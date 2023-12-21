@@ -2,3 +2,13 @@
 .Rhistory
 .RData
 .Ruserdata
+
+# Ignore data too large for GitHub
+## Raw data
+### AIS
+data/a_raw_data/AIS2022_Annual
+
+### Bathymetry
+data/a_raw_data/bathymetry/ncei19_n41x50_w071x00_2018v1.tif
+data/a_raw_data/bathymetry/ncei19_n41x50_w071x25_2018v1.tif
+data/a_raw_data/bathymetry/ncei19_n41x50_w071x50_2018v1.tif
