@@ -1,0 +1,209 @@
+﻿<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Northeastern Regional Association of Coastal Ocean Observing Systems (NERACOOS)</origin>
+        <pubdate>20170724</pubdate>
+        <title>NERACOOS Buoys</title>
+        <geoform>vector digital data</geoform>
+        <onlink>http://50.19.218.171/arcgis1/rest/services/PhysicalOceanography/MapServer/0</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>This dataset provides information on the Northeastern Regional Association of Coastal Ocean Observing Systems (NERACOOS) buoys and monitoring stations. Monitoring stations in this dataset include: NERACOOS Buoys, Bowdoin Buoys, CDIP Buoys, NOAA CMAN stations, DeepC Wind, Gulf of Maine Array, Long Island Sound Array, NOAA buoys, RI-SAMP, and URI Buoys. NERACOOS is the Northeastern Regional Association of Coastal Ocean Observing Systems and is a component of the national Integrated Ocean Observing Sysem (IOOS).</abstract>
+      <purpose>This dataset shows locations of NERACOOS monitoring stations in the northwest Atlantic off the coast of New England and Long Island Sound</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <rngdates>
+          <begdate>20170627</begdate>
+          <enddate>20170627</enddate>
+        </rngdates>
+      </timeinfo>
+      <current>Ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-73.729999</westbc>
+        <eastbc>-63.408202</eastbc>
+        <northbc>44.889991</northbc>
+        <southbc>40.503992</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>ISO 19115 Topic Categories</themekt>
+        <themekey>environment</themekey>
+        <themekey>oceans</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>Gulf of Maine, Long Island Sound, Northeast</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>FOR PLANNING PURPOSES, ONLY. Northeast Regional Ocean Council and NortheastOceanData.org make no warranties or representations whatsoever regarding the availability, quality, accuracy, content, completeness or suitability for the user's needs of such information. The services, information, and data made available are provided 'as is' without warranties of any kind</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Northeast Regional Ocean Council</cntorg>
+          <cntper>Northesat Regional Ocean Council</cntper>
+        </cntorgp>
+        <cntpos>Data Manager</cntpos>
+        <cntemail>contact@northeastoceandata.org</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Northeast Regional Ocean Council</cntorg>
+          <cntper>Northesat Regional Ocean Council</cntper>
+        </cntorgp>
+        <cntpos>Data Manager</cntpos>
+        <cntemail>contact@northeastoceandata.org</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <datacred>Northeastern Regional Association of Coastal Ocean Observing Systems (NERACOOS)</datacred>
+    <native>Microsoft Windows 7 Version 6.1 (Build 7601) Service Pack 1; Esri ArcGIS 10.3.1.4959</native>
+  </idinfo>
+  <dataqual>
+    <logic>Point data was imported as X,Y coordinates based on latitude and longitude values originally supplied in text format and converted to ESRI file geodatabase format. Subsequent testing of the data was not performed.</logic>
+    <complete>All displayed features were mapped based upon NERACOOS buoy latitude and longitude locations supplied by NERACOOS.</complete>
+    <lineage>
+      <procstep>
+        <procdesc>The buoy dataset was originally derived from a Microsoft Excel spreadsheet that included latitude, longitude, buoy, location, NOAA ID, CDIP ID, program ID, program name, status, and data access location The data were imported into ArcGIS Desktop and spatially represented using the Display XY data function, with latitude input as the Y and longitude as the X coordinate for a GCS NAD 83 geographic system.</procdesc>
+        <procdate>20170627</procdate>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>46</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <geograph>
+        <latres>8.9831528411952133e-009</latres>
+        <longres>8.9831528411952133e-009</longres>
+        <geogunit>Decimal Degrees</geogunit>
+      </geograph>
+      <geodetic>
+        <horizdn>D North American 1983</horizdn>
+        <ellips>GRS 1980</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257222101</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>NERACOOSBuoys</enttypl>
+        <enttypd>Northeastern Regional Association of Coastal Ocean Observing Systems monitoring stations</enttypd>
+        <enttypds>NERACOOS</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>OBJECTID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>ESRI</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Buoy</attrlabl>
+        <attrdef>Platform description</attrdef>
+        <attrdefs>NERACOOS</attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>Buoy platform description</codesetn>
+            <codesets>GMRI</codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>latitude</attrlabl>
+        <attrdef>Coordinates defining the features</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>longitude</attrlabl>
+        <attrdef>Coordinates defining the features</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>Location</attrlabl>
+        <attrdef>Location of buoy in marine environment</attrdef>
+        <attrdefs>NERACOOS</attrdefs>
+        <attrdomv>
+          <codesetd>
+            <codesetn>Buoy location description</codesetn>
+            <codesets>GMRI</codesets>
+          </codesetd>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>NOAAID</attrlabl>
+        <attrdef>NOAA identification label</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>CDIPID</attrlabl>
+        <attrdef>Coastal Data Information Program identification number</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>programID</attrlabl>
+        <attrdef>Sponsoring program identification label</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>Program</attrlabl>
+        <attrdef>Sponsoring program</attrdef>
+        <attrdefs>NERACOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>status</attrlabl>
+        <attrdef>Activity status of the buoy</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+      <attr>
+        <attrlabl>dataAccess</attrlabl>
+        <attrdef>Web URL providing access to the buoy's data</attrdef>
+        <attrdefs>NEARCOOS</attrdefs>
+      </attr>
+    </detailed>
+  </eainfo>
+  <metainfo>
+    <metd>20170724</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Northeast Regional Ocean Council</cntorg>
+          <cntper>Northesat Regional Ocean Council</cntper>
+        </cntorgp>
+        <cntpos>Data Manager</cntpos>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>
