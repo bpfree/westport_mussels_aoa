@@ -3,7 +3,7 @@
 .RData
 .Ruserdata
 
-# Ignore data too large for GitHub
+# Ignore data too large for GitHub (>100MB)
 ## Raw data
 ### AIS
 data/a_raw_data/AIS2022_Annual
