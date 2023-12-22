@@ -86,7 +86,11 @@ study_region <- sf::st_read(dsn = file.path(paste(study_dir, "studyRegion_constr
 ## original hex grid
 westport_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_constrained") %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
-  sf::st_transform(x = ., crs = crs)
+  sf::st_transform(x = ., crs = crs) %>%
+  # create and index location
+  dplyr::mutate(index = row_number()) %>%
+  dplyr::relocate(index,
+                  .before = GRID_ID)
 
 #####################################
 #####################################
