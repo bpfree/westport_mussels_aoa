@@ -4,6 +4,9 @@
 .Ruserdata
 
 # Ignore data too large for GitHub (>100MB)
+## Westport geopackage
+data/a_raw_data/Westport_FinalGeoPackage.gpkg
+
 ## Raw data
 ### AIS
 data/a_raw_data/AIS2022_Annual
