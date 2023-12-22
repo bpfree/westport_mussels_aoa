@@ -2,16 +2,16 @@
 ### 0. Download Data ###
 ########################
 
-# Clear environment
+# clear environment
 rm(list = ls())
 
-# Calculate start time of code (determine how long it takes to complete all code)
+# calculate start time of code (determine how long it takes to complete all code)
 start <- Sys.time()
 
 #####################################
 #####################################
 
-# Load packages
+# load packages
 if (!require("pacman")) install.packages("pacman")
 pacman::p_load(docxtractr,
                dplyr,
@@ -116,14 +116,14 @@ data_download_function <- function(download_list, data_dir){
 #####################################
 #####################################
 
-# Set directories
-## Define data directory (as this is an R Project, pathnames are simplified)
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
 data_dir <- "data/a_raw_data"
 
 #####################################
 #####################################
 
-# Download data
+# download data
 
 ## BOEM wind call areas data
 ### BOEM source (geodatabase): https://www.boem.gov/renewable-energy/mapping-and-data/renewable-energy-gis-data
@@ -135,7 +135,7 @@ boem_wind_area <- "https://www.boem.gov/BOEM-Renewable-Energy-Geodatabase.zip"
 
 #####################################
 
-## Constraints
+## constraints
 
 ### Bathymetry data
 #### Explore data here: https://www.ncei.noaa.gov/maps/bathymetry/
@@ -277,6 +277,7 @@ sediment <- "https://marinecadastre.gov/downloads/data/mc/SedimentTexture.zip"
 
 ### Deep sea coral
 
+
 #####################################
 
 
@@ -292,6 +293,7 @@ ais_counts <- "https://services.northeastoceandata.org/downloads/AIS/AIS2022_Ann
 
 
 ## Fisheries
+
 
 #####################################
 #####################################
