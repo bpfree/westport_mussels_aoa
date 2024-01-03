@@ -417,7 +417,7 @@ get_file_name <- list.files(data_dir,
                             pattern = "gom")
 
 file.rename(from = file.path(data_dir, get_file_name),
-            # rename it to be 
+            # rename it to be shorter and more understandable
             to = file.path(data_dir, "gom_spawning_protection_areas"))
 
 #####################################
