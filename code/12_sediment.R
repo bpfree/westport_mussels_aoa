@@ -52,8 +52,8 @@ data_dir <- "data/a_raw_data/SedimentTexture/SedimentTexture.gpkg"
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 
 ### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
+#### natural and cultural resources
+natural_cultural_gpkg <- "data/c_submodel_data/natural_cultural.gpkg"
 
 #### intermediate directories
 sediment_gpkg <- "data/b_intermediate_data/westport_sediment.gpkg"
@@ -134,7 +134,7 @@ westport_sediment_hex <- westport_hex[westport_aids_navigation, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_sediment_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_sediment_hex, dsn = natural_cultural_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
 
 ## sediment geopackage
 sf::st_write(obj = sediment, dsn = sediment_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
