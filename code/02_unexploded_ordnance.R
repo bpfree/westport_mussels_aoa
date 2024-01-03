@@ -84,7 +84,7 @@ crs <- "EPSG:26918"
 ## Unexploded ordnance types of interest
 uxo_types <- c("JATO Racks and Associated Debris", "Unexploded Depth Bombs")
 
-## setback distance
+## setback distance (in meters)
 setback <- 500
 
 ## layer names
@@ -118,7 +118,7 @@ uxo_locations <- sf::st_read(dsn = uxo_locations_gdb, layer = "UnexplodedOrdnanc
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region_grid", sep = "_"))
+westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_"))
 
 ## hex grid
 westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "original_grid", sep = "_"))
