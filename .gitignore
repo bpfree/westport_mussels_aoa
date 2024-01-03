@@ -15,3 +15,13 @@ data/a_raw_data/AIS2022_Annual
 data/a_raw_data/bathymetry/ncei19_n41x50_w071x00_2018v1.tif
 data/a_raw_data/bathymetry/ncei19_n41x50_w071x25_2018v1.tif
 data/a_raw_data/bathymetry/ncei19_n41x50_w071x50_2018v1.tif
+
+## Intermediate data
+### bathymetry
+data/b_intermediate_data/bathymetry
+
+### aids to naviation
+data/b_intermediate_data/westport_aids_navigation.gpkg
+
+### wreck and obstruction
+data/b_intermediate_data/westport_wreck_obstruction.gpkg
