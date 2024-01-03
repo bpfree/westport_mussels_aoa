@@ -1,0 +1,416 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <idinfo>
+    <citation>
+      <citeinfo>
+        <origin>Esri</origin>
+        <origin>Department of Commerce (DOC), National Oceanic and Atmospheric Administration (NOAA) National Ocean Service (NOS), National Centers for Coastal Ocean Science (NCCOS)</origin>
+        <origin>Department of Commerce (DOC), National Oceanic and Atmospheric Administration (NOAA) National Ocean Service (NOS), Office for Coastal Management (OCM)</origin>
+        <pubdate>Unpublished material</pubdate>
+        <title>EMU_Salinity</title>
+        <geoform>vector digital data</geoform>
+        <onlink>ftp://ftp.coast.noaa.gov/pub/MSP/ORT/</onlink>
+        <onlink>https://coast.noaa.gov/arcgis/rest/services/OceanReportingTool</onlink>
+        <onlink>https://coast.noaa.gov/</onlink>
+      </citeinfo>
+    </citation>
+    <descript>
+      <abstract>A compilation of ocean water quality (temperature, salinity, and dissolved oxygen) data at ¼ degree spatial resolution for the entire United States Exclusive Economic Zone. The dataset is derived from the ESRI Ecological Marine Unit (EMU) dataset, which was assembled from non-supervised statistical clustering of over 52 million points from NOAA’s World Ocean Atlas (2013) WoA database, an authoritative 57 year archive of global water column data. This derived dataset is divided into three separate point shapefiles, each representing either temperature (degrees Celsius), salinity (practical salinity units), or dissolved oxygen (mg/L). Values represent a climatological average. Each shapefile is formatted such that a single point location (i.e., unique associated latitude and longitude) contains a unique column entry for a given depth interval. Depth intervals are variable from 5 m near the surface to 100 m in the deeper regions (&gt; 2000 m) for a total of 102 depth levels.
+
+All disclaimers provided by the original dataset authors apply to this derived dataset. For detail on these disclaimers, please refer to the following reference: Sayre, R., J. Dangermond, D. Wright, S. Breyer, K. Butler, K. Van Graafeiland, M.J. Costello, P. Harris, K. Goodin, M. Kavanaugh, N. Cressie, J. Guinotte, Z. Basher, P. Halpin, M. Monaco, P. Aniello, C. Frye, D. Stephens, P. Valentine, J. Smith, R. Smith, D.P. VanSistine, J. Cress, H. Warner, C. Brown, J. Steffenson, D. Cribbs, B. Van Esch, D. Hopkins, G. Noll, S. Kopp, and C. Convis. 2017. A New Map of Global Ecological Marine Units – An Environmental Stratification Approach. Washington, DC: American Association of Geographers. 36 pages.</abstract>
+      <purpose>To support coastal and ocean planning and other activities pursuant to the Energy Policy Act, Coastal Zone Management Act, Magnuson-Stevens Fishery Conservation and Management Act, National Environmental Policy Act, Rivers and Harbors Act and the Submerged Lands Act.</purpose>
+    </descript>
+    <timeperd>
+      <timeinfo>
+        <sngdate>
+          <caldate>Unknown</caldate>
+        </sngdate>
+      </timeinfo>
+      <current>ground condition</current>
+    </timeperd>
+    <status>
+      <progress>Complete</progress>
+      <update>As needed</update>
+    </status>
+    <spdom>
+      <bounding>
+        <westbc>-179.875000</westbc>
+        <eastbc>179.875000</eastbc>
+        <northbc>74.625000</northbc>
+        <southbc>-17.375000</southbc>
+      </bounding>
+    </spdom>
+    <keywords>
+      <theme>
+        <themekt>None</themekt>
+        <themekey>marine cadastre</themekey>
+        <themekey>marine spatial planning</themekey>
+        <themekey>environmental</themekey>
+        <themekey>oceans</themekey>
+        <themekey>environment</themekey>
+        <themekey>farming</themekey>
+        <themekey>planningCadastre</themekey>
+        <themekey>United States</themekey>
+        <themekey>national</themekey>
+        <themekey>alternative energy planning</themekey>
+        <themekey>coastal energy planning</themekey>
+        <themekey>environmental energy planning</themekey>
+        <themekey>ocean energy planning</themekey>
+        <themekey>offshore energy planning</themekey>
+        <themekey>renewable energy planning</themekey>
+        <themekey>water column features</themekey>
+        <themekey>water quality parameters</themekey>
+        <themekey>biology</themekey>
+      </theme>
+      <place>
+        <placekt>None</placekt>
+        <placekey>United States, Atlantic, Pacific, national</placekey>
+      </place>
+    </keywords>
+    <accconst>None</accconst>
+    <useconst>None</useconst>
+    <ptcontac>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Office for Coastal Management</cntorg>
+          <cntper>MarineCadastre.gov Data Steward</cntper>
+        </cntorgp>
+        <cntpos>MarineCadastre.gov Data Steward</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2234 South Hobson Avenue</address>
+          <city>Charleston</city>
+          <state>SC</state>
+          <postal>29405-2413</postal>
+        </cntaddr>
+        <cntvoice>843.740.1202</cntvoice>
+        <cntemail>coastal.info@noaa.gov</cntemail>
+      </cntinfo>
+    </ptcontac>
+    <native> Version 6.2 (Build 9200) ; Esri ArcGIS 10.5.1.7333</native>
+  </idinfo>
+  <dataqual>
+    <attracc>
+      <attraccr>The attributes in this dataset are believed to be accurate.</attraccr>
+    </attracc>
+    <logic>These data are believed to be logically consistent. Geometry is topologically clean.</logic>
+    <complete>Spatial and attribute properties are believed to be complete, although attribute information has been simplified. Geometric thresholds from original data are preserved. No tests have been completed for exhaustiveness.</complete>
+    <posacc>
+      <horizpa>
+        <horizpar>Maximum scale of intended use is 1:80,000.</horizpar>
+      </horizpa>
+    </posacc>
+    <lineage>
+      <srcinfo>
+        <srccite>
+          <citeinfo>
+            <origin>Esri</origin>
+            <pubdate>Unknown</pubdate>
+            <title>Esri Ecological Marine Unit (EMU) dataset for Salinity</title>
+            <onlink>https://www.arcgis.com/home/item.html?id=5075d771f6894080ac190c3ccd954f0e</onlink>
+          </citeinfo>
+        </srccite>
+        <typesrc>online</typesrc>
+        <srctime>
+          <timeinfo>
+            <sngdate>
+              <caldate>201808</caldate>
+            </sngdate>
+          </timeinfo>
+          <srccurr>ground condition</srccurr>
+        </srctime>
+        <srccitea>Unknown</srccitea>
+        <srccontr>Esri Ecological Marine Unit (EMU) dataset</srccontr>
+      </srcinfo>
+      <procstep>
+        <procdesc>(1) ESRI Ecological Marine Units data clipped to the boundaries of the United States Exclusive Economic Zone were provided by Keith VanGraafeiland (ESRI). Data were provided in a large point shapefile format with multiple points associated with a single latitude and longitude location. Original attribute fields included those representing depth, unique ecological marine units, nutrients (nitrates, phosphates, silicates), temperature, salinity, dissolved oxygen, among other related fields.
+(2) Data were re-shaped into a single point shapefile for each parameter (i.e., temperature, salinity, dissolved oxygen). These shapefiles contain a unique point representing each single latitude and longitude location. Attribute fields for parameters at depth were added for each point within the shapefile. These fields were derived from the original dataset and represent the given parameter within each depth interval (e.g., DOmgL_001-DOmgL_102 wherein DOmgL_001 represents dissolved oxygen (mg/L) for waters between 0 and 5 m depth).
+
+Depth bins:
+Depth Bin #	Bottom Depth of Bin (m)
+1	-5
+2	-10
+3	-15
+4	-20
+5	-25
+6	-30
+7	-35
+8	-40
+9	-45
+10	-50
+11	-55
+12	-60
+13	-65
+14	-70
+15	-75
+16	-80
+17	-85
+18	-90
+19	-95
+20	-100
+21	-125
+22	-150
+23	-175
+24	-200
+25	-225
+26	-250
+27	-275
+28	-300
+29	-325
+30	-350
+31	-375
+32	-400
+33	-425
+34	-450
+35	-475
+36	-500
+37	-550
+38	-600
+39	-650
+40	-700
+41	-750
+42	-800
+43	-850
+44	-900
+45	-950
+46	-1000
+47	-1050
+48	-1100
+49	-1150
+50	-1200
+51	-1250
+52	-1300
+53	-1350
+54	-1400
+55	-1450
+56	-1500
+57	-1550
+58	-1600
+59	-1650
+60	-1700
+61	-1750
+62	-1800
+63	-1850
+64	-1900
+65	-1950
+66	-2000
+67	-2100
+68	-2200
+69	-2300
+70	-2400
+71	-2500
+72	-2600
+73	-2700
+74	-2800
+75	-2900
+76	-3000
+77	-3100
+78	-3200
+79	-3300
+80	-3400
+81	-3500
+82	-3600
+83	-3700
+84	-3800
+85	-3900
+86	-4000
+87	-4100
+88	-4200
+89	-4300
+90	-4400
+91	-4500
+92	-4600
+93	-4700
+94	-4800
+95	-4900
+96	-5000
+97	-5100
+98	-5200
+99	-5300
+100	-5400
+101	-5500
+102	-6000</procdesc>
+        <procdate>201808</procdate>
+        <proccont>
+          <cntinfo>
+            <cntorgp>
+              <cntorg>NOAA NCCOS Coastal Aquaculture Siting and Sustainability (CASS)</cntorg>
+            </cntorgp>
+            <cntaddr>
+              <addrtype>mailing and physical</addrtype>
+              <address>101 Pivers Island Road</address>
+              <city>Beaufort</city>
+              <state>NC</state>
+              <postal>28516</postal>
+            </cntaddr>
+            <cntvoice>252.728.8797</cntvoice>
+          </cntinfo>
+        </proccont>
+      </procstep>
+    </lineage>
+  </dataqual>
+  <spdoinfo>
+    <direct>Vector</direct>
+    <ptvctinf>
+      <sdtsterm>
+        <sdtstype>Entity point</sdtstype>
+        <ptvctcnt>21041</ptvctcnt>
+      </sdtsterm>
+    </ptvctinf>
+  </spdoinfo>
+  <spref>
+    <horizsys>
+      <planar>
+        <mapproj>
+          <mapprojn>WGS 1984 World Mercator</mapprojn>
+          <mercator>
+            <stdparll>0.0</stdparll>
+            <longcm>0.0</longcm>
+            <feast>0.0</feast>
+            <fnorth>0.0</fnorth>
+          </mercator>
+        </mapproj>
+        <planci>
+          <plance>coordinate pair</plance>
+          <coordrep>
+            <absres>0.0001</absres>
+            <ordres>0.0001</ordres>
+          </coordrep>
+          <plandu>meter</plandu>
+        </planci>
+      </planar>
+      <geodetic>
+        <horizdn>D WGS 1984</horizdn>
+        <ellips>WGS 1984</ellips>
+        <semiaxis>6378137.0</semiaxis>
+        <denflat>298.257223563</denflat>
+      </geodetic>
+    </horizsys>
+  </spref>
+  <eainfo>
+    <detailed>
+      <enttyp>
+        <enttypl>EMU_Salinity</enttypl>
+        <enttypd>Esri Ecological Marine Unit (EMU) dataset for Salinity</enttypd>
+        <enttypds>Esri</enttypds>
+      </enttyp>
+      <attr>
+        <attrlabl>OBJECTID</attrlabl>
+        <attrdef>Internal feature number.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Sequential unique whole numbers that are automatically generated.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>X</attrlabl>
+        <attrdef>Longitude for the point feature.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Y</attrlabl>
+        <attrdef>Latitude for the point feature.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sal_001 - sal_020</attrlabl>
+        <attrdef>Salinity (practical salinity units) for 0 - 100 m depth, every 5 m (e.g., 0 – 5 m = sal_001).</attrdef>
+        <attrdefs>NOAA NCCOS CASS</attrdefs>
+        <attrdomv>
+          <udom>Alphanumeric text defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sal_021 - sal_036</attrlabl>
+        <attrdef>Salinity (practical salinity units) for 125 – 500 m depth, every 25 m (e.g., 100 – 125 m = sal_021).</attrdef>
+        <attrdefs>NOAA NCCOS CASS</attrdefs>
+        <attrdomv>
+          <udom>Alphanumeric text defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sal_037 - sal_066</attrlabl>
+        <attrdef>Salinity (practical salinity units) for 550 – 2000 m depth, every 50 m (e.g., 500 – 550 m = sal_037).</attrdef>
+        <attrdefs>NOAA NCCOS CASS</attrdefs>
+        <attrdomv>
+          <udom>Alphanumeric text defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sal_067 - sal_101</attrlabl>
+        <attrdef>Salinity (practical salinity units) for 2100 – 5500 m depth, every 100 m (e.g., 2000 – 2100 m = sal_067).</attrdef>
+        <attrdefs>NOAA NCCOS CASS</attrdefs>
+        <attrdomv>
+          <udom>Alphanumeric text defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>sal_102</attrlabl>
+        <attrdef>Salinity (practical salinity units) for 6000 m depth.</attrdef>
+        <attrdefs>NOAA NCCOS CASS</attrdefs>
+        <attrdomv>
+          <udom>Alphanumeric text defining the features.</udom>
+        </attrdomv>
+      </attr>
+      <attr>
+        <attrlabl>Shape</attrlabl>
+        <attrdef>Feature geometry.</attrdef>
+        <attrdefs>Esri</attrdefs>
+        <attrdomv>
+          <udom>Coordinates defining the features.</udom>
+        </attrdomv>
+      </attr>
+    </detailed>
+  </eainfo>
+  <distinfo>
+    <distrib>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Office for Coastal Management</cntorg>
+          <cntper>MarineCadastre.gov Data Steward</cntper>
+        </cntorgp>
+        <cntpos>MarineCadastre.gov Data Steward</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2234 South Hobson Avenue</address>
+          <city>Charleston</city>
+          <state>SC</state>
+          <postal>29405-2413</postal>
+        </cntaddr>
+        <cntvoice>843.740.1202</cntvoice>
+        <cntemail>coastal.info@noaa.gov</cntemail>
+      </cntinfo>
+    </distrib>
+    <distliab>NOAA makes no warranties or representations whatsoever regarding the availability, quality, accuracy, content, completeness or suitability for the user's needs of such information. The services, information, and data made available on the Marine Cadastre web site are provided "as is" without warranties of any kind. These data are intended for coastal and ocean use planning. Not for navigation. http://www.marinecadastre.gov/about/disclaimer.html</distliab>
+  </distinfo>
+  <metainfo>
+    <metd>20180829</metd>
+    <metc>
+      <cntinfo>
+        <cntorgp>
+          <cntorg>Office for Coastal Management</cntorg>
+          <cntper>MarineCadastre.gov Data Steward</cntper>
+        </cntorgp>
+        <cntpos>MarineCadastre.gov Data Steward</cntpos>
+        <cntaddr>
+          <addrtype>mailing and physical</addrtype>
+          <address>2234 South Hobson Avenue</address>
+          <city>Charleston</city>
+          <state>SC</state>
+          <postal>29405-2413</postal>
+        </cntaddr>
+        <cntvoice>843.740.1202</cntvoice>
+        <cntemail>coastal.info@noaa.gov</cntemail>
+      </cntinfo>
+    </metc>
+    <metstdn>FGDC Content Standard for Digital Geospatial Metadata</metstdn>
+    <metstdv>FGDC-STD-001-1998</metstdv>
+    <mettc>local time</mettc>
+  </metainfo>
+</metadata>
