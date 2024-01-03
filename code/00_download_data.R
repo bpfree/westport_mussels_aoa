@@ -299,6 +299,19 @@ ais_counts <- "https://services.northeastoceandata.org/downloads/AIS/AIS2022_Ann
 #### PDF Map: https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf
 cod_protection <- "https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip"
 
+
+#####################################
+
+## Miscellaneous
+
+### Federal waters (https://marinecadastre.gov/downloads/data/mc/CoastalZoneManagementAct.zip)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/53132
+federal_waters <- "https://marinecadastre.gov/downloads/data/mc/CoastalZoneManagementAct.zip"
+
+### Temperature (https://marinecadastre.gov/downloads/data/mc/EMUWaterQuality.zip)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/66137
+temperature <- "https://marinecadastre.gov/downloads/data/mc/EMUWaterQuality.zip"
+
 #####################################
 #####################################
 
@@ -358,7 +371,13 @@ download_list <- c(
   ais_counts,
   
   # cod protection
-  cod_protection
+  cod_protection,
+  
+  # federal waters
+  federal_waters,
+  
+  # temperature (EMU water quality)
+  temperature
 )
   
 data_download_function(download_list, data_dir)
@@ -368,6 +387,8 @@ data_download_function(download_list, data_dir)
 
 # list all files in data directory
 list.files(data_dir)
+
+#####################################
 
 # create a subdirectory for bathymetry files
 dir.create(path = file.path(data_dir, "bathymetry", sep = "/"))
@@ -387,6 +408,19 @@ for(i in 1:length(bathymetry_files)){
               # and move to the new bathymetry subdirectory
               to = file.path(bath_dir, bathymetry_files[i]))
 }
+
+#####################################
+
+# rename cod spawning protection areas directory
+get_file_name <- list.files(data_dir,
+                            # get the element that has "gom" in it -- gom = Gulf of Maine
+                            pattern = "gom")
+
+file.rename(from = file.path(data_dir, get_file_name),
+            # rename it to be 
+            to = file.path(data_dir, "gom_spawning_protection_areas"))
+
+#####################################
 
 # examine all subdirectories in data directory
 list.files(data_dir)
