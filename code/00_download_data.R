@@ -167,12 +167,12 @@ boem_wind_area <- "https://www.boem.gov/BOEM-Renewable-Energy-Geodatabase.zip"
 ####      i.) 1/3-arc directory: rima
 
 #### Data are spread across two major data sourcs: CUDEM third arc-second resolution and ninth arc-second resolution
-#### ***Note: for the 1/9-arc second data, the data encompass three datasets
+#### ***Note: for the 1/9-arc second data (~3m), the data encompass three datasets
 ####    a.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x00_2018v1.tif,
 ####    b.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x25_2018v1.tif, and
 ####    c.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x50_2018v1.tif)
 
-#### ***Note: for the 1/3-arc second data, the data encompass three datasets
+#### ***Note: for the 1/3-arc second data (~10m), the data encompass three datasets
 ####    a.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x00_2021v1.tif
 ####    b.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x25_2021v1.tif
 ####    c.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x50_2021v1.tif
@@ -294,6 +294,10 @@ ais_counts <- "https://services.northeastoceandata.org/downloads/AIS/AIS2022_Ann
 
 ## Fisheries
 
+### Cod spawning protection areas (source: https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip)
+#### Metadata: https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf
+#### PDF Map: https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf
+cod_protection <- "https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip"
 
 #####################################
 #####################################
@@ -351,7 +355,10 @@ download_list <- c(
   # deep-sea coral
   
   # vessel traffic
-  ais_counts
+  ais_counts,
+  
+  # cod protection
+  cod_protection
 )
   
 data_download_function(download_list, data_dir)
