@@ -129,7 +129,7 @@ westport_cod_spawning_hex <- westport_hex[westport_cod_spawning, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_cod_spawning_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_cod_spawning_hex, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
 
 ## cod spawning protection areas geopackage
 sf::st_write(obj = cod_spawning, dsn = cod_spawning_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
