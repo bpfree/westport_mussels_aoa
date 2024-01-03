@@ -121,7 +121,7 @@ westport_sediment <- sediment %>%
 #####################################
 
 # sediment hex grids
-westport_sediment_hex <- westport_hex[westport_aids_navigation, ] %>%
+westport_sediment_hex <- westport_hex[westport_sediment, ] %>%
   # spatially join sediment values to Westport hex cells
   sf::st_join(x = .,
               y = westport_sediment,
