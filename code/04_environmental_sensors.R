@@ -46,7 +46,7 @@ pacman::p_load(docxtractr,
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
 #### environmental sensors and buoys
-data_gdb <- "data/a_raw_data/PhysicalOceanography/PhysicalOceanography/PhysicalOceanography.gdb"
+data_dir <- "data/a_raw_data/PhysicalOceanography/PhysicalOceanography/PhysicalOceanography.gdb"
 
 #### study area grid
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
@@ -61,7 +61,7 @@ environmental_sensor_gpkg <- "data/b_intermediate_data/westport_environmental_se
 #####################################
 
 # inspect layers within geodatabases and geopackages
-sf::st_layers(dsn = data_gdb,
+sf::st_layers(dsn = data_dir,
               do_count = T)
 
 sf::st_layers(dsn = study_region_gpkg,
@@ -78,7 +78,7 @@ region <- "westport"
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
-## setback distance
+## setback distance (in meters)
 setback <- 500
 
 ## layer names
@@ -93,9 +93,9 @@ date <- format(Sys.time(), "%Y%m%d")
 # load data
 ## environmental sensors and buoys data (source: https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography.zip)
 ### metadata: https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm
-envir_sense <- sf::st_read(dsn = data_gdb,
+envir_sense <- sf::st_read(dsn = data_dir,
                            # NERACOOS buoys are the first dataset
-                           layer = sf::st_layers(data_gdb)[[1]]) %>%
+                           layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 500-meter setback
@@ -104,7 +104,7 @@ envir_sense <- sf::st_read(dsn = data_gdb,
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region_grid", sep = "_"))
+westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_"))
 
 ## hex grid
 westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "original_grid", sep = "_"))
@@ -123,7 +123,7 @@ westport_envir_sense <- envir_sense %>%
 #####################################
 #####################################
 
-# danger zone and restricted area hex grids
+# environmental sensor and buoys hex grids
 westport_envir_sense_hex <- westport_hex[westport_envir_sense, ] %>%
   # spatially join environmental sensors and buoys values to Westport hex cells
   sf::st_join(x = .,
