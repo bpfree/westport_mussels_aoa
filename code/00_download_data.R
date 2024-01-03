@@ -275,6 +275,10 @@ military_operating_area <- "https://marinecadastre.gov/downloads/data/mc/Militar
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
 sediment <- "https://marinecadastre.gov/downloads/data/mc/SedimentTexture.zip"
 
+### Sediment size (source: https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/Sediment.zip)
+#### Northeast Ocean Data: https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/SoftSediment.pdf
+sediment_size <- "https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/Sediment.zip"
+
 ### Deep sea coral
 
 
@@ -365,6 +369,9 @@ download_list <- c(
   # sediment
   sediment,
   
+  # sediment size
+  sediment_size,
+  
   # deep-sea coral
   
   # vessel traffic
@@ -419,6 +426,9 @@ get_file_name <- list.files(data_dir,
 file.rename(from = file.path(data_dir, get_file_name),
             # rename it to be shorter and more understandable
             to = file.path(data_dir, "cod_spawning_protection_areas"))
+
+# delete unzipped directory without name change
+unlink(file.path(data_dir, get_file_name), recursive = T)
 
 #####################################
 
