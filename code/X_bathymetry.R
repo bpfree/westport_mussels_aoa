@@ -215,8 +215,15 @@ westport_bath <- terra::mosaic(bath_9th_1,
 dim(westport_bath)
 
 #####################################
+
+# change projection back to NAD83 / UTM 18N (https://epsg.io/26918)
+westport_bath <- terra::project(x = westport_bath, y = crs)
+cat(crs(westport_bath))
+
+#####################################
 #####################################
 
+# export raster file
 terra::writeRaster(westport_bath, filename = file.path(bathymetry_dir, "westport_bath.grd"), overwrite = T)
 
 #####################################
