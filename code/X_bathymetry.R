@@ -2,16 +2,6 @@
 ### X. Bathymetry ###
 #####################
 
-# Clear environment
-rm(list = ls())
-
-# Calculate start time of code (determine how long it takes to complete all code)
-start <- Sys.time()
-
-#####################################
-#####################################
-
-
 # clear environment
 rm(list = ls())
 
@@ -84,7 +74,7 @@ crs <- "EPSG:26918"
 bath_crs <- "EPSG:4269"
 
 ## layer names
-export_name <- "sediment"
+export_name <- "bathymetry_boundary"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
@@ -126,11 +116,11 @@ bath_3rd_3 <- terra::rast(paste(data_dir, "ncei13_n41x25_w071x50_2021v1.tif", se
 
 #####################################
 
-## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_")) %>%
-  sf::st_transform(x = ., crs = bath_crs)
-
-cat(crs(westport_region))
+# ## study region
+# westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_")) %>%
+#   sf::st_transform(x = ., crs = bath_crs)
+# 
+# cat(crs(westport_region))
 
 #####################################
 #####################################
@@ -167,7 +157,7 @@ terra::res(bath_3rd_3) # 9.259259e-05 9.259259e-05
 
 ## Disaggregate the resolution to match the other datasets
 ### Calculate the factor between the resolutions (3)
-factor <- round(terra::res(bath_3rd_1)[1] / terra::res(bath_9th_1)[1],0) 
+factor <- round(terra::res(bath_3rd_1)[1] / terra::res(bath_9th_1)[1], 0) 
 
 ### Disaggreate the resolution
 bath_3rd_1_disagg <- terra::disagg(x = bath_3rd_1,
@@ -207,12 +197,13 @@ westport_bath <- terra::mosaic(bath_9th_1,
                                bath_3rd_1_disagg,
                                bath_3rd_2_disagg,
                                bath_3rd_3_disagg,
-                               fun = "mean") %>%
-  # crop bathymetry data to the Westport study area
-  terra::crop(westport_region,
-              # use the Westport study area to mask the data
-              mask = T)
+                               fun = "mean") # %>%
+  # # crop bathymetry data to the Westport study area
+  # terra::crop(westport_region,
+  #             # use the Westport study area to mask the data
+  #             mask = T)
 dim(westport_bath)
+plot(westport_bath)
 
 #####################################
 
@@ -221,13 +212,44 @@ westport_bath <- terra::project(x = westport_bath, y = crs)
 cat(crs(westport_bath))
 
 # inspect minimum and maximum values
-terra::minmax(westport_bath)[1]
-terra::minmax(westport_bath)[2]
+terra::minmax(westport_bath)[1] # top depth
+terra::minmax(westport_bath)[2] # bottom depth
+
+#####################################
+
+# limit area to locations where bathymetry falls between -40 and -20 meters
+westport_bath_boundary <- terra::ifel(westport_bath < -40, NA, terra::ifel(westport_bath > -20, NA, westport_bath))
+
+# plot new raster
+plot(westport_bath_boundary)
+
+# inspect minimum and maximum values
+terra::minmax(westport_bath_boundary)[1] # top depth
+terra::minmax(westport_bath_boundary)[2] # bottom depth
+
+#####################################
+
+# convert boundary to a polygon
+westport_boundary <- terra::as.polygons(x = westport_bath_boundary) %>%
+  # set as sf
+  sf::st_as_sf(westport_boundary) %>%
+  # create field called "land"
+  dplyr::mutate(boundary = "boundary") %>%
+  # select the "land" field
+  dplyr::select(boundary) %>%
+  # group all rows by the different elements with "boundary" field -- this will create a row for the grouped data
+  dplyr::group_by(boundary) %>%
+  # summarise all those grouped elements together -- in effect this will create a single feature
+  dplyr::summarise()
 
 #####################################
 #####################################
+
+# export boundary
+sf::st_write(obj = westport_boundary, dsn = study_region_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
 
 # export raster file
+terra::writeRaster(westport_bath_boundary, filename = file.path(bathymetry_dir, "westport_bathymetry_boundary.grd"), overwrite = T)
 terra::writeRaster(westport_bath, filename = file.path(bathymetry_dir, "westport_bath.grd"), overwrite = T)
 
 #####################################
