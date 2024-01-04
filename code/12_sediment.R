@@ -98,13 +98,16 @@ sediment <- sf::st_read(dsn = data_dir,
   # limit to only classifications with either sand and / or mud
   dplyr::filter(grepl('Sand | Mud', classification))
 
+list(unique(sediment$classification))
+length(unique(sediment$classification))
+
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_"))
+westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "original_grid", sep = "_"))
+westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 #####################################
 #####################################
