@@ -118,10 +118,10 @@ uxo_locations <- sf::st_read(dsn = uxo_locations_gdb, layer = "UnexplodedOrdnanc
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_"))
+westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "original_grid", sep = "_"))
+westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 #####################################
 #####################################

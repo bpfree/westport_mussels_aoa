@@ -93,10 +93,10 @@ comb_prot_resources <- sf::st_read(dsn = file.path(paste(data_dir, "final_PRD_CE
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_"))
+westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "original_grid", sep = "_"))
+westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 #####################################
 #####################################
