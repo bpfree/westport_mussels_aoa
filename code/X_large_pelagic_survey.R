@@ -81,6 +81,9 @@ crs <- "EPSG:26918"
 ## layer names
 export_name <- "large_pelagic_survey"
 
+## setback distance (in meters)
+setback <- 16093.4
+
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
 
@@ -93,15 +96,17 @@ lps <- sf::st_read(dsn = data_dir,
                             # large pelagic survey
                             layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
-  sf::st_transform(x = ., crs = crs)
+  sf::st_transform(x = ., crs = crs) %>%
+  # apply 16093.4-meter setback
+  sf::st_buffer(x = ., dist = setback)
 
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_"))
+westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "original_grid", sep = "_"))
+westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 #####################################
 #####################################
