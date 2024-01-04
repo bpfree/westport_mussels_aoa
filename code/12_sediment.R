@@ -96,10 +96,10 @@ sediment <- sf::st_read(dsn = data_dir,
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # limit to only classifications with either sand and / or mud
-  dplyr::filter(grepl('Sand | Mud', classification))
+  dplyr::filter(grepl("Sand|Mud", classification, ignore.case = T))
 
 list(unique(sediment$classification))
-length(unique(sediment$classification))
+length(unique(sediment$classification)) # 238 different combinations that have either sand or mud
 
 #####################################
 
