@@ -220,6 +220,10 @@ dim(westport_bath)
 westport_bath <- terra::project(x = westport_bath, y = crs)
 cat(crs(westport_bath))
 
+# inspect minimum and maximum values
+terra::minmax(westport_bath)[1]
+terra::minmax(westport_bath)[2]
+
 #####################################
 #####################################
 
