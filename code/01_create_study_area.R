@@ -56,8 +56,6 @@ data_dir <- "data/b_intermediate_data/westport_study_area.gpkg"
 sf::st_layers(dsn = data_dir,
               do_count = T)
 
-test <- grep(pattern = "bathymetry", sf::st_layers(dsn = data_dir, do_count = T)[[1]])
-
 #####################################
 #####################################
 
