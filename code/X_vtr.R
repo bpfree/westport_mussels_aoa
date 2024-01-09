@@ -79,7 +79,7 @@ region <- "westport"
 crs <- "EPSG:26918"
 
 ## layer names
-export_name <- "large_pelagic_survey"
+export_name <- "vtr_charter"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
