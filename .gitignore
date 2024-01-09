@@ -30,5 +30,8 @@ data/b_intermediate_data/westport_wreck_obstruction.gpkg
 ### large pelagic survey
 data/b_intermediate_data/westport_large_pelagic_survey.gpkg
 
+### AIS
+data/b_intermediate_data/ais_data
+
 ## Submodel data
 data/c_submodel_data/fisheries.gpkg
