@@ -233,9 +233,9 @@ terra::minmax(westport_bath_boundary)[2] # bottom depth
 westport_boundary <- terra::as.polygons(x = westport_bath_boundary) %>%
   # set as sf
   sf::st_as_sf(westport_boundary) %>%
-  # create field called "land"
+  # create field called "boundary"
   dplyr::mutate(boundary = "boundary") %>%
-  # select the "land" field
+  # select the "boundary" field
   dplyr::select(boundary) %>%
   # group all rows by the different elements with "boundary" field -- this will create a row for the grouped data
   dplyr::group_by(boundary) %>%
