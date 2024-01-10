@@ -1,5 +1,5 @@
 #########################################################
-### X. Vessel Monitoring System (VMS) --- all fishing ###
+### X. Vessel monitoring system (VMS) --- all fishing ###
 #########################################################
 
 # clear environment
@@ -87,6 +87,18 @@ date <- format(Sys.time(), "%Y%m%d")
 #####################################
 
 # function
+fishery_function <- function(fishery_dir, study_region){
+  # load the fishery raster data
+  fishery_raster <- terra::rast(paste(data_dir, fishery_dir, "w001001.adf", sep = "/"))
+  
+  # limit fishery raster data to the study region
+  raster <- terra::crop(x = fishery_raster,
+                        # crop using study region
+                        y = study_region,
+                        # mask using study region (T = True)
+                        mask = T)
+}
+
 ## z-membership function
 ### Adapted from https://www.mathworks.com/help/fuzzy/zmf.html
 zmf_function <- function(raster){
@@ -127,59 +139,7 @@ zmf_function <- function(raster){
   
   # set values back to the original raster
   zvalues <- terra::setValues(raster, z_value)
-  
-  # return the raster
-  return(zvalues)
-}
-
-test_function <- function(fishery_dir, study_region){
-  
-  # load the fishery raster data
-  raster <- terra::rast(paste(data_dir, fishery_dir, "w001001.adf", sep = "/"))
-  
-  # limit fishery raster data to the study region
-  westport_her_0610 <- terra::crop(x = raster,
-                                   # crop using study region
-                                   y = study_region,
-                                   # mask using study region (T = True)
-                                   mask = T)
-  
-  # calculate the absolute value of minimum
-  value_add <- abs(terra::minmax(raster)[1])
-  
-  # calculate the rescaled maximum value
-  max_value <- terra::minmax(raster)[2] + value_add
-  
-  # verify against the range
-  range <- terra::minmax(raster)[2] - terra::minmax(raster)[1]
-  
-  print(c(max_value, range))
-  
-  # new raster with shifted values
-  raster_add <- raster + value_add
-  plot(raster_add)
-  
-  # calculate minimum value
-  min <- terra::minmax(raster_add)[1,]
-  
-  # calculate maximum value
-  max <- terra::minmax(raster_add)[2,]
-  
-  # calculate z-score minimum value
-  ## this ensures that no value gets a value of 0
-  z_max <- max + (max * 1 / 1000)
-  
-  # calculate z-scores (more desired values get score of 1 while less desired will decrease till 0)
-  z_value <- ifelse(raster_add[] == min, 1, # if value is equal to minimum, score as 1
-                    # if value is larger than minimum but lower than mid-value, calculate based on reduction equation
-                    ifelse(raster_add[] > min & raster_add[] < (min + z_max) / 2, 1 - 2 * ((raster_add[] - min) / (z_max - min)) ** 2,
-                           # if value is larger than mid-value but lower than maximum, calculate based on equation
-                           ifelse(raster_add[] >= (min + z_max) / 2 & raster[] < z_max, 2*((raster_add[] - z_max) / (z_max - min)) ** 2,
-                                  # if value is equal to maximum, score min - (min * 1 / 1000); otherwise give NA
-                                  ifelse(raster_add[] == z_max, 0, NA))))
-  
-  # set values back to the original raster
-  zvalues <- terra::setValues(raster, z_value)
+  plot(zvalues)
   
   # return the raster
   return(zvalues)
@@ -189,23 +149,6 @@ test_function <- function(fishery_dir, study_region){
 #####################################
 
 # load data
-## VMS all fisheries
-### Her (2006 - 2010)
-her_0610 <- terra::rast(paste(data_dir, "her_2006_2010" ,"w001001.adf", sep = "/"))
-
-### inspect data
-#### plot data
-plot(her_0610)
-
-#### minimum and maximum values
-terra::minmax(her_0610)[1]
-terra::minmax(her_0610)[2]
-
-### coordinate reference system
-cat(crs(her_0610))
-
-#####################################
-
 ## study region
 westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_")) %>%
   # change projection to match AIS data coordinate reference system
@@ -220,34 +163,117 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 #####################################
 #####################################
 
-plot(westport_region)
+# run z-membership function on each fishery
+## 2015 - 2016 fishery data
+her_15_16 <- fishery_function("her_2015_2016", westport_region)
+mnk_15_16 <- fishery_function("mnk_2015_2016", westport_region)
+nms_15_16 <- fishery_function("nms_2015_2016", westport_region)
+pel_15_16 <- fishery_function("pel_2015_2016", westport_region)
+sco_15_16 <- fishery_function("sco_2015_2016", westport_region)
+ses_15_16 <- fishery_function("ses_2015_2016", westport_region)
+smb_15_16 <- fishery_function("smb_2015_2016", westport_region)
 
-# limit data to study region
-westport_her_0610 <- terra::crop(x = her_0610,
-                            # crop using study region
-                            y = westport_region,
-                            # mask using study region (T = True)
-                            mask = T)
+her_15_16
+mnk_15_16
+nms_15_16
+pel_15_16
+sco_15_16
+ses_15_16
+smb_15_16
+
+# inspect fisheries data
+## plots
+plot(her_15_16)
+plot(mnk_15_16)
+plot(nms_15_16)
+plot(pel_15_16)
+plot(sco_15_16)
+plot(ses_15_16)
+plot(smb_15_16)
+
+# extents
+terra::ext(her_15_16)
+terra::ext(mnk_15_16)
+terra::ext(nms_15_16)
+terra::ext(pel_15_16)
+terra::ext(sco_15_16)
+terra::ext(ses_15_16)
+terra::ext(smb_15_16)
+
+# expand extent
+xmin <- min(terra::ext(her_15_16)[1],
+            terra::ext(mnk_15_16)[1],
+            terra::ext(nms_15_16)[1],
+            terra::ext(pel_15_16)[1],
+            terra::ext(sco_15_16)[1],
+            terra::ext(ses_15_16)[1],
+            terra::ext(smb_15_16)[1])
+xmin
+
+xmax <- max(terra::ext(her_15_16)[2],
+            terra::ext(mnk_15_16)[2],
+            terra::ext(nms_15_16)[2],
+            terra::ext(pel_15_16)[2],
+            terra::ext(sco_15_16)[2],
+            terra::ext(ses_15_16)[2],
+            terra::ext(smb_15_16)[2])
+xmax
+
+ymin <- min(terra::ext(her_15_16)[3],
+            terra::ext(mnk_15_16)[3],
+            terra::ext(nms_15_16)[3],
+            terra::ext(pel_15_16)[3],
+            terra::ext(sco_15_16)[3],
+            terra::ext(ses_15_16)[3],
+            terra::ext(smb_15_16)[3])
+ymin
+
+ymax <- max(ext(her_15_16)[4],
+            ext(mnk_15_16)[4],
+            ext(nms_15_16)[4],
+            ext(pel_15_16)[4],
+            ext(sco_15_16)[4],
+            ext(ses_15_16)[4],
+            ext(smb_15_16)[4])
+ymax
+
+# raster extent
+raster_ext <- c(xmin, xmax, ymin, ymax)
+
+terra::ext(her_15_16) <- raster_ext
+terra::ext(mnk_15_16) <- raster_ext
+terra::ext(nms_15_16) <- raster_ext
+terra::ext(pel_15_16) <- raster_ext
+terra::ext(sco_15_16) <- raster_ext
+terra::ext(ses_15_16) <- raster_ext
+terra::ext(smb_15_16) <- raster_ext
+
+her_15_16
+mnk_15_16
+nms_15_16
+pel_15_16
+sco_15_16
+ses_15_16
+smb_15_16
 
 #####################################
 #####################################
 
-# rescale AIS values using a z-membership function
+# combine all fishery rasters
+terra::ext(her_15_16) <- terra::ext(nms_15_16)
 
-her_0610_z <- raster %>%
-  zmf_function()
-
-raster2 <- westport_her_0610
-her_0610_z_test <- raster2 %>%
-  test_function()
-
-## inspect rescaled data
-plot(her_0610_z)
-plot(her_0610_z_test)
-
-change <- her_0610_z_test - her_0610_z
-hist(change)
-plot(change)
+fishery_raster <- terra::app(c(#her_15_16,
+                               #mnk_15_16,
+                               nms_15_16,
+                               pel_15_16,
+                               #sco_15_16,
+                               #ses_15_16,
+                               smb_15_16),
+                             # take mean values of all fishery rasters (2015 - 2016)
+                             fun = mean,
+                             # remove any NA values from calculation
+                             na.rm = T)
+plot(fishery_raster)
 
 #####################################
 #####################################
