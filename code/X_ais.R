@@ -1,5 +1,5 @@
 ################################################
-### X. Automatic Identification System (AIS) ###
+### X. Automatic identification system (AIS) ###
 ################################################
 
 # clear environment
@@ -120,7 +120,8 @@ zmf_function <- function(raster){
 #####################################
 
 # load data
-## AIS 2022 data (source: )
+## AIS 2022 data (source: https://services.northeastoceandata.org/downloads/AIS/AIS2022_Annual.zip)
+### metadata: https://www.northeastoceandata.org/files/metadata/Themes/AIS/AllAISVesselTransitCounts2022.pdf
 ais <- terra::rast(paste(data_dir, "w001001.adf", sep = "/"))
 crs(ais) <- ais_crs
 
