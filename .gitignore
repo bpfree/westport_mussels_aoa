@@ -17,6 +17,9 @@ data/a_raw_data/bathymetry/ncei19_n41x50_w071x00_2018v1.tif
 data/a_raw_data/bathymetry/ncei19_n41x50_w071x25_2018v1.tif
 data/a_raw_data/bathymetry/ncei19_n41x50_w071x50_2018v1.tif
 
+### VMS
+data/a_raw_data/vms
+
 ## Intermediate data
 ### bathymetry
 data/b_intermediate_data/bathymetry
