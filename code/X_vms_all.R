@@ -78,7 +78,7 @@ crs <- "EPSG:26918"
 vms_crs <- "ESRI:102008"
 
 ## layer names
-export_name <- "ais"
+export_name <- "vms_all"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
@@ -96,7 +96,8 @@ fishery_function <- function(fishery_dir, study_region){
                         # crop using study region
                         y = study_region,
                         # mask using study region (T = True)
-                        mask = T)
+                        mask = T,
+                        extend = T)
 }
 
 ## z-membership function
@@ -165,14 +166,30 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 
 # run z-membership function on each fishery
 ## 2015 - 2016 fishery data
+### herring
 her_15_16 <- fishery_function("her_2015_2016", westport_region)
+
+### monk fish
 mnk_15_16 <- fishery_function("mnk_2015_2016", westport_region)
+
+### multiple species
 nms_15_16 <- fishery_function("nms_2015_2016", westport_region)
+
+### pelagics
 pel_15_16 <- fishery_function("pel_2015_2016", westport_region)
+
+### surfclam / quahog
 sco_15_16 <- fishery_function("sco_2015_2016", westport_region)
+
+### scallops
 ses_15_16 <- fishery_function("ses_2015_2016", westport_region)
+
+### squid
 smb_15_16 <- fishery_function("smb_2015_2016", westport_region)
 
+#####################################
+
+# Inspect data
 her_15_16
 mnk_15_16
 nms_15_16
@@ -181,8 +198,35 @@ sco_15_16
 ses_15_16
 smb_15_16
 
-# inspect fisheries data
-## plots
+## dimensions and update for those that are different
+dim(her_15_16)
+dim(mnk_15_16)
+dim(nms_15_16)
+dim(pel_15_16)
+dim(sco_15_16)
+dim(ses_15_16)
+dim(smb_15_16)
+
+her_15_16 <- terra::extend(x = her_15_16,
+                           y = smb_15_16)
+mnk_15_16 <- terra::extend(x = mnk_15_16,
+                           y = smb_15_16)
+sco_15_16 <- terra::extend(x = sco_15_16,
+                           y = smb_15_16)
+ses_15_16 <- terra::extend(x = ses_15_16,
+                           y = smb_15_16)
+
+dim(her_15_16)
+dim(mnk_15_16)
+dim(nms_15_16)
+dim(pel_15_16)
+dim(sco_15_16)
+dim(ses_15_16)
+dim(smb_15_16)
+
+#####################################
+
+## plot data
 plot(her_15_16)
 plot(mnk_15_16)
 plot(nms_15_16)
@@ -191,7 +235,9 @@ plot(sco_15_16)
 plot(ses_15_16)
 plot(smb_15_16)
 
-# extents
+#####################################
+
+## extents
 terra::ext(her_15_16)
 terra::ext(mnk_15_16)
 terra::ext(nms_15_16)
@@ -200,7 +246,7 @@ terra::ext(sco_15_16)
 terra::ext(ses_15_16)
 terra::ext(smb_15_16)
 
-# expand extent
+### expand extent
 xmin <- min(terra::ext(her_15_16)[1],
             terra::ext(mnk_15_16)[1],
             terra::ext(nms_15_16)[1],
@@ -237,7 +283,7 @@ ymax <- max(ext(her_15_16)[4],
             ext(smb_15_16)[4])
 ymax
 
-# raster extent
+### raster extent
 raster_ext <- c(xmin, xmax, ymin, ymax)
 
 terra::ext(her_15_16) <- raster_ext
@@ -248,6 +294,9 @@ terra::ext(sco_15_16) <- raster_ext
 terra::ext(ses_15_16) <- raster_ext
 terra::ext(smb_15_16) <- raster_ext
 
+#####################################
+
+## reinspect data
 her_15_16
 mnk_15_16
 nms_15_16
@@ -260,83 +309,101 @@ smb_15_16
 #####################################
 
 # combine all fishery rasters
-terra::ext(her_15_16) <- terra::ext(nms_15_16)
-
-fishery_raster <- terra::app(c(#her_15_16,
-                               #mnk_15_16,
+fishery_raster <- terra::app(c(her_15_16,
+                               mnk_15_16,
                                nms_15_16,
                                pel_15_16,
-                               #sco_15_16,
-                               #ses_15_16,
+                               sco_15_16,
+                               ses_15_16,
                                smb_15_16),
                              # take mean values of all fishery rasters (2015 - 2016)
                              fun = mean,
                              # remove any NA values from calculation
-                             na.rm = T)
-plot(fishery_raster)
+                             na.rm = T) %>%
+  
+  # crop and mask to the study region
+  terra::crop(westport_region,
+              mask = T)
+
+#####################################
+#####################################
+
+# rescale using z-membership function
+fishery_z_scale <- fishery_raster %>%
+  
+  # apply the z-membership function
+  zmf_function()
 
 #####################################
 #####################################
 
 # convert raster to vector data (as polygons)
 # convert to polygon
-westport_ais_polygon <- terra::as.polygons(x = ais_z,
+westport_vms_polygon <- terra::as.polygons(x = fishery_z_scale,
                                            # do not aggregate all similar values together as single feature
                                            aggregate = F,
                                            # use the values from original raster
                                            values = T) %>%
   # change to simple feature (sf)
   sf::st_as_sf() %>%
-  # simplify column name to "richness" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the high_habitat object)
-  dplyr::rename(ais = colnames(.)[1]) %>%
-  # add field "layer" and populate with "ais"
-  dplyr::mutate(layer = "ais") %>%
+  # simplify column name to "vms" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the vms object)
+  dplyr::rename(vms = colnames(.)[1]) %>%
+  # add field "layer" and populate with "vms"
+  dplyr::mutate(layer = "vms") %>%
   # limit to the study region
   rmapshaper::ms_clip(clip = westport_region) %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 18N) that will convert units from degrees to meters
   sf::st_transform(crs = crs)
 
-## inspect vectorized rescaled AIS data (***warning: lots of data, so will take a long time to load; comment out unless want to display data)
-# plot(westport_ais_polygon)
+## inspect vectorized rescaled VMS data (***warning: lots of data, so will take a long time to load; comment out unless want to display data)
+# plot(westport_VMS_polygon)
 
 #####################################
 #####################################
 
 # vessel trip reporting hex grids
-westport_ais_hex <- westport_hex[westport_ais_polygon, ] %>%
+westport_vms_hex <- westport_hex[westport_vms_polygon, ] %>%
   # spatially join vessel trip reporting values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_ais_polygon,
+              y = westport_vms_polygon,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer,
-                ais) %>%
+                vms) %>%
   # group by the index values as there are duplicates
   dplyr::group_by(index) %>%
   # summarise the fisheries score values
   ## take the maximum value of the AIS score for any that overlap
   ## ***Note: this will provide the most conservation given that
   ##          high values are less desirable
-  dplyr::summarise(marine_bird_index = max(ais))
+  dplyr::summarise(vms_max = max(vms))
 
 #####################################
 #####################################
 
 # export data
-## industry, transportation, navigation geopackage
-sf::st_write(obj = westport_ais_hex, dsn = industry_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+## fisheries geopackage
+sf::st_write(obj = westport_vms_hex, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
 
-## ais geopackage
-sf::st_write(obj = westport_ais_polygon, dsn = ais_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
-sf::st_write(obj = westport_ais_hex, dsn = ais_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+## vms geopackage
+sf::st_write(obj = westport_vms_polygon, dsn = vms_all_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
+sf::st_write(obj = westport_vms_hex, dsn = vms_all_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
 
-## ais raster
-ais_raster <- dir.create(paste0("data/b_intermediate_data/ais_data"))
-raster_dir <- "data/b_intermediate_data/ais_data"
+## vms raster
+vms_raster <- dir.create(paste0("data/b_intermediate_data/vms_data"))
+raster_dir <- "data/b_intermediate_data/vms_data"
 
-terra::writeRaster(westport_ais, filename = file.path(raster_dir, paste("westport_ais_2022.grd")), overwrite = T)
-terra::writeRaster(ais, filename = file.path(raster_dir, paste("ais_2022.grd")), overwrite = T)
-terra::writeRaster(ais_z, filename = file.path(raster_dir, paste("westport_ais_2022_rescaled.grd")), overwrite = T)
+### fishery rasters
+terra::writeRaster(her_15_16, filename = file.path(raster_dir, paste("westport_vms_herring_2015_2016.grd")), overwrite = T)
+terra::writeRaster(mnk_15_16, filename = file.path(raster_dir, paste("westport_vms_monk_fish_2015_2016.grd")), overwrite = T)
+terra::writeRaster(nms_15_16, filename = file.path(raster_dir, paste("westport_vms_multiple_species_2015_2016.grd")), overwrite = T)
+terra::writeRaster(pel_15_16, filename = file.path(raster_dir, paste("westport_vms_pelagics_2015_2016.grd")), overwrite = T)
+terra::writeRaster(sco_15_16, filename = file.path(raster_dir, paste("westport_vms_surfclam_quahog_2015_2016.grd")), overwrite = T)
+terra::writeRaster(ses_15_16, filename = file.path(raster_dir, paste("westport_vms_scallop_2015_2016.grd")), overwrite = T)
+terra::writeRaster(smb_15_16, filename = file.path(raster_dir, paste("westport_vms_squid_2015_2016.grd")), overwrite = T)
+
+terra::writeRaster(fishery_raster, filename = file.path(raster_dir, paste("westport_vms_fishery_all.grd")), overwrite = T)
+terra::writeRaster(fishery_z_scale, filename = file.path(raster_dir, paste("westport_vms_all_rescaled.grd")), overwrite = T)
 
 #####################################
 #####################################
