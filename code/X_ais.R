@@ -185,7 +185,7 @@ westport_ais_polygon <- terra::as.polygons(x = ais_z,
                                           values = T) %>%
   # change to simple feature (sf)
   sf::st_as_sf() %>%
-  # simplify column name to "richness" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the high_habitat object)
+  # simplify column name to "ais" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the ais object)
   dplyr::rename(ais = colnames(.)[1]) %>%
   # add field "layer" and populate with "ais"
   dplyr::mutate(layer = "ais") %>%
@@ -215,7 +215,7 @@ westport_ais_hex <- westport_hex[westport_ais_polygon, ] %>%
   ## take the maximum value of the AIS score for any that overlap
   ## ***Note: this will provide the most conservation given that
   ##          high values are less desirable
-  dplyr::summarise(marine_bird_index = max(ais))
+  dplyr::summarise(ais_max = max(ais))
 
 #####################################
 #####################################
