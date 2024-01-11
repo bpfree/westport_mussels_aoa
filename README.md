@@ -1,5 +1,5 @@
-# westport_mussels_aoa
-Siting analysis for the Westport, Massachusetts aquaculture area
+# Westport Areas of Aquaculture -- mussels
+# Siting analysis for the Westport, Massachusetts aquaculture area
 
 Data examined but not existing within original region
 1. Environmental sensors and buoys
