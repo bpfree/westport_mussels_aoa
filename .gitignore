@@ -35,6 +35,7 @@ data/b_intermediate_data/westport_large_pelagic_survey.gpkg
 
 ### AIS
 data/b_intermediate_data/ais_data
+data/b_intermediate_data/westport_ais.gpkg
 
 ## Submodel data
 data/c_submodel_data/fisheries.gpkg
