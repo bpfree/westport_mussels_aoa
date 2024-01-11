@@ -1,6 +1,6 @@
-#######################################
-### X. Combined protected resources ###
-#######################################
+########################################
+### 21. Combined protected resources ###
+########################################
 
 # clear environment
 rm(list = ls())
@@ -76,7 +76,7 @@ region <- "westport"
 crs <- "EPSG:26918"
 
 ## layer names
-export_name <- "large_pelagic_survey"
+export_name <- "combined_protected_resources"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
