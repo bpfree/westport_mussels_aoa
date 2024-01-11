@@ -1,6 +1,6 @@
-#########################################################
-### X. Vessel monitoring system (VMS) --- all fishing ###
-#########################################################
+##############################################################
+### X. Vessel monitoring system (VMS) --- <4 knots fishing ###
+##############################################################
 
 # clear environment
 rm(list = ls())
@@ -46,7 +46,7 @@ pacman::p_load(docxtractr,
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
 #### vessel trip reporting
-data_dir <- "data/a_raw_data/vms/vms_fishing/fisheries_all"
+data_dir <- "data/a_raw_data/vms/vms_fishing/fisheries_4_5_kt"
 
 #### study area grid
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
@@ -56,7 +56,7 @@ study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 fisheries_gpkg <- "data/c_submodel_data/fisheries.gpkg"
 
 #### intermediate directories
-vms_all_gpkg <- "data/b_intermediate_data/westport_vms_all.gpkg"
+vms_4_5kt_gpkg <- "data/b_intermediate_data/westport_vms_4_5knot.gpkg"
 
 #####################################
 
@@ -78,7 +78,7 @@ crs <- "EPSG:26918"
 vms_crs <- "ESRI:102008"
 
 ## layer names
-export_name <- "vms_all"
+export_name <- "vms_4_5_knot"
 
 ## designate date
 date <- format(Sys.time(), "%Y%m%d")
@@ -165,160 +165,167 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 #####################################
 
 # run z-membership function on each fishery
-## 2015 - 2016 fishery data
+## 2015 - 2016 fishery data for speeds under 4 / 5 knots
 ### herring
-her_15_16 <- fishery_function("her_2015_2016", westport_region)
+her_4kt <- fishery_function("her_15_16_4kt", westport_region)
 
 ### monk fish
-mnk_15_16 <- fishery_function("mnk_2015_2016", westport_region)
+mnk_4kt <- fishery_function("mnk_15_16_4kt", westport_region)
 
 ### multiple species
-nms_15_16 <- fishery_function("nms_2015_2016", westport_region)
+nms_4kt <- fishery_function("nms_15_16_4kt", westport_region)
 
 ### pelagics
-pel_15_16 <- fishery_function("pel_2015_2016", westport_region)
+pel_4kt <- fishery_function("pel_15_16_4kt", westport_region)
 
 ### surfclam / quahog
-sco_15_16 <- fishery_function("sco_2015_2016", westport_region)
+sco_4kt <- fishery_function("sco_15_16_4kt", westport_region)
 
 ### scallops
-ses_15_16 <- fishery_function("ses_2015_2016", westport_region)
+ses_5kt <- fishery_function("ses_15_16_5kt", westport_region)
 
 ### squid
-smb_15_16 <- fishery_function("smb_2015_2016", westport_region)
+smb_4kt <- fishery_function("smb_15_16_4kt", westport_region)
 
 #####################################
 
 # Inspect data
-her_15_16
-mnk_15_16
-nms_15_16
-pel_15_16
-sco_15_16
-ses_15_16
-smb_15_16
+her_4kt
+mnk_4kt
+nms_4kt
+pel_4kt
+sco_4kt
+ses_5kt
+smb_4kt
 
 ## dimensions and update for those that are different
-dim(her_15_16)
-dim(mnk_15_16)
-dim(nms_15_16)
-dim(pel_15_16)
-dim(sco_15_16)
-dim(ses_15_16)
-dim(smb_15_16)
+### ***warning: the calculation of the mean across the fisheries
+###             will not work properly if the dimensions across
+###             all the datasets are not uniform (513 x 626)
+dim(her_4kt) # 513 x 626
+dim(mnk_4kt) # 513 x 626
+dim(nms_4kt) # 513 x 626
+dim(pel_4kt) # 513 x 626
+dim(sco_4kt) # 513 x 626
+dim(ses_5kt) # 512 x 626
+dim(smb_4kt) # 512 x 626
 
-her_15_16 <- terra::extend(x = her_15_16,
-                           y = smb_15_16)
-mnk_15_16 <- terra::extend(x = mnk_15_16,
-                           y = smb_15_16)
-sco_15_16 <- terra::extend(x = sco_15_16,
-                           y = smb_15_16)
-ses_15_16 <- terra::extend(x = ses_15_16,
-                           y = smb_15_16)
+### force the correct extent for ones with different extents
+ses_5kt <- terra::extend(x = ses_5kt,
+                           y = her_4kt)
+smb_4kt <- terra::extend(x = smb_4kt,
+                         y = her_4kt)
 
-dim(her_15_16)
-dim(mnk_15_16)
-dim(nms_15_16)
-dim(pel_15_16)
-dim(sco_15_16)
-dim(ses_15_16)
-dim(smb_15_16)
+dim(her_4kt) # 513 x 626
+dim(mnk_4kt) # 513 x 626
+dim(nms_4kt) # 513 x 626
+dim(pel_4kt) # 513 x 626
+dim(sco_4kt) # 513 x 626
+dim(ses_5kt) # 513 x 626
+dim(smb_4kt) # 512 x 626
 
 #####################################
 
 ## plot data
-plot(her_15_16)
-plot(mnk_15_16)
-plot(nms_15_16)
-plot(pel_15_16)
-plot(sco_15_16)
-plot(ses_15_16)
-plot(smb_15_16)
+plot(her_4kt)
+plot(mnk_4kt)
+plot(nms_4kt)
+plot(pel_4kt)
+plot(sco_4kt)
+plot(ses_5kt)
+plot(smb_4kt)
 
 #####################################
 
 ## extents
-terra::ext(her_15_16)
-terra::ext(mnk_15_16)
-terra::ext(nms_15_16)
-terra::ext(pel_15_16)
-terra::ext(sco_15_16)
-terra::ext(ses_15_16)
-terra::ext(smb_15_16)
+### ***warning: the calculation of the mean across the fisheries
+###             will not work properly if the extensions across
+###             all the datasets are not uniform
+terra::ext(her_4kt)
+terra::ext(mnk_4kt)
+terra::ext(nms_4kt)
+terra::ext(pel_4kt)
+terra::ext(sco_4kt)
+terra::ext(ses_5kt)
+terra::ext(smb_4kt)
 
 ### expand extent
-xmin <- min(terra::ext(her_15_16)[1],
-            terra::ext(mnk_15_16)[1],
-            terra::ext(nms_15_16)[1],
-            terra::ext(pel_15_16)[1],
-            terra::ext(sco_15_16)[1],
-            terra::ext(ses_15_16)[1],
-            terra::ext(smb_15_16)[1])
+#### ***note: this will take the maximum possible extent
+####          across all the fishery datasets
+xmin <- min(terra::ext(her_4kt)[1],
+            terra::ext(mnk_4kt)[1],
+            terra::ext(nms_4kt)[1],
+            terra::ext(pel_4kt)[1],
+            terra::ext(sco_4kt)[1],
+            terra::ext(ses_5kt)[1],
+            terra::ext(smb_4kt)[1])
 xmin
 
-xmax <- max(terra::ext(her_15_16)[2],
-            terra::ext(mnk_15_16)[2],
-            terra::ext(nms_15_16)[2],
-            terra::ext(pel_15_16)[2],
-            terra::ext(sco_15_16)[2],
-            terra::ext(ses_15_16)[2],
-            terra::ext(smb_15_16)[2])
+xmax <- max(terra::ext(her_4kt)[2],
+            terra::ext(mnk_4kt)[2],
+            terra::ext(nms_4kt)[2],
+            terra::ext(pel_4kt)[2],
+            terra::ext(sco_4kt)[2],
+            terra::ext(ses_5kt)[2],
+            terra::ext(smb_4kt)[2])
 xmax
 
-ymin <- min(terra::ext(her_15_16)[3],
-            terra::ext(mnk_15_16)[3],
-            terra::ext(nms_15_16)[3],
-            terra::ext(pel_15_16)[3],
-            terra::ext(sco_15_16)[3],
-            terra::ext(ses_15_16)[3],
-            terra::ext(smb_15_16)[3])
+ymin <- min(terra::ext(her_4kt)[3],
+            terra::ext(mnk_4kt)[3],
+            terra::ext(nms_4kt)[3],
+            terra::ext(pel_4kt)[3],
+            terra::ext(sco_4kt)[3],
+            terra::ext(ses_5kt)[3],
+            terra::ext(smb_4kt)[3])
 ymin
 
-ymax <- max(ext(her_15_16)[4],
-            ext(mnk_15_16)[4],
-            ext(nms_15_16)[4],
-            ext(pel_15_16)[4],
-            ext(sco_15_16)[4],
-            ext(ses_15_16)[4],
-            ext(smb_15_16)[4])
+ymax <- max(ext(her_4kt)[4],
+            ext(mnk_4kt)[4],
+            ext(nms_4kt)[4],
+            ext(pel_4kt)[4],
+            ext(sco_4kt)[4],
+            ext(ses_5kt)[4],
+            ext(smb_4kt)[4])
 ymax
 
 ### raster extent
 raster_ext <- c(xmin, xmax, ymin, ymax)
 
-terra::ext(her_15_16) <- raster_ext
-terra::ext(mnk_15_16) <- raster_ext
-terra::ext(nms_15_16) <- raster_ext
-terra::ext(pel_15_16) <- raster_ext
-terra::ext(sco_15_16) <- raster_ext
-terra::ext(ses_15_16) <- raster_ext
-terra::ext(smb_15_16) <- raster_ext
+terra::ext(her_4kt) <- raster_ext
+terra::ext(mnk_4kt) <- raster_ext
+terra::ext(nms_4kt) <- raster_ext
+terra::ext(pel_4kt) <- raster_ext
+terra::ext(sco_4kt) <- raster_ext
+terra::ext(ses_5kt) <- raster_ext
+terra::ext(smb_4kt) <- raster_ext
 
 #####################################
 
 ## reinspect data
-her_15_16
-mnk_15_16
-nms_15_16
-pel_15_16
-sco_15_16
-ses_15_16
-smb_15_16
+her_4kt
+mnk_4kt
+nms_4kt
+pel_4kt
+sco_4kt
+ses_5kt
+smb_4kt
 
 #####################################
 #####################################
 
 # combine all fishery rasters
-fishery_raster <- terra::app(c(her_15_16,
-                               mnk_15_16,
-                               nms_15_16,
-                               pel_15_16,
-                               sco_15_16,
-                               ses_15_16,
-                               smb_15_16),
-                             # take mean values of all fishery rasters (2015 - 2016)
+## ***warning: verify that all rasters have exact same
+##             dimensions and extents before running
+fishery_raster <- terra::app(c(her_4kt,
+                               mnk_4kt,
+                               nms_4kt,
+                               pel_4kt,
+                               sco_4kt,
+                               ses_5kt,
+                               smb_4kt),
+                             # take mean values of fishery under 4 / 5 knots rasters (2015 - 2016)
                              fun = mean,
-                             # remove any NA values from calculation
+                             # remove any NA values from mean calculation
                              na.rm = T) %>%
   
   # crop and mask to the study region
@@ -386,24 +393,24 @@ westport_vms_hex <- westport_hex[westport_vms_polygon, ] %>%
 sf::st_write(obj = westport_vms_hex, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
 
 ## vms geopackage
-sf::st_write(obj = westport_vms_polygon, dsn = vms_all_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
-sf::st_write(obj = westport_vms_hex, dsn = vms_all_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_vms_polygon, dsn = vms_4_5kt_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
+sf::st_write(obj = westport_vms_hex, dsn = vms_4_5kt_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
 
 ## vms raster
 vms_raster <- dir.create(paste0("data/b_intermediate_data/vms_data"))
 raster_dir <- "data/b_intermediate_data/vms_data"
 
 ### fishery rasters
-terra::writeRaster(her_15_16, filename = file.path(raster_dir, paste("westport_vms_herring_2015_2016.grd")), overwrite = T)
-terra::writeRaster(mnk_15_16, filename = file.path(raster_dir, paste("westport_vms_monk_fish_2015_2016.grd")), overwrite = T)
-terra::writeRaster(nms_15_16, filename = file.path(raster_dir, paste("westport_vms_multiple_species_2015_2016.grd")), overwrite = T)
-terra::writeRaster(pel_15_16, filename = file.path(raster_dir, paste("westport_vms_pelagics_2015_2016.grd")), overwrite = T)
-terra::writeRaster(sco_15_16, filename = file.path(raster_dir, paste("westport_vms_surfclam_quahog_2015_2016.grd")), overwrite = T)
-terra::writeRaster(ses_15_16, filename = file.path(raster_dir, paste("westport_vms_scallop_2015_2016.grd")), overwrite = T)
-terra::writeRaster(smb_15_16, filename = file.path(raster_dir, paste("westport_vms_squid_2015_2016.grd")), overwrite = T)
+terra::writeRaster(her_4kt, filename = file.path(raster_dir, paste("westport_vms_herring_2015_2016_4kt.grd")), overwrite = T)
+terra::writeRaster(mnk_4kt, filename = file.path(raster_dir, paste("westport_vms_monk_fish_2015_2016_4kt.grd")), overwrite = T)
+terra::writeRaster(nms_4kt, filename = file.path(raster_dir, paste("westport_vms_multiple_species_2015_2016_4kt.grd")), overwrite = T)
+terra::writeRaster(pel_4kt, filename = file.path(raster_dir, paste("westport_vms_pelagics_2015_2016_4kt.grd")), overwrite = T)
+terra::writeRaster(sco_4kt, filename = file.path(raster_dir, paste("westport_vms_surfclam_quahog_2015_2016_4kt.grd")), overwrite = T)
+terra::writeRaster(ses_5kt, filename = file.path(raster_dir, paste("westport_vms_scallop_2015_2016_5kt.grd")), overwrite = T)
+terra::writeRaster(smb_4kt, filename = file.path(raster_dir, paste("westport_vms_squid_2015_2016_4kt.grd")), overwrite = T)
 
-terra::writeRaster(fishery_raster, filename = file.path(raster_dir, paste("westport_vms_fishery_all.grd")), overwrite = T)
-terra::writeRaster(fishery_z_scale, filename = file.path(raster_dir, paste("westport_vms_all_rescaled.grd")), overwrite = T)
+terra::writeRaster(fishery_raster, filename = file.path(raster_dir, paste("westport_vms_fishery_4_5kt.grd")), overwrite = T)
+terra::writeRaster(fishery_z_scale, filename = file.path(raster_dir, paste("westport_vms_4_5kt_rescaled.grd")), overwrite = T)
 
 #####################################
 #####################################
