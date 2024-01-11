@@ -1,6 +1,6 @@
-##################################
-### 9. Shipping fairways ###
-##################################
+#############################
+### 11. Shipping fairways ###
+#############################
 
 # clear environment
 rm(list = ls())
@@ -120,7 +120,11 @@ westport_shipping_fairway_hex <- westport_hex[westport_shipping_fairway, ] %>%
               y = westport_shipping_fairway,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(index, layer)
+  dplyr::select(index, layer) %>%
+  # group by the index values as there are duplicates
+  dplyr::group_by(index) %>%
+  # summarise by index
+  dplyr::summarise()
 
 #####################################
 #####################################
