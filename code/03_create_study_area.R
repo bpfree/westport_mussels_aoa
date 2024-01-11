@@ -1,5 +1,5 @@
 ############################
-### 1. Define Study Area ###
+### 3. Define Study Area ###
 ############################
 
 # clear environment

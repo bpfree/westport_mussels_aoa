@@ -1,5 +1,5 @@
 #####################
-### X. Bathymetry ###
+### 1. Bathymetry ###
 #####################
 
 # clear environment
