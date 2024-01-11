@@ -1,5 +1,5 @@
 ############################################
-### 3. Danger zones and restricted areas ###
+### 5. Danger zones and restricted areas ###
 ############################################
 
 # clear environment

@@ -1,5 +1,5 @@
 ##########################################
-### 4. Environmental buoys and sensors ###
+### 6. Environmental buoys and sensors ###
 ##########################################
 
 # clear environment
