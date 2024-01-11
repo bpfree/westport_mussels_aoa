@@ -1,6 +1,6 @@
-##################################
-### 8. Wrecks and obstructions ###
-##################################
+###################################
+### 10. Wrecks and obstructions ###
+###################################
 
 # clear environment
 rm(list = ls())
@@ -130,7 +130,11 @@ westport_wreck_obstruction_hex <- westport_hex[westport_wreck_obstruction, ] %>%
               y = westport_wreck_obstruction,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(index, layer)
+  dplyr::select(index, layer) %>%
+  # group by the index values as there are duplicates
+  dplyr::group_by(index) %>%
+  # summarise by index
+  dplyr::summarise()
 
 #####################################
 #####################################
