@@ -1,5 +1,5 @@
 ####################################
-### 2. Unexploded ordnance areas ###
+### 4. Unexploded ordnance areas ###
 ####################################
 
 # clear environment
@@ -56,6 +56,9 @@ study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 #### constraints
 constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
 
+#### national security
+national_security_gpkg <- "data/c_submodel_data/national_security.gpkg"
+
 #### intermediate directories
 uxo_gpkg <- "data/b_intermediate_data/westport_unexploded_ordnance.gpkg"
 
@@ -88,7 +91,6 @@ uxo_types <- c("JATO Racks and Associated Debris", "Unexploded Depth Bombs")
 setback <- 500
 
 ## layer names
-export_name <- "uxo"
 export_area <- "uxo_area"
 export_location <- "uxo_location"
 
@@ -148,18 +150,23 @@ westport_uxo_locations <- uxo_locations %>%
   dplyr::select(name, layer)
 
 #####################################
-
-westport_uxo <- rbind(westport_uxo_areas,
-                      westport_uxo_locations)
-
-#####################################
 #####################################
 
 # unexploded ordnance hex grids
-westport_uxo_hex <- westport_hex[westport_uxo, ] %>%
+## locations
+westport_uxo_locations_hex <- westport_hex[westport_uxo_locations, ] %>%
   # spatially join unexploded ordnance values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_uxo,
+              y = westport_uxo_locations,
+              join = st_intersects) %>%
+  # select fields of importance
+  dplyr::select(index, layer)
+
+## areas
+westport_uxo_areas_hex <- westport_hex[westport_uxo_areas, ] %>%
+  # spatially join unexploded ordnance values to Westport hex cells
+  sf::st_join(x = .,
+              y = westport_uxo_areas,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer)
@@ -169,13 +176,16 @@ westport_uxo_hex <- westport_hex[westport_uxo, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_uxo_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_uxo_locations_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_location, date, sep = "_"), append = F)
+
+## national security geopackage
+sf::st_write(obj = westport_uxo_areas_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_area, date, sep = "_"), append = F)
 
 ## unexploded ordnance geopackage
-sf::st_write(obj = uxo_areas, dsn = uxo_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
+sf::st_write(obj = uxo_areas, dsn = uxo_gpkg, layer = paste(export_area, date, sep = "_"), append = F)
+sf::st_write(obj = uxo_locations, dsn = uxo_gpkg, layer = paste(export_location, date, sep = "_"), append = F)
 sf::st_write(obj = westport_uxo_areas, dsn = uxo_gpkg, layer = paste(region, export_area, date, sep = "_"), append = F)
 sf::st_write(obj = westport_uxo_locations, dsn = uxo_gpkg, layer = paste(region, export_location, date, sep = "_"), append = F)
-sf::st_write(obj = westport_uxo, dsn = uxo_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
 
 #####################################
 #####################################
