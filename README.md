@@ -15,3 +15,4 @@ Data examined but not existing within -20m and -40m of federal waters
 2. Special use airspace
 3. VTR (charter / party)
 4. Cod spawning protection areas
+5. Known cod spawning areas
