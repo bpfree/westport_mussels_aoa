@@ -75,6 +75,7 @@ region <- "westport"
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
+### EPSG:3857 is WGS 84 / Pseudo-Mercator -- Spherical Mercator, Google Maps, OpenStreetMap, Bing, ArcGIS, ESRI (https://epsg.io/3857)
 ais_crs <- "EPSG:3857"
 
 ## layer names
