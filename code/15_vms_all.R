@@ -82,7 +82,7 @@ vms_crs <- "ESRI:102008"
 export_name <- "vms_all"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -388,7 +388,7 @@ westport_vms_hex <- westport_hex[westport_vms_polygon, ] %>%
   ## take the maximum value of the AIS score for any that overlap
   ## ***Note: this will provide the most conservation given that
   ##          high values are less desirable
-  dplyr::summarise(vms_max = max(vms))
+  dplyr::summarise(vms_all_max = max(vms))
 
 #####################################
 #####################################
