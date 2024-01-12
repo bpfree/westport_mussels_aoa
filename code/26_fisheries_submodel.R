@@ -129,9 +129,9 @@ westport_hex_fisheries <- westport_hex %>%
   dplyr::left_join(x = .,
                    y = westport_hex_vtr,
                    by = "index") %>%
-  # dplyr::left_join(x = .,
-  #                  y = westport_hex_lps,
-  #                  by = "index") %>%
+  dplyr::left_join(x = .,
+                   y = westport_hex_lps,
+                   by = "index") %>%
   dplyr::select(index,
                 contains("max")) %>%
   
@@ -163,12 +163,14 @@ duplicates_verify <- westport_hex_fisheries %>%
 #####################################
 
 # Export data
-## Suitability
+## suitability
 sf::st_write(obj = westport_hex_fisheries, dsn = suitability_gpkg, layer = paste(region, export_name, "suitability", sep = "_"), append = F)
 
-## Constraints
-saveRDS(obj = westport_hex_military_operating, file = paste(fisheries_dir, paste(region, "hex_fisheries_military_operating.rds", sep = "_"), sep = "/"))
-saveRDS(obj = westport_hex_unexploded_areas, file = paste(fisheries_dir, paste(region, "hex_fisheries_unexploded_areas.rds", sep = "_"), sep = "/"))
+## fisheries
+saveRDS(obj = westport_hex_vms_all, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_all.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_vms_4_5_knot, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_4_5_kt.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_vtr, file = paste(fisheries_dir, paste(region, "hex_fisheries_vtr.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_lps, file = paste(fisheries_dir, paste(region, "hex_fisheries_lps.rds", sep = "_"), sep = "/"))
 
 sf::st_write(obj = westport_hex_fisheries, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, "suitability", sep = "_"), append = F)
 
