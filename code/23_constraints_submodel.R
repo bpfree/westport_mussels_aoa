@@ -1,5 +1,5 @@
 ################################
-### 23. Constraints Submodel ###
+### 23. Constraints submodel ###
 ################################
 
 # clear environment
@@ -51,6 +51,14 @@ study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 #### constraints
 submodel_gpkg <- "data/c_submodel_data/constraints.gpkg"
 
+### constraints directory
+suitability_dir <- "data/d_suitability_data"
+dir.create(paste0(suitability_dir, "/",
+                  "constraints_suitability"))
+
+constraints_dir <- "data/d_suitability_data/constraints_suitability"
+constraints_gpkg <- "data/d_suitability_data/constraints_suitability/westport_constraints_suitability.gpkg"
+
 #### suitability
 suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
 
@@ -81,7 +89,7 @@ export_name <- "constraints"
 constraints_value <- 0
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -91,48 +99,40 @@ date <- format(Sys.time(), "%Y%m%d")
 westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 ## constraints
-### unexploded ordnance areas
-westport_hex_unexploded_areas <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "uxo_area", date, sep = "_")) %>%
+### unexploded ordnance locations
+westport_hex_unexploded_location <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "uxo_location", date, sep = "_")) %>%
   dplyr::mutate(uxo_loc_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
-
+  sf::st_drop_geometry()
 
 ### danger zones and restricted areas
 westport_hex_danger_restricted <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "danger_zones_restricted_areas", date, sep = "_")) %>%
   dplyr::mutate(danger_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
+  sf::st_drop_geometry()
 
 ### environmental sensors and buoys
 westport_hex_environmental_sensor <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "environmental_sensor", date, sep = "_")) %>%
   dplyr::mutate(environmental_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
+  sf::st_drop_geometry()
 
 ### ocean disposal sites
 westport_hex_ocean_disposal <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "ocean_disposal", date, sep = "_")) %>%
   dplyr::mutate(disposal_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
+  sf::st_drop_geometry()
 
 ### aids to navigation
 westport_hex_aids_navigation <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "aids_navigation", date, sep = "_")) %>%
   dplyr::mutate(navigation_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
+  sf::st_drop_geometry()
 
 ### wrecks and obstructions
 westport_hex_wreck_obstruction <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "wreck_obstruction", date, sep = "_")) %>%
   dplyr::mutate(wreck_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
+  sf::st_drop_geometry()
 
 ### shipping fairways
 westport_hex_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "shipping_fairway", date, sep = "_")) %>%
   dplyr::mutate(shipping_value = 0) %>%
-  sf::st_drop_geometry() %>%
-  as.data.frame()
+  sf::st_drop_geometry()
 
 #####################################
 #####################################
@@ -140,7 +140,7 @@ westport_hex_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = paste(
 # Create Oregon constraints submodel
 westport_hex_constraints <- westport_hex %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_unexploded_areas,
+                   y = westport_hex_unexploded_location,
                    by = "index") %>%
   dplyr::left_join(x = .,
                    y = westport_hex_danger_restricted,
@@ -167,9 +167,9 @@ westport_hex_constraints <- westport_hex %>%
 duplicates_verify <- westport_hex_constraints %>%
   # create frequency field based on index
   dplyr::add_count(index) %>%
-  # see which ones are duplicates and verify that values for DoD and PACPARS are equal
+  # see which ones are duplicates and verify that values are equal
   dplyr::filter(n>1) %>%
-  # show distinct options (otherwise will get 128 results [duplicated cells x frequency of duplication])
+  # show distinct options
   dplyr::distinct()
 
 # Keep only one result per cell
@@ -201,18 +201,18 @@ westport_constraints <- westport_hex_constraints %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = westport_constraints, dsn = suitability_gpkg, layer = paste0(region, "_", submodel_gpkg), append = F)
+sf::st_write(obj = westport_constraints, dsn = suitability_gpkg, layer = paste(region, export_name, "suitability", sep = "_"), append = F)
 
 ## Constraints
-sf::st_write(obj = westport_hex_aids_navigation, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_aids_navigation", sep = "/"), append = F)
-sf::st_write(obj = westport_hex_danger_restricted, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_danger_restricted", sep = "/"), append = F)
-sf::st_write(obj = westport_hex_environmental_sensor, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_environmental_sensor", sep = "/"), append = F)
-sf::st_write(obj = westport_hex_ocean_disposal, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_ocean_disposal", sep = "/"), append = F)
-sf::st_write(obj = westport_hex_shipping_fairway, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_shipping_fairway", sep = "/"), append = F)
-sf::st_write(obj = westport_hex_unexploded_areas, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_unexploded_ordnance_areas", sep = "/"), append = F)
-sf::st_write(obj = westport_hex_wreck_obstruction, dsn = submodel_gpkg, layer = paste(region, "hex_constraint_wreck_obstruction", sep = "/"), append = F)
+saveRDS(obj = westport_hex_aids_navigation, file = paste(constraints_dir, paste(region, "hex_constraint_aids_navigation.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_environmental_sensor, file = paste(constraints_dir, paste(region, "hex_constraint_environmental_sensor.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_danger_restricted, file = paste(constraints_dir, paste(region, "hex_constraint_danger_restricted.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_ocean_disposal, file = paste(constraints_dir, paste(region, "hex_constraint_ocean_disposal.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_shipping_fairway, file = paste(constraints_dir, paste(region, "hex_constraint_shipping_fairway.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_unexploded_location, file = paste(constraints_dir, paste(region, "hex_constraint_unexploded_ordnance_location.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_wreck_obstruction, file = paste(constraints_dir, paste(region, "hex_constraint_wreck_obstruction.rds", sep = "_"), sep = "/"))
 
-sf::st_write(obj = westport_hex_constraints, dsn = submodel_gpkg, layer = paste(region, "hex_constraints", sep = "/"), append = F)
+sf::st_write(obj = westport_hex_constraints, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, sep = "_"), append = F)
 
 #####################################
 #####################################
