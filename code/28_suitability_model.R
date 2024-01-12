@@ -187,7 +187,7 @@ model_areas <- suitability_model %>%
                 # natural and cultural resources
                 cpr_max,
                 # submodel geometric values
-                constraints, ns_geom_mean, itn_geom_mean, nc_geom_mean,
+                constraints, ns_geom_mean, itn_geom_mean, fish_geom_mean, nc_geom_mean,
                 # model geometric value
                 model_geom_mean)
 
