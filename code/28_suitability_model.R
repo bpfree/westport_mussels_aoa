@@ -155,6 +155,9 @@ suitability_model <- westport_hex %>%
                    y = industry,
                    by = "index") %>%
   # join the fisheries areas by index field to the full Westport hex grid
+  dplyr::left_join(x = .,
+                   y = fisheries,
+                   by = "index") %>%
   # join the natural and cultural resources areas by index field to the full Westport hex grid
   dplyr::left_join(x = .,
                    y = natural_cultural,
@@ -180,7 +183,7 @@ model_areas <- suitability_model %>%
                 # industry, transportation, and navigation
                 ais_max,
                 # fisheries
-                
+                vms_all_max, vms_kt_max, vtr_max, lps_max,
                 # natural and cultural resources
                 cpr_max,
                 # submodel geometric values
@@ -195,7 +198,7 @@ dim(model_areas)[1]
 
 # export data
 ## overall suitability
-sf::st_write(obj = model_areas, dsn = suitability_models, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = model_areas, dsn = suitability_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
 
 ## submodels
 saveRDS(object = constraints, file = paste(overall_suitability_dir, paste(region, "hex", export_name, "constraints.rds", sep = "_"), sep = "/"))
