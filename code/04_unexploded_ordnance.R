@@ -95,7 +95,7 @@ export_area <- "uxo_area"
 export_location <- "uxo_location"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -179,7 +179,7 @@ westport_uxo_areas_hex <- westport_hex[westport_uxo_areas, ] %>%
 sf::st_write(obj = westport_uxo_locations_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_location, date, sep = "_"), append = F)
 
 ## national security geopackage
-sf::st_write(obj = westport_uxo_areas_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_area, date, sep = "_"), append = F)
+sf::st_write(obj = westport_uxo_areas_hex, dsn = national_security_gpkg, layer = paste(region, "hex", export_area, date, sep = "_"), append = F)
 
 ## unexploded ordnance geopackage
 sf::st_write(obj = uxo_areas, dsn = uxo_gpkg, layer = paste(export_area, date, sep = "_"), append = F)
