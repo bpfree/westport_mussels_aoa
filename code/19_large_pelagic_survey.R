@@ -90,6 +90,40 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 #####################################
 
+# function
+## z-membership function
+### Adapted from https://www.mathworks.com/help/fuzzy/zmf.html
+zmf_function <- function(large_pelagic_survey){
+  
+  # calculate minimum value
+  min <- min(large_pelagic_survey$)
+  
+  # calculate maximum value
+  max <- max(large_pelagic_survey$)
+  
+  # calculate z-score minimum value
+  ## this ensures that no value gets a value of 0
+  z_max <- max + (max * 1 / 1000)
+  
+  # create a field and populate with the value determined by the z-shape membership scalar
+  large_pelagic_survey <- large_pelagic_survey %>%
+    # calculate the z-shape membership value (more desired values get a score of 1 and less desired values will decrease till 0.01)
+    ## ***Note: in other words, habitats with higher richness values will be closer to 0
+    dplyr::mutate(cpr_z_value = ifelse(cpr_value == min, 1, # if value is equal to minimum, score as 1
+                                       # if value is larger than minimum but lower than mid-value, calculate based on scalar equation
+                                       ifelse(cpr_value > min & cpr_value < (min + z_max) / 2, 1 - 2 * ((cpr_value - min) / (z_max - min)) ** 2,
+                                              # if value is lower than z_maximum but larger than than mid-value, calculate based on scalar equation
+                                              ifelse(cpr_value >= (min + z_max) / 2 & cpr_value < z_max, 2 * ((cpr_value - z_max) / (z_max - min)) ** 2,
+                                                     # if value is equal to maximum, value is equal to 0.01 [all other values should get an NA]
+                                                     ifelse(cpr_value == z_max, 0.01, NA)))))
+  
+  # return the layer
+  return(combined_protected_resources)
+}
+
+#####################################
+#####################################
+
 # load data
 ## large pelagic survey data
 lps <- sf::st_read(dsn = data_dir,
