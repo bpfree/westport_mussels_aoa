@@ -96,10 +96,10 @@ date <- format(Sys.Date(), "%Y%m%d")
 zmf_function <- function(large_pelagic_survey){
   
   # calculate minimum value
-  min <- min(large_pelagic_survey$)
+  min <- min(large_pelagic_survey$lps_value)
   
   # calculate maximum value
-  max <- max(large_pelagic_survey$)
+  max <- max(large_pelagic_survey$lps_value)
   
   # calculate z-score minimum value
   ## this ensures that no value gets a value of 0
@@ -109,16 +109,16 @@ zmf_function <- function(large_pelagic_survey){
   large_pelagic_survey <- large_pelagic_survey %>%
     # calculate the z-shape membership value (more desired values get a score of 1 and less desired values will decrease till 0.01)
     ## ***Note: in other words, habitats with higher richness values will be closer to 0
-    dplyr::mutate(cpr_z_value = ifelse(cpr_value == min, 1, # if value is equal to minimum, score as 1
+    dplyr::mutate(lps_z_value = ifelse(lps_value == min, 1, # if value is equal to minimum, score as 1
                                        # if value is larger than minimum but lower than mid-value, calculate based on scalar equation
-                                       ifelse(cpr_value > min & cpr_value < (min + z_max) / 2, 1 - 2 * ((cpr_value - min) / (z_max - min)) ** 2,
+                                       ifelse(lps_value > min & lps_value < (min + z_max) / 2, 1 - 2 * ((lps_value - min) / (z_max - min)) ** 2,
                                               # if value is lower than z_maximum but larger than than mid-value, calculate based on scalar equation
-                                              ifelse(cpr_value >= (min + z_max) / 2 & cpr_value < z_max, 2 * ((cpr_value - z_max) / (z_max - min)) ** 2,
+                                              ifelse(lps_value >= (min + z_max) / 2 & lps_value < z_max, 2 * ((lps_value - z_max) / (z_max - min)) ** 2,
                                                      # if value is equal to maximum, value is equal to 0.01 [all other values should get an NA]
-                                                     ifelse(cpr_value == z_max, 0.01, NA)))))
+                                                     ifelse(lps_value == z_max, 0.01, NA)))))
   
   # return the layer
-  return(combined_protected_resources)
+  return(large_pelagic_survey)
 }
 
 #####################################
@@ -163,7 +163,20 @@ westport_lps_hex <- westport_hex[westport_lps, ] %>%
               y = westport_lps,
               join = st_intersects) %>%
   # select fields of importance
-  dplyr::select(index, layer)
+  dplyr::select(index, layer,
+                cluster) %>%
+  # rename "cluster" field
+  dplyr::rename(lps_value = cluster) %>%
+  # calculate z-values
+  zmf_function() %>%
+  # relocate the z-value field
+  dplyr::relocate(lps_z_value, .after = lps_value) %>%
+  # group by the index values as there are duplicates
+  dplyr::group_by(index) %>%
+  # summarise the fisheries score values
+  ## take the maximum value of the large pelagic survey score for any that overlap
+  ## ***Note: this will provide the most conservation given that high values are less desirable
+  dplyr::summarise(lps_max = max(lps_z_value))
 
 #####################################
 #####################################
