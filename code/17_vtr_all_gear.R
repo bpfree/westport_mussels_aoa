@@ -82,7 +82,7 @@ vtr_crs <- "EPSG:26919"
 export_name <- "vtr_all_gear"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

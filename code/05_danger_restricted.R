@@ -82,7 +82,7 @@ crs <- "EPSG:26918"
 export_name <- "danger_zones_restricted_areas"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

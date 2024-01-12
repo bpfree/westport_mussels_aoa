@@ -79,7 +79,7 @@ crs <- "EPSG:26918"
 export_name <- "cod_spawning"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

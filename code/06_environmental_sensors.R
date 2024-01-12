@@ -85,7 +85,7 @@ setback <- 500
 export_name <- "environmental_sensor"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

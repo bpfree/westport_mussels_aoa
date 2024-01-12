@@ -85,7 +85,7 @@ export_name <- "aids_navigation"
 setback <- 500
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

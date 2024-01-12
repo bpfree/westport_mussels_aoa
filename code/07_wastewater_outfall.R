@@ -88,7 +88,7 @@ export_pipe <- "wastewater_outfall_pipe"
 export_outfall <- "wastewater_outfall"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

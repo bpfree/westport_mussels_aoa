@@ -85,7 +85,7 @@ export_name <- "known_cod"
 setback <- 2000
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

@@ -77,7 +77,7 @@ bath_crs <- "EPSG:4269"
 export_name <- "bathymetry_boundary"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

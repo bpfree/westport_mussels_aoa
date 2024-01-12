@@ -85,7 +85,7 @@ export_name <- "wreck_obstruction"
 setback <- 152.4
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

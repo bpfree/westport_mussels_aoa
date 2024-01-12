@@ -82,7 +82,7 @@ ais_crs <- "EPSG:3857"
 export_name <- "ais"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################

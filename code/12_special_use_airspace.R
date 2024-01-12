@@ -82,7 +82,7 @@ crs <- "EPSG:26918"
 export_name <- "special_use_airspace"
 
 ## designate date
-date <- format(Sys.time(), "%Y%m%d")
+date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
