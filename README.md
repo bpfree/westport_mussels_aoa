@@ -16,3 +16,8 @@ Data examined but not existing within -20m and -40m of federal waters
 3. VTR (charter / party)
 4. Cod spawning protection areas
 5. Known cod spawning areas
+
+Submodels
+* National Security: currently integrates two datasets (unexploded ordnance areas and military operating areas) for three layers were aimed to get integrated in the submodel, however, no special use airspace overlapped with the Westport study region.
+
+* Fisheries: four datasets integrated in model (VMS [all fishing (2015-2016)], VMS [all fishing under 4 / 5 knots(2015-2016)], VTR [all gear types], large pelagic survey [2012 - 2021])
