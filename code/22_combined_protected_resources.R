@@ -52,7 +52,7 @@ data_dir <- "data/a_raw_data/combined_protected_resources"
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 
 ### output directories
-#### fisheries
+#### natural and cultural resources
 natural_cultural_gpkg <- "data/c_submodel_data/natural_cultural.gpkg"
 
 #### intermediate directories
