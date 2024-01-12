@@ -75,6 +75,7 @@ region <- "westport"
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
+### ESRI:102008 is NAD 1983 Albers North America (https://epsg.io/102008)
 vms_crs <- "ESRI:102008"
 
 ## layer names
