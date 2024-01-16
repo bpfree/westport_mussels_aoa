@@ -316,6 +316,10 @@ federal_waters <- "https://marinecadastre.gov/downloads/data/mc/CoastalZoneManag
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/66137
 temperature <- "https://marinecadastre.gov/downloads/data/mc/EMUWaterQuality.zip"
 
+### Massachusetts town survey (https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/gdbs/townssurvey_gdb.zip)
+#### Metadata: https://www.mass.gov/info-details/massgis-data-municipalities
+mass_admin <- "https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/gdbs/townssurvey_gdb.zip"
+
 #####################################
 #####################################
 
@@ -384,7 +388,10 @@ download_list <- c(
   federal_waters,
   
   # temperature (EMU water quality)
-  temperature
+  temperature,
+  
+  # Massachusetts town boundaries
+  mass_admin
 )
   
 data_download_function(download_list, data_dir)
