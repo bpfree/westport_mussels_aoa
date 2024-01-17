@@ -1,8 +1,8 @@
 # Westport Areas of Aquaculture -- mussels
 ## Siting analysis for the Westport, Massachusetts aquaculture area
 
-**Points of contact**
-* **Aquaculture leader:** [Chris Schillaci](mailto:christopher.schillaci@noaa.gov)
+**Points of contact**  
+* **Aquaculture leader:** [Chris Schillaci](mailto:christopher.schillaci@noaa.gov)  
 * **Project lead:** [Drew Resnick](mailto:drew.resnick@noaa.gov)
 
 #### **Repository Structure**
@@ -29,7 +29,9 @@ Please contact Brian Free ([brian.free@noaa.gov](mailto:brian.free@noaa.gov)) wi
 |---------------|---------------|---------------|---------------|---------------|
 | Administrative boundary | NOAA | [Federal waters](https://marinecadastre.gov/downloads/data/mc/CoastalZoneManagementAct.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/53132) |  |
 | Temperature | NOAA | [EMU water quality](https://marinecadastre.gov/downloads/data/mc/EMUWaterQuality.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66137) |  |
-| Administrative boundary | [Masschusetts]()  | [Town survey](https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/gdbs/townssurvey_gdb.zip) | [Metadata](https://www.mass.gov/info-details/massgis-data-municipalities) | Massachusetts GIS [data page](https://www.mass.gov/info-details/massgis-data-layers) |
+| Administrative boundary | [Masschusetts](https://www.mass.gov/info-details/massgis-data-layers)  | [Town survey](https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/gdbs/townssurvey_gdb.zip) | [Metadata](https://www.mass.gov/info-details/massgis-data-municipalities) | [MASSGIS](https://www.mass.gov/orgs/massgis-bureau-of-geographic-information) |
+| Sediment | NOAA  | [Sediment texture](https://marinecadastre.gov/downloads/data/mc/SedimentTexture.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/55364) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::sediment-texture/about) contains more information |
+| Sediment | [Northeast Ocean Data](https://www.northeastoceandata.org/)  | [Sediment size](https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/Sediment.zip) | [Metadata](https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/SoftSediment.pdf) | TNC provided the data |
 
 ##### *Constraints Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
@@ -41,55 +43,57 @@ Please contact Brian Free ([brian.free@noaa.gov](mailto:brian.free@noaa.gov)) wi
 | Bathymetry | NOAA | [CUDEM, 1/3-arc second](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x25_2021v1.tif) | [Metadata](https://data.noaa.gov/metaview/page?xml=NOAA/NESDIS/NGDC/MGG/DEM//iso/xml/199913.xml&view=xml2text/xml-to-text-ISO) | Explore data [here](https://www.ncei.noaa.gov/maps/bathymetry/), for a [bulk down](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/), while other options for [individual downloads](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/) can provide ways to get DEMs that cover the area of interest while also providing detailed attention to specific areas. ***Note: the data can also get accessed throught the [FTP server](ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/) even though browsers do not support it any more and the correct directory is rima |
 | Bathymetry | NOAA | [CUDEM, 1/3-arc second](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x50_2021v1.tif) | [Metadata](https://data.noaa.gov/metaview/page?xml=NOAA/NESDIS/NGDC/MGG/DEM//iso/xml/199913.xml&view=xml2text/xml-to-text-ISO) | Explore data [here](https://www.ncei.noaa.gov/maps/bathymetry/), for a [bulk down](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/), while other options for [individual downloads](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/) can provide ways to get DEMs that cover the area of interest while also providing detailed attention to specific areas. ***Note: the data can also get accessed throught the [FTP server](ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/) even though browsers do not support it any more and the correct directory is rima |
 | Unexploded ordnance | NOAA | [Unexploded ordnance locations](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66208) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
-| Danger zones | NOAA | [Danger zones and restricted areas](https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48876) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about) |
+| Danger zones | NOAA | [Danger zones and restricted areas](https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48876) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about) contains more information |
 | Environmental sensors | [Northeast Ocean Data Portal](https://www.northeastoceandata.org/) | [Environmental sensors and buoys](https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography.zip) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm) |  |
+| Wastewater facilities | NOAA | [Wastewater outfall facilities](https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66706) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/b0c5d61277f440e3b6ca001f7fbd5416_0/about) contains more information, also please note that the download link is the same for the [wastewater outfall pipes data](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wastewater-outfall-pipes/about) and the [wastewater outfalls data](https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip) |
+| Ocean disposal | NOAA | [Ocean disposal sites](https://marinecadastre.gov/downloads/data/mc/OceanDisposalSite.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/54193) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::ocean-disposal-sites/about) contains more information |
+| Navigation | NOAA | [Aids to Navigation](https://marinecadastre.gov/downloads/data/mc/AtoN.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/56120) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::aids-to-navigation-1/about) contains more information |
+| Obstructions | NOAA | [Wrecks and obstructions](https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/70439) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wrecks-and-obstructions/about) contains more information |
+| Shipping | NOAA | [Shipping lanes (federal)](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/39986) | Note these data are for shipping lanes in federal waters |
 
-Bathymetry 1/9-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/
+Bathymetry 1/9-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/  
 Bathymetry 1/3-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/
 
-##### *Industry and Operations Data*
+##### *National Securuty Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Submarine Cable | NOAA | [NOAA Chartered Submarine Cable](https://marinecadastre.gov/downloads/data/mc/SubmarineCable.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/57238)| |
+| Unexploded ordnance | NOAA | [Unexploded ordnance areas](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66206) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
+| Airspace | NOAA | [Special use airspace](https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48898) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::military-special-use-airspace/about) contains more information |
+| Military | [Data.gov](https://data.gov/) | [Military operating areas](https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/55364) | MarineCadastre contains an alternative [download link](https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip), yet these data contain different objects, though both datasets have the same data for the study region |
 
-
-##### *Natural Resources Data*
+##### *Industry, Transportation, and Navigation Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Conservation Areas | NOAA | [Essential Fisheries Habitat Conservation Areas](https://www.habitat.noaa.gov/protection/efh/newInv/data/west_coast/westcoast_efha.zip) | | [Text](https://www.ecfr.gov/current/title-50/chapter-VI/part-660/subpart-C/section-660.76), [Essential Fish Habitat Mapper](https://www.habitat.noaa.gov/apps/efhmapper/?data_id=dataSource_13-EFHA_7887%3A102&page=page_4), [Alternative download source](https://www.fisheries.noaa.gov/s3/2021-02/EFH-HAPC-EFHCA-shapefiles-AM19-2006-AM28-2020.zip) |
-| Habitat | NOAA | [Leatherback Sea Turtle](https://noaa.maps.arcgis.com/home/item.html?id=f66c1e33f91d480db7d1b1c1336223c3) | [Metadata](https://www.fisheries.noaa.gov/inport/item/65327) | [NMFS ESA Critical Habitat Mapper](https://noaa.maps.arcgis.com/apps/webappviewer/index.html?id=68d8df16b39c48fe9f60640692d0e318), [InPort](https://www.fisheries.noaa.gov/inport/item/65207), [West Coast Specific Download](https://www.webapps.nwfsc.noaa.gov/portal7/home/item.html?id=40d9b14ae87e4023ae07361cf3067007), [West Coast Region Protected Resources App](https://www.webapps.nwfsc.noaa.gov/portal/apps/webappviewer/index.html?id=7514c715b8594944a6e468dd25aaacc9), [Code of Regulations](https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.207) |
-| Habitat | NOAA | [Humpback Whale (Central America DPS)](https://noaa.maps.arcgis.com/home/item.html?id=f66c1e33f91d480db7d1b1c1336223c3) | [Metadata](https://www.fisheries.noaa.gov/inport/item/65375) | [NMFS ESA Critical Habitat Mapper](https://noaa.maps.arcgis.com/apps/webappviewer/index.html?id=68d8df16b39c48fe9f60640692d0e318), [InPort](https://www.fisheries.noaa.gov/inport/item/65207), [West Coast Specific Download](https://www.webapps.nwfsc.noaa.gov/portal7/home/item.html?id=40d9b14ae87e4023ae07361cf3067007), [West Coast Region Protected Resources App](https://www.webapps.nwfsc.noaa.gov/portal/apps/webappviewer/index.html?id=7514c715b8594944a6e468dd25aaacc9), [Code of Regulations](https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227) |
-| Habitat | NOAA | [Humpback Whale (Mexico DPS)](https://noaa.maps.arcgis.com/home/item.html?id=f66c1e33f91d480db7d1b1c1336223c3) | [Metadata](https://www.fisheries.noaa.gov/inport/item/65377) | [NMFS ESA Critical Habitat Mapper](https://noaa.maps.arcgis.com/apps/webappviewer/index.html?id=68d8df16b39c48fe9f60640692d0e318), [InPort](https://www.fisheries.noaa.gov/inport/item/65207), [West Coast Specific Download](https://www.webapps.nwfsc.noaa.gov/portal7/home/item.html?id=40d9b14ae87e4023ae07361cf3067007), [West Coast Region Protected Resources App](https://www.webapps.nwfsc.noaa.gov/portal/apps/webappviewer/index.html?id=7514c715b8594944a6e468dd25aaacc9), [Code of Regulations](https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.227) |
-| Habitat | NOAA | [Killer Whale (Southern Resident)](https://noaa.maps.arcgis.com/home/item.html?id=f66c1e33f91d480db7d1b1c1336223c3) | [Metadata](https://www.fisheries.noaa.gov/inport/item/65409) | [NMFS ESA Critical Habitat Mapper](https://noaa.maps.arcgis.com/apps/webappviewer/index.html?id=68d8df16b39c48fe9f60640692d0e318), [InPort](https://www.fisheries.noaa.gov/inport/item/65207), [West Coast Specific Download](https://www.webapps.nwfsc.noaa.gov/portal7/home/item.html?id=40d9b14ae87e4023ae07361cf3067007), [West Coast Region Protected Resources App](https://www.webapps.nwfsc.noaa.gov/portal/apps/webappviewer/index.html?id=7514c715b8594944a6e468dd25aaacc9), [Code of Regulations](https://www.ecfr.gov/current/title-50/chapter-II/subchapter-C/part-226/section-226.206) |
-| Habitat | NOAA | [U.S. West Coast Cross-Shelf Habitat Suitability Modeling of Deep-Sea Corals and Sponges](https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/276883.1.1.tar.gz) | [Metadata](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883;view=iso) | [NCEI](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883), [Link](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0276883) for habitat suitability data only |
-| Habitat | NOAA | [Methane Bubble Streams](https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tables-US-only-revised-dec30-2020.xlsx) | | [Merle et al. (2021)](https://www.frontiersin.org/articles/10.3389/feart.2021.531714/full), data come from the supplemental table and contain points from Reidel et al. (2018) and Johnson et al. (2015) |
-| Habitat | NOAA | [Methane Bubble Streams](https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tables-US-only-revised-dec30-2020.xlsx) | | [Reidel et al. (2018)](https://www.nature.com/articles/s41467-018-05736-x), data come from the supplementary data 2 and these data are contained within the Merle et al. (2021) dataset |
-| Habitat | NOAA | [Methane Bubble Streams](https://www.pmel.noaa.gov/eoi/Cascadia/Supplemental-Tables-US-only-revised-dec30-2020.xlsx) | | [Johnson et al. (2015)](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/2015GC005955), data come from the supporting information document (see S2 and S3) and while these data are contained within the Merle et al. (2021) dataset, S3 does not contain any sites that fall within Oregon call areas |
-| Habitat | USGS | Rainier (H13118 (2018) | | Data came ahead of a 2019 EXPRESS cruise aboard the NOAA Ship Lasker (RL-19-05). [Nancy Prouty](nprouty@usgs.gov) at USGS shared these unpublished location data with [Curt Whitmire](curt.whitmire@noaa.gov) |
-| Species | NOAA | [Marine seabird density](https://www.ncei.noaa.gov/archive/archive-management-system/OAS/bin/prd/jquery/download/242882.1.1.tar.gz) | [Metadata](https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.nodc:0242882;view=iso) | These data were combined with vulnerability factors as detailed in [Adams et al. (2017)](https://pubs.usgs.gov/of/2016/1154/ofr20161154.pdf) and [Kelsey et al. (2018)](https://www.sciencedirect.com/science/article/abs/pii/S0301479718309228?via%3Dihub); option for downloading particular data is accessible through the [HTTPS](https://www.nodc.noaa.gov/archive/arc0193/0242882/) |
-| Species | USGS | [Population vulnerability](https://www.sciencebase.gov/catalog/item/592f05a2e4b0e9bd0ea793df), [Collision vulnerability](https://www.sciencebase.gov/catalog/item/58f80528e4b0b7ea5451fcaf), [Displacement vulnerability](https://www.sciencebase.gov/catalog/item/592efde1e4b0e9bd0ea7939c) | These data are from the [Adams et al. (2017) paper](https://pubs.usgs.gov/of/2016/1154/ofr20161154.pdf) and used by [Kelsey et al. (2018)](https://www.sciencedirect.com/science/article/abs/pii/S0301479718309228?via%3Dihub)
+| AIS | [Northeast Ocean Data](https://www.northeastoceandata.org/) | [AIS vessel tracks (counts)](https://services.northeastoceandata.org/downloads/AIS/AIS2022_Annual.zip) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/AIS/AllAISVesselTransitCounts2022.pdf) | For data downloads at Northeast Ocean Data, use this [link](https://www.northeastoceandata.org/data-download/)
 
 ##### *Fisheries Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| VMS |  | VMS (all fishing) | | |
+| VMS |  | VMS (slow fishing) | | Fishing vessels under speeds 4 or 5 knots (depends on the fishery |
+| VTR |  | VTR (all gear) | | |
+| VTR |  | VTR (charter / party) | | |
+| Survey |  | Large pelagic survey | | |
+| Cod | | [Cod spawning protection areas](https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip) | [Metadata](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf) |[PDF maps](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf) |
+| Cod | | Known cod spawning areas | | |
 
-##### *Wind Data*
+##### *Natural and Cultural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
+| Protected resources | | Combined protected resources | | |
 
 #### Data commentary
-Datasets explored but not included in analyses due to not located geographically in study area:
-- [BOEM Active Lease Areas](https://www.data.boem.gov/Main/Mapping.aspx#ascii) ([Geodatabase download link](https://www.data.boem.gov/Mapping/Files/ActiveLeasePolygons.gdb.zip),[Shapefile download link](https://www.data.boem.gov/Mapping/Files/actlease.zip), [Metadata](https://www.data.boem.gov/Mapping/Files/actlease_meta.html))
-- [Anchorage Areas](https://marinecadastre.gov/downloads/data/mc/Anchorage.zip) ([Metadata](https://www.fisheries.noaa.gov/inport/item/48849))
-- [BOEM Lease Blocks](https://www.data.boem.gov/Mapping/Files/Blocks.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/blocks_meta.html))
-- [Lightering Zones](https://marinecadastre.gov/downloads/data/mc/LighteringZone.zip) ([Metadata](https://www.fisheries.noaa.gov/inport/item/66149), [more information](https://www.govinfo.gov/content/pkg/CFR-2018-title33-vol2/xml/CFR-2018-title33-vol2-part156.xml#seqnum156.300)) - [Pipelines](https://www.data.boem.gov/Mapping/Files/Pipelines.gdb.zip) ([Option page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Metadata](https://www.data.boem.gov/Mapping/Files/ppl_arcs_meta.html))
-- [Shipping Lanes](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) (Federal)
-- [Unexploded ordnances](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) (Points and areas, [metadata](https://www.fisheries.noaa.gov/inport/item/66208))
-- [BOEM Drilling Platforms](https://www.data.boem.gov/Mapping/Files/Platforms.gdb.zip) ([Metadata](https://www.data.boem.gov/Mapping/Files/platform_meta.html), [Mapping Page](https://www.data.boem.gov/Main/Mapping.aspx#ascii), [Alternative Platform Structure dataset](https://www.data.boem.gov/Platform/PlatformStructures/Default.aspx))
+Datasets explored but not included in analyses due to not located geographically in study region:
 
+  - [Environmental sensors and buoys](https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm)
+  - [Wastewater outfall structures](https://www.fisheries.noaa.gov/inport/item/66706)
+  - [Special use airspace](https://www.fisheries.noaa.gov/inport/item/48898)
+  - [VTR (charter / party)]()
+  - [Cod spawning protection areas]()
+  - [Known cod spawning areas]()
 
 #### Methodologies
-While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the minimum value occurring in the hex cell. The minimum value prioritized conservation.
+While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the maximum value occurring in the hex cell. The maximum value prioritized conservation.
 
 Data examined but not existing within original region
 1. Environmental sensors and buoys
@@ -100,7 +104,7 @@ Data examined but not existing within original region
 6. VTR (charter / party)
 7. Known cod spawning areas
 
-Data examined but not existing within -20m and -40m of federal waters
+Data examined but not existing within -20m and -40m of federal waters that are within 20 miles of Westport
 1. Wastewater outfall structures
 2. Ocean disposal
 3. Special use airspace
