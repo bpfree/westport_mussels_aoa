@@ -73,15 +73,18 @@ crs <- "EPSG:26918"
 # load data
 ## bathymetry boundary
 bathymetry <- sf::st_read(dsn = data_dir,
-                          layer = sf::st_layers(data_dir)[[1]][grep(pattern = "bathymetry", sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
+                          layer = sf::st_layers(data_dir)[[1]][grep(pattern = "bathymetry",
+                                                                    sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
 
 ## federal waters
 federal_waters <- sf::st_read(dsn = data_dir,
-                              layer = sf::st_layers(data_dir)[[1]][grep(pattern = "federal", sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
+                              layer = sf::st_layers(data_dir)[[1]][grep(pattern = "federal",
+                                                                        sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
 
 ## Westport town 20-mile setback
 town_20mi <- sf::st_read(dsn = data_dir,
-                         layer = sf::st_layers(data_dir)[[1]][grep(pattern = "town", sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
+                         layer = sf::st_layers(data_dir)[[1]][grep(pattern = "town",
+                                                                   sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
 
 #####################################
 
