@@ -169,7 +169,7 @@ boem_wind_area <- "https://www.boem.gov/BOEM-Renewable-Energy-Geodatabase.zip"
 #### Data are spread across two major data sourcs: CUDEM third arc-second resolution and ninth arc-second resolution
 #### ***Note: for the 1/9-arc second data (~3m), the data encompass three datasets
 ####    a.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x00_2018v1.tif,
-####    b.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x25_2018v1.tif, and
+####    b.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x25_2018v1.tif,
 ####    c.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x50_2018v1.tif)
 
 #### ***Note: for the 1/3-arc second data (~10m), the data encompass three datasets
