@@ -20,22 +20,26 @@ data/a_raw_data/bathymetry/ncei19_n41x50_w071x50_2018v1.tif
 ### VMS
 data/a_raw_data/vms
 
+#####################################
+
 ## Intermediate data
+### AIS
+data/b_intermediate_data/ais_data
+
 ### bathymetry
 data/b_intermediate_data/bathymetry
 
 ### aids to naviation
 data/b_intermediate_data/westport_aids_navigation.gpkg
 
-### wreck and obstruction
-data/b_intermediate_data/westport_wreck_obstruction.gpkg
-
 ### large pelagic survey
 data/b_intermediate_data/westport_large_pelagic_survey.gpkg
 
-### AIS
-data/b_intermediate_data/ais_data
-data/b_intermediate_data/westport_ais.gpkg
+### wreck and obstruction
+data/b_intermediate_data/westport_wreck_obstruction.gpkg
+
+#####################################
 
 ## Submodel data
-data/c_submodel_data/fisheries.gpkg
+# data/c_submodel_data/fisheries.gpkg
+
