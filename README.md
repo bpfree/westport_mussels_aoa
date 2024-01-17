@@ -4,7 +4,6 @@
 **Points of contact**
 * **Aquaculture leader:** [Chris Schillaci](mailto:christopher.schillaci@noaa.gov)
 * **Project lead:** [Drew Resnick](mailto:drew.resnick@noaa.gov)
-* **Data manager:** [Bryce O'brien](mailto:bryce.obrien@noaa.gov)
 
 #### **Repository Structure**
 
