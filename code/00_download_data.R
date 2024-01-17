@@ -193,12 +193,6 @@ unexploded_ordnance_location <- "https://marinecadastre.gov/downloads/data/mc/Un
 
 #####################################
 
-### Unexploded ordnance area data (source: https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip)
-#### Metadata: https://www.fisheries.noaa.gov/inport/item/66206
-unexploded_ordnance_area <- "https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip"
-
-#####################################
-
 ### Danger zones and restricted areas data (source: https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip)
 #### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/48876
@@ -213,7 +207,7 @@ environmental_sensor_buoy <- "https://www.northeastoceandata.org/files/metadata/
 #####################################
 
 ### Wastewater outfall facilities data (source: https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip)
-#### MarineCadastre: https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip
+#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/b0c5d61277f440e3b6ca001f7fbd5416_0/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/66706
 #### ***Note: the download link is the same for the wastewater outfall pipes data (https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wastewater-outfall-pipes/about)
 ####          and the wastewater outfalls data (https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip)
@@ -242,8 +236,9 @@ wrecks_obstructions <- "https://marinecadastre.gov/downloads/data/mc/WreckObstru
 
 #####################################
 
-## Shipping lanes data (source: http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip)
-### These are federal water shipping lanes
+### Shipping lanes data (source: http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip)
+#### ***Note: These are federal water shipping lanes
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/39986
 federal_shipping_lanes <- "http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip"
 
 
@@ -251,6 +246,12 @@ federal_shipping_lanes <- "http://encdirect.noaa.gov/theme_layers/data/shipping_
 
 
 ## National Security
+
+### Unexploded ordnance area data (source: https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/66206
+unexploded_ordnance_area <- "https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip"
+
+#####################################
 
 ### Special use airspace data (source: https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip)
 #### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::military-special-use-airspace/about
@@ -262,6 +263,8 @@ special_use_airspace <- "https://marinecadastre.gov/downloads/data/mc/MilitarySp
 ### Military operating areas data (source: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
 #### Data.gov: https://catalog.data.gov/dataset/military-operating-area-boundaries/resource/50f08bdd-3816-4895-824c-c48e71d9d3d7
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
+#### ***Note: MarineCadastre contains an alternative download link: https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip
+####          yet these data contain different objects, though both datasets have the same data for the study region
 military_operating_area <- "https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip"
 
 
