@@ -24,7 +24,7 @@
 Please contact Brian Free ([brian.free@noaa.gov](mailto:brian.free@noaa.gov)) with any questions regarding the code.
 
 #### **Study region**
-The aquaculture analysis focused in federal waters off the coast from Westport, Massachusetts. The site needed to be within 20-miles of Westport and have depths between -20 and -40 meters. A hexagonal grid with 10-acre cells covered all federal waters within 20 miles of Westport and had depths between -20 and -40 meters.
+The aquaculture analysis focused on finding suitable sites in federal waters off the coast from Westport, Massachusetts. The site needed to be within 20-miles of Westport and have depths between -20 and -40 meters. A hexagonal grid with 10-acre cells covered all federal waters within 20 miles of Westport and had depths between -20 and -40 meters.
 
 #### **Data sources**
 ##### *Generic Data*
