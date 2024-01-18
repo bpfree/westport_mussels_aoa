@@ -69,11 +69,11 @@ Bathymetry 1/3-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/ra
 ##### *Fisheries Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| VMS |  | VMS (all fishing) | | |
-| VMS |  | VMS (slow fishing) | | Fishing vessels under speeds 4 or 5 knots (depends on the fishery |
+| VMS |  | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016 |
+| VMS |  | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery); fisheries effort for 2015 and 2016  |
 | VTR |  | VTR (all gear) | | |
 | VTR |  | VTR (charter / party) | | |
-| Survey |  | Large pelagic survey | | |
+| Survey |  | Large pelagic survey (2012 - 2021) | | |
 | Cod | | [Cod spawning protection areas](https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip) | [Metadata](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf) |[PDF maps](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf) |
 | Cod | | Known cod spawning areas | | |
 
@@ -93,9 +93,14 @@ Datasets explored but not included in analyses due to not located geographically
   - [Known cod spawning areas]()
 
 #### Methodologies
+All data cleaning and analyses were performed using the R programming software (version 4.3.2, R Core Team 2023). Especially important R packages used include: dplyr(1.1.4), rmapshaper(0.5.0), sf(1.0-15), terra(1.7-65).
+
 While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the maximum value occurring in the hex cell. The maximum value prioritized conservation.
 
+Data layers with continuous data had their values rescaled between 0 and 1 using a [z-shaped memebership function](https://www.mathworks.com/help/fuzzy/zmf.html#d126e54766) adapted from Matlab's methods. The z-shaped membership function rescaled values so that minimum values receive a score of 1 and as the values increase to the maximum, the rescaled score approaches 0. In the normal Matlab function, the maximum value would get the rescaled value of 0; however, scores of 0 got classified as constraints -- areas not permitted for aquaculture. To avoid rescaled continuous data getting scores of 0, the maximum value received an extra one-thousandth of the maximum value (*i.e.*, maximum value * 1/1000). 
+
 Data examined but not existing within original region
+
 1. Environmental sensors and buoys
 2. WWTF outfall structures
 3. Ocean disposal sites
@@ -105,6 +110,7 @@ Data examined but not existing within original region
 7. Known cod spawning areas
 
 Data examined but not existing within -20m and -40m of federal waters that are within 20 miles of Westport
+
 1. Wastewater outfall structures
 2. Ocean disposal
 3. Special use airspace
