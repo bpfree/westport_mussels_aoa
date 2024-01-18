@@ -23,6 +23,9 @@
 
 Please contact Brian Free ([brian.free@noaa.gov](mailto:brian.free@noaa.gov)) with any questions regarding the code.
 
+#### **Study region**
+The aquaculture analysis focused in federal waters off the coast from Westport, Massachusetts. The site needed to be within 20-miles of Westport and have depths between -20 and -40 meters. A hexagonal grid with 10-acre cells covered all federal waters within 20 miles of Westport and had depths between -20 and -40 meters.
+
 #### **Data sources**
 ##### *Generic Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
@@ -69,8 +72,8 @@ Bathymetry 1/3-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/ra
 ##### *Fisheries Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| VMS |  | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016 |
-| VMS |  | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery); fisheries effort for 2015 and 2016  |
+| VMS |  | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf) |
+| VMS |  | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery) and for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf)  |
 | VTR |  | VTR (all gear) | | |
 | VTR |  | VTR (charter / party) | | |
 | Survey |  | Large pelagic survey (2012 - 2021) | | |
@@ -93,11 +96,18 @@ Datasets explored but not included in analyses due to not located geographically
   - [Known cod spawning areas]()
 
 #### Methodologies
+##### *Software*
 All data cleaning and analyses were performed using the R programming software (version 4.3.2, R Core Team 2023). Especially important R packages used include: dplyr(1.1.4), rmapshaper(0.5.0), sf(1.0-15), terra(1.7-65).
 
 While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the maximum value occurring in the hex cell. The maximum value prioritized conservation.
 
-Data layers with continuous data had their values rescaled between 0 and 1 using a [z-shaped memebership function](https://www.mathworks.com/help/fuzzy/zmf.html#d126e54766) adapted from Matlab's methods. The z-shaped membership function rescaled values so that minimum values receive a score of 1 and as the values increase to the maximum, the rescaled score approaches 0. In the normal Matlab function, the maximum value would get the rescaled value of 0; however, scores of 0 got classified as constraints -- areas not permitted for aquaculture. To avoid rescaled continuous data getting scores of 0, the maximum value received an extra one-thousandth of the maximum value (*i.e.*, maximum value * 1/1000). 
+##### *z-shaped membership function*
+Data layers with continuous data had their values rescaled between 0 and 1 using a [z-shaped memebership function](https://www.mathworks.com/help/fuzzy/zmf.html#d126e54766) adapted from Matlab's methods. The z-shaped membership function rescaled values so that minimum values receive a score of 1 and as the values increase to the maximum, the rescaled score approaches 0. In the normal Matlab function, the maximum value would get the rescaled value of 0; however, scores of 0 got classified as constraints -- areas not permitted for aquaculture. To avoid rescaled continuous data getting scores of 0, the maximum value received an extra one-thousandth of the maximum value (*i.e.*, maximum value * 1/1000).
+
+The z-shaped membership function required additional adaptation for the vessel monitoring system data for these data had negative values. These data had fishing densities standardized and the [authors noted](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) that the results were best to understand qualitatively through its five classes: very high, high, medium-high, medium-low, and low. A z-shaped membership function assumes that all values are positive. The absolute value of the minimum standardized fishing densities, which can then get added to every value across the dataset to have only positive values for running the normal z-shaped membership function on these shifted values.
+
+##### *Data*
+For any data not already in the coordinate reference system, they were transformed to the coordinate reference system of EPSG:26918 is [NAD83 / UTM 18N](https://epsg.io/26918) to ensure layering and analysis. Many datasets covered areas beyond the study region; when this occurred, the analysis only considered data within the study region. For constraints data, a value field was added and given a value of 0. When a layer had multiple datasets, those datasets were combined; then the combined datasets were 
 
 Data examined but not existing within original region
 
@@ -118,7 +128,7 @@ Data examined but not existing within -20m and -40m of federal waters that are w
 5. Cod spawning protection areas
 6. Known cod spawning areas
 
-Submodels
+##### *Submodels*
 * National Security: currently integrates two datasets (unexploded ordnance areas and military operating areas) for three layers were aimed to get integrated in the submodel, however, no special use airspace overlapped with the Westport study region.
 
 * Fisheries: four datasets integrated in model (VMS [all fishing (2015-2016)], VMS [all fishing under 4 / 5 knots(2015-2016)], VTR [all gear types], large pelagic survey [2012 - 2021])
