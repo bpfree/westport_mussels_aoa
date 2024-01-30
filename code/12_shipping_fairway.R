@@ -85,8 +85,8 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 
 # load data
-## shipping fairway data (source: )
-### metadata: 
+## shipping fairway data (source: http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip)
+### metadata: https://www.fisheries.noaa.gov/inport/item/39986
 shipping_fairway <- sf::st_read(dsn = file.path(paste(data_dir, "shippinglanes.shp", sep ="/"))) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
