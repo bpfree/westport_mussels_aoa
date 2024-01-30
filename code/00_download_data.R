@@ -267,12 +267,13 @@ special_use_airspace <- "https://marinecadastre.gov/downloads/data/mc/MilitarySp
 
 #####################################
 
-### Military operating areas data (source: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
+### Military operating areas data (source: https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip)
 #### Data.gov: https://catalog.data.gov/dataset/military-operating-area-boundaries/resource/50f08bdd-3816-4895-824c-c48e71d9d3d7
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
-#### ***Note: MarineCadastre contains an alternative download link: https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip
-####          yet these data contain different objects, though both datasets have the same data for the study region
-military_operating_area <- "https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip"
+#### ***Note: MarineCadastre contains an alternative download link: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
+####          yet these data contain different objects (as the data were deprecated on 9 February 2024),
+####          though both datasets have the same data for the study region
+military_operating_area <- "https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip"
 
 
 #####################################
