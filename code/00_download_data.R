@@ -193,6 +193,13 @@ unexploded_ordnance_location <- "https://marinecadastre.gov/downloads/data/mc/Un
 
 #####################################
 
+### Munitions and explosives of concern data (source: https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip)
+#### Metadata: https://www.fisheries.noaa.gov/inport/item/69013
+#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/c28b230c336b472e979723d15ede22e7_0/about
+munitions_explosives <- "https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip"
+
+#####################################
+
 ### Danger zones and restricted areas data (source: https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip)
 #### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/48876
@@ -345,6 +352,9 @@ download_list <- c(
   # unexploded ordnances
   unexploded_ordnance_location,
   unexploded_ordnance_area,
+  
+  # munitions and explosives
+  munitions_explosives,
   
   # danger zones and restrictions
   danger_zone,
