@@ -58,12 +58,12 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 Bathymetry 1/9-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/  
 Bathymetry 1/3-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/
 
-##### *National Securuty Data*
+##### *National Security Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Unexploded ordnance | NOAA | [Unexploded ordnance areas](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66206) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
 | Airspace | NOAA | [Special use airspace](https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48898) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::military-special-use-airspace/about) contains more information |
-| Military | [Data.gov](https://data.gov/) | [Military operating areas](https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/55364) | MarineCadastre contains an alternative [download link](https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip), yet these data contain different objects, though both datasets have the same data for the study region |
+| Military | [Data.gov](https://data.gov/) | [Military operating areas](https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/55364) | MarineCadastre contains an alternative [download link](https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip), yet these data are deprecated as of 9 February 2024 and contain different objects, though both datasets have the same data for the study region |
 
 ##### *Industry, Transportation, and Navigation Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
