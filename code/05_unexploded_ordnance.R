@@ -49,6 +49,8 @@ pacman::p_load(docxtractr,
 uxo_areas_gdb <- "data/a_raw_data/UnexplodedOrdnanceArea/UnexplodedOrdnanceArea.gdb"
 uxo_locations_gdb <- "data/a_raw_data/UnexplodedOrdnance/UnexplodedOrdnance.gdb"
 
+mec_gdb <- "data/a_raw_data/MunitionsExplosivesConcern.gpkg"
+
 #### study area grid
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 
@@ -68,6 +70,9 @@ uxo_gpkg <- "data/b_intermediate_data/westport_unexploded_ordnance.gpkg"
 sf::st_layers(dsn = uxo_areas_gdb,
               do_count = T)
 sf::st_layers(dsn = uxo_locations_gdb,
+              do_count = T)
+
+sf::st_layers(dsn = mec_gdb,
               do_count = T)
 
 sf::st_layers(dsn = study_region_gpkg,
@@ -93,6 +98,7 @@ setback <- 500
 ## layer names
 export_area <- "uxo_area"
 export_location <- "uxo_location"
+export_mec <- "munitions_explosives"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -112,6 +118,14 @@ uxo_areas <- sf::st_read(dsn = uxo_locations_gdb, layer = "UnexplodedOrdnanceAre
 ## unexploded ordnance location data (source: https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/66208
 uxo_locations <- sf::st_read(dsn = uxo_locations_gdb, layer = "UnexplodedOrdnanceLocations") %>%
+  # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
+  sf::st_transform(x = ., crs = crs) %>%
+  # apply 500-meter setback
+  sf::st_buffer(x = ., dist = setback)
+
+## munitions and explosives of concern data (source: https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip)
+### metadata: https://www.fisheries.noaa.gov/inport/item/69013
+mec <- sf::st_read(dsn = mec_gdb, layer = "MunitionsExplosivesConcern") %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 500-meter setback
