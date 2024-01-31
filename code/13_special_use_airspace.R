@@ -46,7 +46,7 @@ pacman::p_load(docxtractr,
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
 #### special use airspace
-data_dir <- "data/a_raw_data/MilitarySpecialUseAirspace/MilitarySpecialUseAirspace.gpkg"
+data_dir <- "data/a_raw_data/MilitaryCollection/MilitaryCollection.gpkg"
 
 #### study area grid
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
@@ -88,11 +88,11 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 
 # load data
-## special use airspace data (source: https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip)
+## special use airspace data (source: https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/48898
 special_use_airspace <- sf::st_read(dsn = data_dir,
-                                 # special use airspace
-                                 layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                                    # special use airspace
+                                    layer = st_layers(dsn = data_dir)[[1]][5]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
