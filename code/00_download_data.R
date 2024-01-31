@@ -260,12 +260,11 @@ unexploded_ordnance_area <- "https://marinecadastre.gov/downloads/data/mc/Unexpl
 
 #####################################
 
-### Special use airspace data (source: https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip)
+### Special use airspace
 #### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::military-special-use-airspace/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/48898
-special_use_airspace <- "https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip"
-
-#####################################
+#### ***Note: Marine Cadastre had a link for special use airspace (https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip)
+####          yet these data have become deprecated (according to Daniel Marin [daniel.martin@noaa.gov] as of 31 January 2024)
 
 ### Military operating areas data (source: https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip)
 #### Data.gov: https://catalog.data.gov/dataset/military-operating-area-boundaries/resource/50f08bdd-3816-4895-824c-c48e71d9d3d7
@@ -273,7 +272,7 @@ special_use_airspace <- "https://marinecadastre.gov/downloads/data/mc/MilitarySp
 #### ***Note: MarineCadastre contains an alternative download link: https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip)
 ####          yet these data contain different objects (as the data were deprecated on 9 February 2024),
 ####          though both datasets have the same data for the study region
-military_operating_area <- "https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip"
+military <- "https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip"
 
 
 #####################################
@@ -378,11 +377,8 @@ download_list <- c(
   # shipping lanes
   federal_shipping_lanes,
   
-  # special use airspace
-  special_use_airspace,
-  
-  # military operating areas
-  military_operating_area,
+  # military areas
+  military,
   
   # sediment
   sediment,
