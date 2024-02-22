@@ -93,7 +93,7 @@ date <- format(Sys.Date(), "%Y%m%d")
 ## 6.) Click "Link to Metadata" to open new tab for data source and download data
 
 ### ***Note: for these data, mark the option for Continuously Updated Digital Elevation Model (CUDEM) under the Digital
-###          eleveation models dropdown
+###          elevation models dropdown
 
 ### ***Note: Also helpful to mark the option to display DEM footprints
 
