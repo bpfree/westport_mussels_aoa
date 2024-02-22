@@ -55,9 +55,6 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Obstructions | NOAA | [Wrecks and obstructions](https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/70439) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wrecks-and-obstructions/about) contains more information |
 | Shipping | NOAA | [Shipping lanes (federal)](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/39986) | Note these data are for shipping lanes in federal waters |
 
-Bathymetry 1/9-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/  
-Bathymetry 1/3-arc second FTP link: ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/
-
 ##### *National Security Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
