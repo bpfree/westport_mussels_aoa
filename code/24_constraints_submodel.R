@@ -99,6 +99,11 @@ date <- format(Sys.Date(), "%Y%m%d")
 westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 ## constraints
+### offshore wind energy areas
+westport_hex_offshore_wind <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "offshore_wind", date, sep = "_")) %>%
+  dplyr::mutate(wind_value = 0) %>%
+  sf::st_drop_geometry()
+
 ### unexploded ordnance locations
 westport_hex_unexploded_location <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "uxo_location", date, sep = "_")) %>%
   dplyr::mutate(uxo_loc_value = 0) %>%
@@ -140,6 +145,9 @@ westport_hex_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = paste(
 # Create Oregon constraints submodel
 westport_hex_constraints <- westport_hex %>%
   dplyr::left_join(x = .,
+                   y = westport_offshore_wind,
+                   by = "index") %>%
+  dplyr::left_join(x = .,
                    y = westport_hex_unexploded_location,
                    by = "index") %>%
   dplyr::left_join(x = .,
@@ -176,6 +184,7 @@ duplicates_verify <- westport_hex_constraints %>%
 westport_constraints <- westport_hex_constraints %>%
   # group by key fields to reduce duplicates
   dplyr::group_by(index,
+                  wind_value,
                   uxo_loc_value,
                   danger_value,
                   environmental_value,
@@ -186,7 +195,8 @@ westport_constraints <- westport_hex_constraints %>%
   # return only distinct rows (remove duplicates)
   dplyr::distinct() %>%
   # create a field called "constraints" that populates with 0 whenever datasets equal 0
-  dplyr::mutate(constraints = case_when(uxo_loc_value == 0 ~ 0,
+  dplyr::mutate(constraints = case_when(wind_value == 0 ~ 0,
+                                        uxo_loc_value == 0 ~ 0,
                                         danger_value == 0 ~ 0,
                                         environmental_value == 0 ~ 0,
                                         # disposal_value == 0 ~ 0,
@@ -208,6 +218,7 @@ saveRDS(obj = westport_hex_aids_navigation, file = paste(constraints_dir, paste(
 saveRDS(obj = westport_hex_environmental_sensor, file = paste(constraints_dir, paste(region, "hex_constraint_environmental_sensor.rds", sep = "_"), sep = "/"))
 saveRDS(obj = westport_hex_danger_restricted, file = paste(constraints_dir, paste(region, "hex_constraint_danger_restricted.rds", sep = "_"), sep = "/"))
 # saveRDS(obj = westport_hex_ocean_disposal, file = paste(constraints_dir, paste(region, "hex_constraint_ocean_disposal.rds", sep = "_"), sep = "/"))
+saveRDS(obj = westport_hex_offshore_wind, file = paste(constraints_dir, paste(region, "hex_constraint_offshore_wind.rds", sep = "_"), sep = "/"))
 saveRDS(obj = westport_hex_shipping_fairway, file = paste(constraints_dir, paste(region, "hex_constraint_shipping_fairway.rds", sep = "_"), sep = "/"))
 saveRDS(obj = westport_hex_unexploded_location, file = paste(constraints_dir, paste(region, "hex_constraint_unexploded_ordnance_location.rds", sep = "_"), sep = "/"))
 saveRDS(obj = westport_hex_wreck_obstruction, file = paste(constraints_dir, paste(region, "hex_constraint_wreck_obstruction.rds", sep = "_"), sep = "/"))
