@@ -128,7 +128,7 @@ data_dir <- "data/a_raw_data"
 ## BOEM wind call areas data
 ### BOEM source (geodatabase): https://www.boem.gov/renewable-energy/mapping-and-data/renewable-energy-gis-data
 ### An online download link: https://www.boem.gov/renewable-energy/boem-renewable-energy-geodatabase
-### Metadata: https://metadata.boem.gov/geospatial/boem_renewable_lease_areas.xml
+### Metadata: https://www.arcgis.com/sharing/rest/content/items/709831444a234968966667d84bcc0357/info/metadata/metadata.xml?format=default&output=html
 #### ***Note: Data are also accessible for download on MarineCadastre (under "Active Renewable Energy Leases")
 #### This provides a usable URL for R: https://www.boem.gov/BOEM-Renewable-Energy-Geodatabase.zip
 boem_wind_area <- "https://www.boem.gov/BOEM-Renewable-Energy-Geodatabase.zip"
