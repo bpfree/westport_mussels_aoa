@@ -103,7 +103,7 @@ zmf_function <- function(large_pelagic_survey){
   
   # calculate z-score minimum value
   ## this ensures that no value gets a value of 0
-  z_max <- max + (max * 1 / 1000)
+  z_max <- max + (max * 1 / 10000)
   
   # create a field and populate with the value determined by the z-shape membership scalar
   large_pelagic_survey <- large_pelagic_survey %>%
