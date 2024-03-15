@@ -104,9 +104,14 @@ westport_hex_offshore_wind <- sf::st_read(dsn = submodel_gpkg, layer = paste(reg
   dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
-### unexploded ordnance locations
-westport_hex_unexploded_location <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "uxo_location", date, sep = "_")) %>%
-  dplyr::mutate(uxo_loc_value = 0) %>%
+# ### unexploded ordnance locations
+# westport_hex_unexploded_location <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "uxo_location", date, sep = "_")) %>%
+#   dplyr::mutate(uxo_loc_value = 0) %>%
+#   sf::st_drop_geometry()
+
+### munitions and explosive concerns
+westport_hex_mec <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "munitions_explosives", date, sep = "_")) %>%
+  dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 ### danger zones and restricted areas
@@ -147,8 +152,11 @@ westport_hex_constraints <- westport_hex %>%
   dplyr::left_join(x = .,
                    y = westport_offshore_wind,
                    by = "index") %>%
+  # dplyr::left_join(x = .,
+  #                  y = westport_hex_unexploded_location,
+  #                  by = "index") %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_unexploded_location,
+                   y = westport_hex_mec,
                    by = "index") %>%
   dplyr::left_join(x = .,
                    y = westport_hex_danger_restricted,
