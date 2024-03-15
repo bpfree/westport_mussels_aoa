@@ -56,7 +56,7 @@ study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
 constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
 
 #### intermediate directories
-munitions_gpkg <- "data/b_intermediate_data/westport_unexploded_ordnance.gpkg"
+munitions_gpkg <- "data/b_intermediate_data/westport_munitions.gpkg"
 
 #####################################
 
