@@ -88,10 +88,11 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 
 # load data
-## federal waters data (source: https://www.boem.gov/renewable-energy/boem-renewable-energy-geodatabase)
+## offshore wind areas (source: https://www.boem.gov/renewable-energy/boem-renewable-energy-geodatabase)
 ### metadata: https://www.arcgis.com/sharing/rest/content/items/709831444a234968966667d84bcc0357/info/metadata/metadata.xml?format=default&output=html
 offshore_wind <- sf::st_read(dsn = data_dir,
-                             layer = sf::st_layers(data_dir)[[1]][4]) %>%
+                             layer = sf::st_layers(data_dir)[[1]][grep(pattern = "Wind_Leases",
+                                                                       x = sf::st_layers(dsn = data_dir)[[1]])]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
