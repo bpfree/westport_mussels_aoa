@@ -105,6 +105,25 @@ Data layers with continuous data had their values rescaled between 0 and 1 using
 
 The z-shaped membership function required additional adaptation for the vessel monitoring system data for these data had negative values. These data had fishing densities standardized and the [authors noted](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) that the results were best to understand qualitatively through its five classes: very high, high, medium-high, medium-low, and low. A z-shaped membership function assumes that all values are positive. The absolute value of the minimum standardized fishing densities, which can then get added to every value across the dataset to have only positive values for running the normal z-shaped membership function on these shifted values.
 
+#### Costs
+| **Layer** | **Buffer distance (m)** | **Score** | **Notes** |
+|---------------|---------------|---------------|---------------|
+| Sediment (CONMAPSG) - Sand/Mud | --------------- | 0.2 | In a second iteration score reduced to 0.1 |
+| Sediment (CONMAPSG) - Mix | --------------- | 0.4 | In a second iteration score reduced to 0.1 |
+| Sediment (CONMAPSG) - Gravel | --------------- | 0.5 | In a second iteration score reduced to 0.1 |
+| Sediment (CONMAPSG) - Rock | --------------- | 1.0 | In a second iteration score reduced to 0.9 |
+| Active and Inactive Disposal Sites | 500 | 0.8 | --------------- |
+| Intertidal Flats | 500 | 0.2 | --------------- |
+| Sand Patches | 500 | 1.0 | --------------- |
+| Channel Areas | 600 | 1.0 | --------------- |
+| Anchorage Areas | 600 | 0.8 | --------------- |
+| Eelgrass Meadows | 675 | 0.4 | --------------- |
+| Cable and Pipeline Areas | 675 | 0.4 | --------------- |
+| Submarine Cables | 675 | 0.4 | --------------- |
+| LNG Pipelines | 675 | 0.4 | --------------- |
+| Gravel | --------------- | 0.5 | --------------- |
+| Slope | --------------- | Linear regression | --------------- |
+
 ##### *Data*
 For any data not already in the coordinate reference system, they were transformed to the coordinate reference system of EPSG:26918 is [NAD83 / UTM 18N](https://epsg.io/26918) to ensure layering and analysis. Many datasets covered areas beyond the study region; when this occurred, the analysis only considered data within the study region. For constraints data, a value field was added and given a value of 0. When a layer had multiple datasets, those datasets were combined; then the combined datasets were 
 
