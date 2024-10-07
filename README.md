@@ -54,6 +54,7 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Navigation | NOAA | [Aids to Navigation](https://marinecadastre.gov/downloads/data/mc/AtoN.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/56120) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::aids-to-navigation-1/about) contains more information |
 | Obstructions | NOAA | [Wrecks and obstructions](https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/70439) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wrecks-and-obstructions/about) contains more information |
 | Shipping | NOAA | [Shipping lanes (federal)](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/39986) | Note these data are for shipping lanes in federal waters |
+| Wind | BOEM | [Offshore Wind - export cable corridors (proposed)](https://hub.marinecadastre.gov/datasets/BOEM::offshore-wind-export-cable-corridors-proposed) | [Metadata](https://www.arcgis.com/sharing/rest/content/items/0e57fcbb8aaf49c5b8d0944a4ffeef08/info/metadata/metadata.xml?format=default&output=html) | [REST Service](https://services7.arcgis.com/G5Ma95RzqJRPKsWL/arcgis/rest/services/Offshore_Wind-_Proposed_Export_Cable_Corridors/FeatureServer/0) |
 
 ##### *National Security Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
