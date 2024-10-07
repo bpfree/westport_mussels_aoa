@@ -49,7 +49,7 @@ pacman::p_load(docxtractr,
 uxo_areas_gdb <- "data/a_raw_data/UnexplodedOrdnanceArea/UnexplodedOrdnanceArea.gdb"
 uxo_locations_gdb <- "data/a_raw_data/UnexplodedOrdnance/UnexplodedOrdnance.gdb"
 
-mec_gdb <- "data/a_raw_data/MunitionsExplosivesConcern.gpkg"
+mec_gdb <- "data/a_raw_data/MunitionsExplosivesConcern/MunitionsExplosivesConcern.gpkg"
 
 #### study area grid
 study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
