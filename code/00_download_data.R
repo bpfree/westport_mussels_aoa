@@ -248,9 +248,7 @@ wrecks_obstructions <- "https://marinecadastre.gov/downloads/data/mc/WreckObstru
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/39986
 federal_shipping_lanes <- "http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip"
 
-
 #####################################
-
 
 ## National Security
 
@@ -274,9 +272,7 @@ unexploded_ordnance_area <- "https://marinecadastre.gov/downloads/data/mc/Unexpl
 ####          though both datasets have the same data for the study region
 military <- "https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip"
 
-
 #####################################
-
 
 ## Natural and Cultural Resources
 
@@ -302,9 +298,7 @@ sediment_size <- "https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/Sed
 #### Metadata: https://www.northeastoceandata.org/files/metadata/Themes/AIS/AllAISVesselTransitCounts2022.pdf
 ais_counts <- "https://services.northeastoceandata.org/downloads/AIS/AIS2022_Annual.zip"
 
-
 #####################################
-
 
 ## Fisheries
 
@@ -312,7 +306,6 @@ ais_counts <- "https://services.northeastoceandata.org/downloads/AIS/AIS2022_Ann
 #### Metadata: https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf
 #### PDF Map: https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf
 cod_protection <- "https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip"
-
 
 #####################################
 
