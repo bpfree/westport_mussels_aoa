@@ -69,9 +69,6 @@ data_dir <- "data/a_raw_data/CoastalZoneManagementAct/CoastalZoneManagementAct.g
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
-
 #### intermediate directories
 output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
@@ -103,12 +100,11 @@ federal_waters <- sf::st_read(dsn = data_dir,
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = federal_waters, dsn = constraints_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+## region geopackage
 sf::st_write(obj = federal_waters, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 ## federal waters geopackage
-sf::st_write(obj = federal_waters, dsn = datagpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = federal_waters, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################

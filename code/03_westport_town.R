@@ -72,9 +72,6 @@ data_dir <- "data/a_raw_data/townssurvey_gdb/townssurvey.gdb"
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
-
 #### intermediate directories
 output_gpkg <- sstringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
@@ -111,8 +108,7 @@ plot(westport_town)
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = westport_town, dsn = constraints_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+## region geopackage
 sf::st_write(obj = westport_town, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 ## federal waters geopackage
