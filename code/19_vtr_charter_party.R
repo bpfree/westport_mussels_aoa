@@ -42,6 +42,26 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
+# set parameters
+## designate region name
+region_name <- "westport"
+
+## coordinate reference system
+### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
+crs <- "EPSG:26918"
+
+## layer names
+layer_name <- "vtr_charter"
+
+## submodel
+submodel <- "fisheries"
+
+## designate date
+date <- format(Sys.Date(), "%Y%m%d")
+
+#####################################
+#####################################
+
 # set directories
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
@@ -49,14 +69,14 @@ pacman::p_load(docxtractr,
 data_dir <- "data/a_raw_data/Westport_GDB.gdb"
 
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
-#### fisheries
-fisheries_gpkg <- "data/c_submodel_data/fisheries.gpkg"
+#### submodel
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 #### intermediate directories
-vtr_gpkg <- "data/b_intermediate_data/westport_vessel_trip_reporting.gpkg"
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
 #####################################
 
@@ -64,25 +84,8 @@ vtr_gpkg <- "data/b_intermediate_data/westport_vessel_trip_reporting.gpkg"
 sf::st_layers(dsn = data_dir,
               do_count = T)
 
-sf::st_layers(dsn = study_region_gpkg,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
-
-#####################################
-#####################################
-
-# set parameters
-## designate region name
-region <- "westport"
-
-## coordinate reference system
-### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
-crs <- "EPSG:26918"
-
-## layer names
-export_name <- "vtr_charter"
-
-## designate date
-date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -97,10 +100,10 @@ vtr_charter <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
@@ -109,7 +112,7 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 westport_vtr_charter <- vtr_charter %>%
   # obtain only vessel trip reporting in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "vessel trip reporting" for summary
   dplyr::mutate(layer = "vessel trip reporting charter")
 
@@ -117,7 +120,7 @@ westport_vtr_charter <- vtr_charter %>%
 #####################################
 
 # vessel trip reporting hex grids
-westport_vtr_hex <- westport_hex[westport_vtr_charter, ] %>%
+westport_vtr_hex <- hex_grid[westport_vtr_charter, ] %>%
   # spatially join vessel trip reporting values to Westport hex cells
   sf::st_join(x = .,
               y = westport_vtr,
@@ -130,11 +133,11 @@ westport_vtr_hex <- westport_hex[westport_vtr_charter, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_vtr_hex, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_vtr_hex, dsn = fisheries_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## vessel trip reporting geopackage
-sf::st_write(obj = vtr, dsn = vtr_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_vtr, dsn = vtr_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = vtr, dsn = vtr_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = westport_vtr, dsn = vtr_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
