@@ -53,6 +53,9 @@ crs <- "EPSG:26918"
 ## layer names
 layer_name <- "large_pelagic_survey"
 
+## submodel
+submodel <- "fisheries"
+
 ## setback distance (in meters)
 setback <- 16093.4
 
@@ -73,7 +76,7 @@ region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_a
 
 ### output directories
 #### fisheries
-fisheries_gpkg <- "data/c_submodel_data/fisheries.gpkg"
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 #### intermediate directories
 output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
@@ -126,7 +129,7 @@ zmf_function <- function(large_pelagic_survey){
 
 # load data
 ## large pelagic survey data
-lps <- sf::st_read(dsn = data_dir,
+data <- sf::st_read(dsn = data_dir,
                             # large pelagic survey
                             layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
@@ -137,16 +140,16 @@ lps <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## study region
-region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_boundary_{date}"))
 
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 #####################################
 #####################################
 
 # limit data to study region
-westport_lps <- lps %>%
+region_data <- data %>%
   # obtain only large pelagic survey in the study area
   rmapshaper::ms_clip(target = .,
                       clip = region) %>%
@@ -157,10 +160,10 @@ westport_lps <- lps %>%
 #####################################
 
 # large pelagic survey hex grids
-westport_lps_hex <- hex_grid[westport_lps, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join large pelagic survey values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_lps,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer,
@@ -183,11 +186,11 @@ westport_lps_hex <- hex_grid[westport_lps, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_lps_hex, dsn = fisheries_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
 ## large pelagic survey geopackage
-sf::st_write(obj = lps, dsn = lps_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
-sf::st_write(obj = westport_lps, dsn = lps_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
