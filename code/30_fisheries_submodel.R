@@ -50,8 +50,9 @@ region_name <- "westport"
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
-## submodel
+## submodel name
 submodel <- "fisheries"
+submodel_code <- "fish"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -69,14 +70,13 @@ gm_wt <- 1/4
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 #### submodel geopackage
-submodel_gpkg <- stringr::str("data/c_submodel_data/{submodel}.gpkg")
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 ### submodel directory
 suitability_dir <- "data/d_suitability_data"
-dir.create(paste0(suitability_dir, "/",
-                  stringr::str_glue("{submodel}_suitability")))
+dir.create(file.path(suitability_dir, stringr::str_glue("{submodel}_suitability")))
 
-suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
+submodel_suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
 submodel_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region_name}_{submodel}_suitability.gpkg")
 
 #### suitability
@@ -100,37 +100,37 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 
 ## submodel datasets
 ### VMS (all gear, 2015 - 2016)
-hex_grid_vms_all <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vms_all", date, sep = "_")) %>%
+hex_vms_all <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_vms_all_{date}")) %>%
   sf::st_drop_geometry()
 
 ### VMS (speeds under 4 / 5 knots, 2015 - 2016)
-hex_grid_vms_4_5_knot <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vms_4_5_knot", date, sep = "_")) %>%
+hex_vms_4_5_knot <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_vms_4_5_knot_{date}")) %>%
   sf::st_drop_geometry()
 
 ### VTR (all gear types)
-hex_grid_vtr <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vtr_all_gear", date, sep = "_")) %>%
+hex_vtr <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_vtr_all_gear_{date}")) %>%
   sf::st_drop_geometry()
 
 ### large pelagic survey
-hex_grid_lps <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "large_pelagic_survey", date, sep = "_")) %>%
+hex_lps <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_large_pelagic_survey_{date}")) %>%
   sf::st_drop_geometry()
 
 #####################################
 #####################################
 
 # Create Oregon constraints submodel
-hex_grid_fisheries <- hex_grid %>%
+hex_submodel <- hex_grid %>%
   dplyr::left_join(x = .,
-                   y = hex_grid_vms_all,
+                   y = hex_vms_all,
                    by = "index") %>%
   dplyr::left_join(x = .,
-                   y = hex_grid_vms_4_5_knot,
+                   y = hex_vms_4_5_knot,
                    by = "index") %>%
   dplyr::left_join(x = .,
-                   y = hex_grid_vtr,
+                   y = hex_vtr,
                    by = "index") %>%
   dplyr::left_join(x = .,
-                   y = hex_grid_lps,
+                   y = hex_lps,
                    by = "index") %>%
   dplyr::select(index,
                 contains("max")) %>%
@@ -144,14 +144,14 @@ hex_grid_fisheries <- hex_grid %>%
                                      values = 1))) %>%
   
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(fish_geom_mean = (vms_all_max ^ gm_wt) * (vms_kt_max ^ gm_wt) * (vtr_max ^ gm_wt) * (lps_max * gm_wt)) %>%
+  dplyr::mutate(!!stringr::str_glue("{submodel_code}_geom_mean") := (vms_all_max ^ gm_wt) * (vms_kt_max ^ gm_wt) * (vtr_max ^ gm_wt) * (lps_max * gm_wt)) %>%
   
   # relocate the industry and operations geometric mean field
-  dplyr::relocate(fish_geom_mean,
+  dplyr::relocate(stringr::str_glue("{submodel_code}_geom_mean"),
                   .after = lps_max)
 
 ### ***Warning: there are duplicates of the index
-duplicates_verify <- hex_grid_fisheries %>%
+duplicates_verify <- hex_submodel %>%
   # create frequency field based on index
   dplyr::add_count(index) %>%
   # see which ones are duplicates
@@ -164,15 +164,15 @@ duplicates_verify <- hex_grid_fisheries %>%
 
 # Export data
 ## suitability
-sf::st_write(obj = hex_grid_fisheries, dsn = suitability_gpkg, layer = paste(region, submodel, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_submodel, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{submodel}_suitability_{date}"), append = F)
 
 ## fisheries
-saveRDS(obj = hex_grid_vms_all, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_all.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_vms_4_5_knot, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_4_5_kt.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_vtr, file = paste(fisheries_dir, paste(region, "hex_fisheries_vtr.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_lps, file = paste(fisheries_dir, paste(region, "hex_fisheries_lps.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_vms_all, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_vms_all_{date}.rds")))
+saveRDS(obj = hex_vms_4_5_knot, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_vms_4_5kn_{date}.rds")))
+saveRDS(obj = hex_vtr, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_vtr_all_{date}.rds")))
+saveRDS(obj = hex_lps, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_lps_{date}.rds")))
 
-sf::st_write(obj = hex_grid_fisheries, dsn = fisheries_gpkg, layer = paste(region, "hex", submodel, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_submodel, dsn = submodel_suitability_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}_suitability_{date}"), append = F)
 
 #####################################
 #####################################
