@@ -60,11 +60,11 @@ aoi_dir <- "data/a_raw_data/AOI_polygon_shp"
 study_dir <- "data/a_raw_data/studyRegion_polygon"
 westport_gpkg <- "data/a_raw_data/Westport_FinalGeoPackage.gpkg"
 
-data_dir <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 #####################################
 
-sf::st_layers(dsn = data_dir,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
 
 #####################################
@@ -72,19 +72,19 @@ sf::st_layers(dsn = data_dir,
 
 # load data
 ## bathymetry boundary
-bathymetry <- sf::st_read(dsn = data_dir,
-                          layer = sf::st_layers(data_dir)[[1]][grep(pattern = "bathymetry",
-                                                                    sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
+bathymetry <- sf::st_read(dsn = region_gpkg,
+                          layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "bathymetry",
+                                                                    sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 ## federal waters
-federal_waters <- sf::st_read(dsn = data_dir,
-                              layer = sf::st_layers(data_dir)[[1]][grep(pattern = "federal",
-                                                                        sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
+federal_waters <- sf::st_read(dsn = region_gpkg,
+                              layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "federal",
+                                                                        sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 ## Westport town 20-mile setback
-town_20mi <- sf::st_read(dsn = data_dir,
-                         layer = sf::st_layers(data_dir)[[1]][grep(pattern = "town",
-                                                                   sf::st_layers(dsn = data_dir, do_count = T)[[1]])])
+town_20mi <- sf::st_read(dsn = region_gpkg,
+                         layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "town",
+                                                                   sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 #####################################
 
@@ -180,20 +180,20 @@ region_area_hex <- region_area_grid[region_area, ] %>%
 
 # export data
 ## original grid
-sf::st_write(obj = region_grid, dsn = data_dir, layer = stringr::str_glue("{region_name}_original_grid"), append = F)
+sf::st_write(obj = region_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_original_grid"), append = F)
 
 ## study area
 ### area of interest
-sf::st_write(obj = aoi_poly, dsn = data_dir, layer = stringr::str_glue("{region_name}_aoi_polygon"), append = F)
+sf::st_write(obj = aoi_poly, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_aoi_polygon"), append = F)
 
 ### study region
-sf::st_write(obj = region, dsn = data_dir, layer = stringr::str_glue("{region_name}_region"), append = F)
-sf::st_write(obj = region_grid, dsn = data_dir, layer = stringr::str_glue("{region_name}_region_grid"), append = F)
-sf::st_write(obj = region_hex, dsn = data_dir, layer = stringr::str_glue("{region_name}_region_hex"), append = F)
+sf::st_write(obj = region, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region"), append = F)
+sf::st_write(obj = region_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_grid"), append = F)
+sf::st_write(obj = region_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_hex"), append = F)
 
-sf::st_write(obj = region_area, dsn = data_dir, layer = stringr::str_glue("{region_name}_area"), append = F)
-sf::st_write(obj = region_area_grid, dsn = data_dir, layer = stringr::str_glue("{region_name}_area_grid"), append = F)
-sf::st_write(obj = region_area_hex, dsn = data_dir, layer = stringr::str_glue("{region_name}_area_hex"), append = F)
+sf::st_write(obj = region_area, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"), append = F)
+sf::st_write(obj = region_area_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_grid"), append = F)
+sf::st_write(obj = region_area_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"), append = F)
 
 #####################################
 #####################################
