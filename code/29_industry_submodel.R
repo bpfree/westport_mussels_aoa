@@ -42,6 +42,30 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
+# set parameters
+## designate region name
+region_name <- "westport"
+
+## coordinate reference system
+### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
+crs <- "EPSG:26918"
+
+## layer name
+layer_name <- "ais"
+
+## submodel name
+submodel <- "industry"
+submodel_code <- "itn"
+
+## designate date
+date <- format(Sys.Date(), "%Y%m%d")
+
+## geometric mean weight
+gm_wt <- 1/1
+
+#####################################
+#####################################
+
 # set directories
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
@@ -49,14 +73,13 @@ pacman::p_load(docxtractr,
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 #### submodel geopackage
-submodel_gpkg <- stringr::str("data/c_submodel_data/{submodel}.gpkg")
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 ### submodel directory
 suitability_dir <- "data/d_suitability_data"
-dir.create(paste0(suitability_dir, "/",
-                  stringr::str_glue("{submodel}_suitability")))
+dir.create(file.path(suitability_dir, stringr::str_glue("{submodel}_suitability")))
 
-suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
+submodel_suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
 submodel_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region_name}_{submodel}_suitability.gpkg")
 
 #### suitability
@@ -74,42 +97,22 @@ sf::st_layers(dsn = submodel_gpkg,
 #####################################
 #####################################
 
-# set parameters
-## designate region name
-region_name <- "westport"
-
-## coordinate reference system
-### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
-crs <- "EPSG:26918"
-
-## layer names
-layer_name <- "industry"
-
-## designate date
-date <- format(Sys.Date(), "%Y%m%d")
-
-## geometric mean weight
-gm_wt <- 1/1
-
-#####################################
-#####################################
-
 # load data
 ## hex grid
 hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 ## submodel datasets
 ### AIS
-hex_grid_ais <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "ais", date, sep = "_")) %>%
+hex_data <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}")) %>%
   sf::st_drop_geometry()
 
 #####################################
 #####################################
 
 # Create Westport industry, transportation, and navigation submodel
-hex_grid_industry <- hex_grid %>%
+hex_submodel <- hex_grid %>%
   dplyr::left_join(x = .,
-                   y = hex_grid_ais,
+                   y = hex_data,
                    by = "index") %>%
   dplyr::select(index,
                 contains("max")) %>%
@@ -123,14 +126,14 @@ hex_grid_industry <- hex_grid %>%
                                    values = 1))) %>%
   
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(itn_geom_mean = (ais_max ^ gm_wt)) %>%
+  dplyr::mutate(!!stringr::str_glue("{submodel_code}_geom_mean") := .data[[stringr::str_glue("{layer_name}_max")]] ^ gm_wt) %>%
   
   # relocate the industry and operations geometric mean field
-  dplyr::relocate(itn_geom_mean,
-                  .after = ais_max)
+  dplyr::relocate(stringr::str_glue("{submodel_code}_geom_mean"),
+                  .after = stringr::str_glue("{layer_name}_max"))
 
 ### ***Warning: there are duplicates of the index
-duplicates_verify <- hex_grid_industry %>%
+duplicates_verify <- hex_submodel %>%
   # create frequency field based on index
   dplyr::add_count(index) %>%
   # see which ones are duplicates
@@ -142,13 +145,13 @@ duplicates_verify <- hex_grid_industry %>%
 #####################################
 
 # Export data
-## Suitability
-sf::st_write(obj = hex_grid_industry, dsn = suitability_gpkg, layer = paste(region, layer_name, "suitability", sep = "_"), append = F)
+## suitability
+sf::st_write(obj = hex_submodel, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{submodel}_suitability_{date}"), append = F)
 
 ## Constraints
-saveRDS(obj = hex_grid_ais, file = paste(industry_dir, paste(region, "hex_industry_ais.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_data, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_{layer_name}_{date}.rds")))
 
-sf::st_write(obj = hex_grid_industry, dsn = industry_gpkg, layer = paste(region, "hex", layer_name, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_submodel, dsn = submodel_suitability_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}_suitability_{date}"), append = F)
 
 #####################################
 #####################################
