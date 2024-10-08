@@ -92,7 +92,7 @@ sf::st_layers(dsn = region_gpkg,
 
 # load data
 ## vessel trip reporting charter / party (2008 - 2020) data
-vtr_charter <- sf::st_read(dsn = data_dir,
+data <- sf::st_read(dsn = data_dir,
                            layer = "Charter_Party_VTR_2008_2020") %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
@@ -100,16 +100,16 @@ vtr_charter <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## study region
-region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_boundary_{date}"))
 
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 #####################################
 #####################################
 
 # limit data to study region
-westport_vtr_charter <- vtr_charter %>%
+region_data <- data %>%
   # obtain only vessel trip reporting in the study area
   rmapshaper::ms_clip(target = .,
                       clip = region) %>%
@@ -120,10 +120,10 @@ westport_vtr_charter <- vtr_charter %>%
 #####################################
 
 # vessel trip reporting hex grids
-westport_vtr_hex <- hex_grid[westport_vtr_charter, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join vessel trip reporting values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_vtr,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer)
@@ -133,11 +133,11 @@ westport_vtr_hex <- hex_grid[westport_vtr_charter, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_vtr_hex, dsn = fisheries_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data_hex, dsn = fisheries_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## vessel trip reporting geopackage
-sf::st_write(obj = vtr, dsn = vtr_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
-sf::st_write(obj = westport_vtr, dsn = vtr_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = data, dsn = vtr_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = vtr_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
