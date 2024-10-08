@@ -42,46 +42,16 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-#### suitability geopackage
-suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
-
-## Output directories
-### suitability directory
-suitability_dir <- "data/d_suitability_data"
-dir.create(paste0(suitability_dir, "/",
-                  "overall_suitability"))
-
-overall_suitability_dir <- "data/d_suitability_data/overall_suitability"
-overall_suitability <- "data/d_suitability_data/overall_suitability/westport_overall_suitability.gpkg"
-
-#####################################
-
-# inspect layers within geopackage
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-sf::st_layers(dsn = suitability_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
 ## layer names
-export_name <- "suitability"
+layer_name <- "suitability"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -93,9 +63,39 @@ gm_wt <- 1/4
 #####################################
 #####################################
 
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+#### suitability geopackage
+suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
+
+## Output directories
+### suitability directory
+suitability_dir <- "data/d_suitability_data"
+dir.create(paste0(suitability_dir, "/",
+                  "overall_suitability"))
+
+overall_suitability_dir <- "data/d_suitability_data/overall_suitability"
+overall_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/overall_suitability/{region}_overall_suitability.gpkg")
+
+#####################################
+
+# inspect layers within geopackage
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
+
+sf::st_layers(dsn = suitability_gpkg,
+              do_count = T)
+
+#####################################
+#####################################
+
 # load data
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 ## suitability submodels
 ### constraints
@@ -141,7 +141,7 @@ natural_cultural <- sf::st_read(dsn = suitability_gpkg,
 #####################################
 #####################################
 
-suitability_model <- westport_hex %>%
+suitability_model <- hex_grid %>%
   # join the constraints areas by index field to the full Westport hex grid
   dplyr::left_join(x = .,
                    y = constraints,
@@ -171,7 +171,7 @@ model_areas <- suitability_model %>%
   
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(model_geom_mean = (ns_geom_mean ^ gm_wt) * (itn_geom_mean ^ gm_wt) * (nc_geom_mean ^ gm_wt)) %>%
+  dplyr::mutate(model_geom_mean = (ns_geom_mean ^ gm_wt) * (itn_geom_mean ^ gm_wt) * (fish_geom_mean ^ gm_wt) * (nc_geom_mean ^ gm_wt)) %>%
   
   # select desired fields
   dplyr::select(index,
@@ -198,17 +198,17 @@ dim(model_areas)[1]
 
 # export data
 ## overall suitability
-sf::st_write(obj = model_areas, dsn = suitability_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = model_areas, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 ## submodels
-saveRDS(object = constraints, file = paste(overall_suitability_dir, paste(region, "hex", export_name, "constraints.rds", sep = "_"), sep = "/"))
-saveRDS(object = national_security, file = paste(overall_suitability_dir, paste(region, "hex", export_name, "national_security.rds", sep = "_"), sep = "/"))
-saveRDS(object = industry, file = paste(overall_suitability_dir, paste(region, "hex", export_name, "industry.rds", sep = "_"), sep = "/"))
-saveRDS(object = fisheries, file = paste(overall_suitability_dir, paste(region, "hex", export_name, "fisheries.rds", sep = "_"), sep = "/"))
-saveRDS(object = natural_cultural, file = paste(overall_suitability_dir, paste(region, "hex", export_name, "natural_cultural.rds", sep = "_"), sep = "/"))
+saveRDS(object = constraints, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "constraints.rds", sep = "_"), sep = "/"))
+saveRDS(object = national_security, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "national_security.rds", sep = "_"), sep = "/"))
+saveRDS(object = industry, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "industry.rds", sep = "_"), sep = "/"))
+saveRDS(object = fisheries, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "fisheries.rds", sep = "_"), sep = "/"))
+saveRDS(object = natural_cultural, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "natural_cultural.rds", sep = "_"), sep = "/"))
 
 ## model
-sf::st_write(obj = model_areas, dsn = overall_suitability, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = model_areas, dsn = overall_suitability, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
