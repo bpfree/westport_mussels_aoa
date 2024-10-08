@@ -42,37 +42,9 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### wastewater outfall
-data_dir <- "data/a_raw_data/WastewaterOutfall/WastewaterOutfall.gpkg"
-
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
-
-#### intermediate directories
-wastewater_gpkg <- "data/b_intermediate_data/westport_wastewater.gpkg"
-
-#####################################
-
-# inspect layers within geodatabases and geopackages
-sf::st_layers(dsn = data_dir,
-              do_count = T)
-
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -82,13 +54,44 @@ crs <- "EPSG:26918"
 setback <- 500
 
 ## layer names
-export_name <- "wastewater_outfalls"
+layer_name <- "wastewater_outfalls"
 export_facility <- "wastewater_outfall_facility"
 export_pipe <- "wastewater_outfall_pipe"
 export_outfall <- "wastewater_outfall"
 
+## submodel
+submodel <- "constraints"
+
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
+
+#####################################
+#####################################
+
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### wastewater outfall
+data_dir <- "data/a_raw_data/WastewaterOutfall/WastewaterOutfall.gpkg"
+
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+### output directories
+#### submodel
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
+
+#### intermediate directories
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
+
+#####################################
+
+# inspect layers within geodatabases and geopackages
+sf::st_layers(dsn = data_dir,
+              do_count = T)
+
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
 
 #####################################
 #####################################
@@ -129,10 +132,10 @@ ww_outfall <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
@@ -141,7 +144,7 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 westport_ww_facility <- ww_facility %>%
   # obtain only wastewater outfall in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "wastewater facility" for summary
   dplyr::mutate(layer = "wastewater facility") %>%
   dplyr::select(layer)
@@ -149,7 +152,7 @@ westport_ww_facility <- ww_facility %>%
 westport_ww_pipe <- ww_pipe %>%
   # obtain only wastewater outfall in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "wastewater pipe" for summary
   dplyr::mutate(layer = "wastewater pipe") %>%
   dplyr::select(layer)
@@ -157,19 +160,25 @@ westport_ww_pipe <- ww_pipe %>%
 westport_ww_outfall <- ww_outfall %>%
   # obtain only wastewater outfall in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "wastewater outfall" for summary
   dplyr::mutate(layer = "wastewater outfall") %>%
   dplyr::select(layer)
 
 #####################################
+
+region_data <- rbind(westport_ww_facility,
+                     westport_ww_pipe,
+                     westport_ww_outfall)
+
+#####################################
 #####################################
 
 # environmental sensor and buoys hex grids
-westport_envir_sense_hex <- westport_hex[westport_envir_sense, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join wastewater outfall values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_envir_sense,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer)
@@ -178,12 +187,15 @@ westport_envir_sense_hex <- westport_hex[westport_envir_sense, ] %>%
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = westport_envir_sense_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+## submodel geopackage
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
-## environmental sensor and buoys area geopackage
-sf::st_write(obj = envir_sense, dsn = environmental_sensor_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_envir_sense, dsn = environmental_sensor_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+## data geopackage
+sf::st_write(obj = ww_facility, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{export_facility}_{date}"), append = F)
+sf::st_write(obj = ww_pipe, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{export_pipe}_{date}"), append = F)
+sf::st_write(obj = ww_outfall, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{export_outfall}_{date}"), append = F)
+
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
