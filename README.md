@@ -52,12 +52,12 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 |---------------|---------------|---------------|---------------|---------------|
 | Unexploded ordnance | NOAA | [Unexploded ordnance locations](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66208) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
 | Unexploded ordnance | NOAA | [Munitions and explosives of concern](https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/69013) | MECs are replacing the UXOs as the default dataset |
-| Danger zones | NOAA | [Danger zones and restricted areas](https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48876) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about) contains more information |
+| Danger zones | NOAA | [Danger zones and restricted areas](https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48876) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas) contains more information |
 | Environmental sensors | [Northeast Ocean Data Portal](https://www.northeastoceandata.org/) | [Environmental sensors and buoys](https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography.zip) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm) |  |
-| Wastewater facilities | NOAA | [Wastewater outfall facilities](https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66706) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/b0c5d61277f440e3b6ca001f7fbd5416_0/about) contains more information, also please note that the download link is the same for the [wastewater outfall pipes data](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wastewater-outfall-pipes/about) and the [wastewater outfalls data](https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip) |
-| Ocean disposal | NOAA | [Ocean disposal sites](https://marinecadastre.gov/downloads/data/mc/OceanDisposalSite.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/54193) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::ocean-disposal-sites/about) contains more information |
-| Navigation | NOAA | [Aids to Navigation](https://marinecadastre.gov/downloads/data/mc/AtoN.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/56120) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::aids-to-navigation-1/about) contains more information |
-| Obstructions | NOAA | [Wrecks and obstructions](https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/70439) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wrecks-and-obstructions/about) contains more information |
+| Wastewater facilities | NOAA | [Wastewater outfall facilities](https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66706) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/b0c5d61277f440e3b6ca001f7fbd5416_0) contains more information, also please note that the download link is the same for the [wastewater outfall pipes data](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wastewater-outfall-pipes/about) and the [wastewater outfalls data](https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip) |
+| Ocean disposal | NOAA | [Ocean disposal sites](https://marinecadastre.gov/downloads/data/mc/OceanDisposalSite.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/54193) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::ocean-disposal-sites) contains more information |
+| Navigation | NOAA | [Aids to Navigation](https://marinecadastre.gov/downloads/data/mc/AtoN.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/56120) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::aids-to-navigation-1) contains more information |
+| Obstructions | NOAA | [Wrecks and obstructions](https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/70439) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wrecks-and-obstructions) contains more information |
 | Shipping | NOAA | [Shipping lanes (federal)](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/39986) | Note these data are for shipping lanes in federal waters |
 | Wind | BOEM | [Offshore Wind - export cable corridors (proposed)](https://hub.marinecadastre.gov/datasets/BOEM::offshore-wind-export-cable-corridors-proposed) | [Metadata](https://www.arcgis.com/sharing/rest/content/items/0e57fcbb8aaf49c5b8d0944a4ffeef08/info/metadata/metadata.xml?format=default&output=html) | [REST Service](https://services7.arcgis.com/G5Ma95RzqJRPKsWL/arcgis/rest/services/Offshore_Wind-_Proposed_Export_Cable_Corridors/FeatureServer/0) |
 
@@ -78,25 +78,25 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 |---------------|---------------|---------------|---------------|---------------|
 | VMS |  | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf) |
 | VMS |  | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery) and for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf)  |
-| VTR |  | VTR (all gear) | | |
-| VTR |  | VTR (charter / party) | | |
-| Survey |  | Large pelagic survey (2012 - 2021) | | |
+| VTR |  | VTR (all gear) |--------------- | ---------------|
+| VTR |  | VTR (charter / party) | ---------------|--------------- |
+| Survey |  | Large pelagic survey (2012 - 2021) |--------------- | ---------------|
 | Cod | | [Cod spawning protection areas](https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip) | [Metadata](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf) |[PDF maps](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf) |
-| Cod | | Known cod spawning areas | | |
+| Cod | | Known cod spawning areas | ---------------| Not in study region |
 
 #### *Natural and Cultural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Protected resources | | Combined protected resources | | |
+| Protected resources | | Combined protected resources |--------------- | ---------------|
 
 ### **Data commentary**
-Datasets explored but not included in analyses due to not located geographically in study region:
+Datasets explored but not included in analyses due to not geographically located in study region:
 
-  - [Environmental sensors and buoys](https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm)
   - [Wastewater outfall structures](https://www.fisheries.noaa.gov/inport/item/66706)
+  - [Ocean disposal](https://www.fisheries.noaa.gov/inport/item/56120)
   - [Special use airspace](https://www.fisheries.noaa.gov/inport/item/48898)
   - [VTR (charter / party)]()
-  - [Cod spawning protection areas]()
+  - [Cod spawning protection areas](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf)
   - [Known cod spawning areas]()
 
 ### **Methodologies**
@@ -109,23 +109,15 @@ While most data used in the model received a single value, some ranged between 0
 Any hex indexes that got affected by constraints got removed from the siting analysis.
 
 #### *Costs*
-| **Layer** | **Buffer distance (m)** | **Score** | **Notes** |
+| **Submodel** | **Layer** | **Buffer distance (m)** | **Score** | **Notes** |
 |---------------|---------------|---------------|---------------|
-| Sediment (CONMAPSG) - Sand/Mud | --------------- | 0.2 | In a second iteration score reduced to 0.1 |
-| Sediment (CONMAPSG) - Mix | --------------- | 0.4 | In a second iteration score reduced to 0.1 |
-| Sediment (CONMAPSG) - Gravel | --------------- | 0.5 | In a second iteration score reduced to 0.1 |
-| Sediment (CONMAPSG) - Rock | --------------- | 1.0 | In a second iteration score reduced to 0.9 |
-| Active and Inactive Disposal Sites | 500 | 0.8 | --------------- |
-| Intertidal Flats | 500 | 0.2 | --------------- |
-| Sand Patches | 500 | 1.0 | --------------- |
-| Channel Areas | 600 | 1.0 | --------------- |
-| Anchorage Areas | 600 | 0.8 | --------------- |
-| Eelgrass Meadows | 675 | 0.4 | --------------- |
-| Cable and Pipeline Areas | 675 | 0.4 | --------------- |
-| Submarine Cables | 675 | 0.4 | --------------- |
-| LNG Pipelines | 675 | 0.4 | --------------- |
-| Gravel | --------------- | 0.5 | --------------- |
-| Slope | --------------- | Linear regression | --------------- |
+| National Securtity | Military operating areas | --------------- | 1 | Removed from second model iteration |
+| Industry | AIS | --------------- | Z-shaped membership function | --------------- |
+| Fisheries | VMS (all gear) | --------------- | Z-shaped membership function | --------------- |
+| Fisheries | VMS (slow fishing) | --------------- | Z-shaped membership function | slow fishing is considered between 4 - 5 knots |
+| Fisheries | VTR (all gear) | --------------- | Z-shaped membership function | --------------- |
+| Fisheries | Large pelagic survey | --------------- | Z-shaped membership function | --------------- |
+| Natural and Cultural | Protected resources | 16093.4 | Z-shaped membership function | Removed from second model iteration |
 
 #### *z-shaped membership function*
 Data layers with continuous data had their values rescaled between 0 and 1 using a [z-shaped memebership function](https://www.mathworks.com/help/fuzzy/zmf.html#d126e54766) adapted from Matlab's methods. The z-shaped membership function rescaled values so that minimum values receive a score of 1 and as the values increase to the maximum, the rescaled score approaches 0. In the normal Matlab function, the maximum value would get the rescaled value of 0; however, scores of 0 got classified as constraints -- areas not permitted for aquaculture. To avoid rescaled continuous data getting scores of 0, the maximum value received an extra one-thousandth of the maximum value (*i.e.*, maximum value * 1/1000).
@@ -137,13 +129,12 @@ For any data not already in the coordinate reference system, they were transform
 
 Data examined but not existing within original region
 
-1. Environmental sensors and buoys
-2. WWTF outfall structures
-3. Ocean disposal sites
-4. Special use airspace
-5. Cod spawning protection areas
-6. VTR (charter / party)
-7. Known cod spawning areas
+1. WWTF outfall structures
+2. Ocean disposal sites
+3. Special use airspace
+4. Cod spawning protection areas
+5. VTR (charter / party)
+6. Known cod spawning areas
 
 Data examined but not existing within -20m and -40m of federal waters that are within 20 miles of Westport
 
@@ -155,17 +146,21 @@ Data examined but not existing within -20m and -40m of federal waters that are w
 6. Known cod spawning areas
 
 #### *Submodels*
-* National Security: currently integrates two datasets (unexploded ordnance areas and military operating areas) for three layers were aimed to get integrated in the submodel, however, no special use airspace overlapped with the Westport study region.
+* National Security: currently integrates one datasets (military operating areas) for the other two datasets aimed to get integrated in the submodel were removed due to separate reasons;
+no special use airspace overlapped with the Westport study region and unexploded ordnance data got deprecated and replaced with the munitions and explosives of concern
+
+* Industry: only AIS dataset got ingested within this submodel
 
 * Fisheries: four datasets integrated in model (VMS [all fishing (2015-2016)], VMS [all fishing under 4 / 5 knots(2015-2016)], VTR [all gear types], large pelagic survey [2012 - 2021])
 
-* Natural and cultural resources: 
+* Natural and cultural resources: protected resources got removed for the final analysis
 
 ### **Model Runs**
 *8 October 2024*
 - Proposed export offshore wind cable corridors act as constraint
 - Munitions and explosives of concern replace unexploded ordnance locations and areas (act as constraint)
 - Remove combined protected resources from analysis
+- Remove military operating areas for all cells would get a value of 1 (for presence or lack of presence)
 - Any hex with constraint gets removed from final analysis
 
 ### **Issues**
