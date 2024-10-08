@@ -42,6 +42,25 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
+# set parameters
+## designate region name
+region_name <- "westport"
+
+## coordinate reference system
+### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
+crs <- "EPSG:26918"
+
+bath_crs <- "EPSG:4269"
+
+## layer names
+layer_name <- "bathymetry_boundary"
+
+## designate date
+date <- format(Sys.Date(), "%Y%m%d")
+
+#####################################
+#####################################
+
 # set directories
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
@@ -59,25 +78,6 @@ dir.create(paste0(intermediate_dir, "/",
                   "bathymetry"))
 
 output_dir <- "data/b_intermediate_data/bathymetry"
-
-#####################################
-#####################################
-
-# set parameters
-## designate region name
-region_name <- "westport"
-
-## coordinate reference system
-### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
-crs <- "EPSG:26918"
-
-bath_crs <- "EPSG:4269"
-
-## layer names
-layer_name <- "bathymetry_boundary"
-
-## designate date
-date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
