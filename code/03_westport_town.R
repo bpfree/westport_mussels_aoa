@@ -42,37 +42,9 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### Massachusetts town survey
-data_dir <- "data/a_raw_data/townssurvey_gdb/townssurvey.gdb"
-
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
-
-#### intermediate directories
-westport_town_gpkg <- "data/b_intermediate_data/westport_town.gpkg"
-
-#####################################
-
-# inspect layers within geopackages
-sf::st_layers(dsn = data_dir,
-              do_count = T)
-
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -82,10 +54,38 @@ crs <- "EPSG:26918"
 setback <- 32186.9 # 20 miles = 32186.9 meters
 
 ## layer names
-export_name <- "town"
+layer_name <- "town"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
+
+#####################################
+#####################################
+
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### Massachusetts town survey
+data_dir <- "data/a_raw_data/townssurvey_gdb/townssurvey.gdb"
+
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+### output directories
+#### constraints
+constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
+
+#### intermediate directories
+output_gpkg <- sstringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
+
+#####################################
+
+# inspect layers within geopackages
+sf::st_layers(dsn = data_dir,
+              do_count = T)
+
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
 
 #####################################
 #####################################
@@ -112,11 +112,11 @@ plot(westport_town)
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_town, dsn = constraints_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_town, dsn = study_region_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_town, dsn = constraints_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = westport_town, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 ## federal waters geopackage
-sf::st_write(obj = westport_town, dsn = westport_town_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_town, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
