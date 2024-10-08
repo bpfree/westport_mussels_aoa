@@ -53,6 +53,9 @@ crs <- "EPSG:26918"
 ## layer names
 layer_name <- "offshore_wind"
 
+## submodel
+submodel <- "constraints"
+
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
 
@@ -70,7 +73,7 @@ region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_a
 
 ### output directories
 #### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
+constraints_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 #### intermediate directories
 output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
@@ -90,7 +93,7 @@ sf::st_layers(dsn = region_gpkg,
 # load data
 ## offshore wind areas (source: https://www.boem.gov/renewable-energy/boem-renewable-energy-geodatabase)
 ### metadata: https://www.arcgis.com/sharing/rest/content/items/709831444a234968966667d84bcc0357/info/metadata/metadata.xml?format=default&output=html
-offshore_wind <- sf::st_read(dsn = data_dir,
+data <- sf::st_read(dsn = data_dir,
                              layer = sf::st_layers(data_dir)[[1]][grep(pattern = "Wind_Leases",
                                                                        x = sf::st_layers(dsn = data_dir)[[1]])]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
@@ -108,7 +111,7 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 #####################################
 
 # limit data to study region
-westport_offshore_wind <- offshore_wind %>%
+region_data <- data %>%
   # obtain only offshore wind in the study area
   rmapshaper::ms_clip(target = .,
                       clip = region) %>%
@@ -119,10 +122,10 @@ westport_offshore_wind <- offshore_wind %>%
 #####################################
 
 # offshore wind hex grids
-westport_offshore_wind_hex <- hex_grid[westport_offshore_wind, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join offshore wind values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_offshore_wind,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer)
@@ -131,13 +134,12 @@ westport_offshore_wind_hex <- hex_grid[westport_offshore_wind, ] %>%
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = westport_offshore_wind_hex, dsn = constraints_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
-sf::st_write(obj = westport_offshore_wind_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+## submodel geopackage
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
-## federal waters geopackage
-sf::st_write(obj = offshore_wind, dsn = offshore_wind_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
-sf::st_write(obj = westport_offshore_wind_hex, dsn = offshore_wind_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+## data geopackage
+sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
