@@ -73,7 +73,7 @@ region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_a
 
 ### output directories
 #### intermediate directories
-output_gpkg <- sstringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
 #####################################
 
