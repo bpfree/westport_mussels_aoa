@@ -42,6 +42,26 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
+# set parameters
+## designate region name
+region_name <- "westport"
+
+## coordinate reference system
+### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
+crs <- "EPSG:26918"
+
+## layer names
+layer_name <- "special_use_airspace"
+
+## submodel
+submodel <- "national_security"
+
+## designate date
+date <- format(Sys.Date(), "%Y%m%d")
+
+#####################################
+#####################################
+
 # set directories
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
@@ -49,14 +69,14 @@ pacman::p_load(docxtractr,
 data_dir <- "data/a_raw_data/MilitaryCollection/MilitaryCollection.gpkg"
 
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
-#### national security
-national_security_gpkg <- "data/c_submodel_data/national_security.gpkg"
+#### submodel
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 #### intermediate directories
-special_use_airspace_gpkg <- "data/b_intermediate_data/westport_special_use_airspace.gpkg"
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
 #####################################
 
@@ -64,25 +84,8 @@ special_use_airspace_gpkg <- "data/b_intermediate_data/westport_special_use_airs
 sf::st_layers(dsn = data_dir,
               do_count = T)
 
-sf::st_layers(dsn = study_region_gpkg,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
-
-#####################################
-#####################################
-
-# set parameters
-## designate region name
-region <- "westport"
-
-## coordinate reference system
-### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
-crs <- "EPSG:26918"
-
-## layer names
-export_name <- "special_use_airspace"
-
-## designate date
-date <- format(Sys.Date(), "%Y%m%d")
 
 #####################################
 #####################################
@@ -99,10 +102,10 @@ special_use_airspace <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
@@ -111,7 +114,7 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 westport_special_use_airspace <- special_use_airspace %>%
   # obtain only special use airspace in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "special use airspace" for summary
   dplyr::mutate(layer = "special use airspace")
 
@@ -119,7 +122,7 @@ westport_special_use_airspace <- special_use_airspace %>%
 #####################################
 
 # special use airspace hex grids
-westport_special_use_airspace_hex <- westport_hex[westport_special_use_airspace, ] %>%
+westport_special_use_airspace_hex <- hex_grid[westport_special_use_airspace, ] %>%
   # spatially join special use airspace values to Westport hex cells
   sf::st_join(x = .,
               y = westport_special_use_airspace,
@@ -131,12 +134,12 @@ westport_special_use_airspace_hex <- westport_hex[westport_special_use_airspace,
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = westport_special_use_airspace_hex, dsn = national_security_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+## submodel geopackage
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
-## special use airspace geopackage
-sf::st_write(obj = special_use_airspace, dsn = special_use_airspace_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_special_use_airspace, dsn = special_use_airspace_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+## data geopackage
+sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
