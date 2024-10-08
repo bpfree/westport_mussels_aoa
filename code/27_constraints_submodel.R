@@ -77,7 +77,7 @@ dir.create(paste0(suitability_dir, "/",
                   stringr::str_glue("{submodel}_suitability")))
 
 constraints_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
-constraints_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region}_{submodel}_suitability.gpkg")
+constraints_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region_name}_{submodel}_suitability.gpkg")
 
 #### suitability
 suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
@@ -96,7 +96,7 @@ sf::st_layers(dsn = submodel_gpkg,
 
 # load data
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 ## constraints
 ### offshore wind energy areas
