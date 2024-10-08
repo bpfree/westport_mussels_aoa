@@ -42,41 +42,19 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### shipping fairways
-data_dir <- "data/a_raw_data/shippinglanes"
-
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
-
-#### intermediate directories
-shipping_fairway_gpkg <- "data/b_intermediate_data/westport_shipping_fairway.gpkg"
-
-#####################################
-
-# inspect layers within geodatabases and geopackages
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
 ## layer names
-export_name <- "shipping_fairway"
+layer_name <- "shipping_fairway"
+
+# submodel
+submodel <- "constraints"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -84,29 +62,54 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 #####################################
 
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### shipping fairways
+data_dir <- "data/a_raw_data/shippinglanes"
+
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+### output directories
+#### submodel
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
+
+#### intermediate directories
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
+
+#####################################
+
+# inspect layers within geodatabases and geopackages
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
+
+#####################################
+#####################################
+
 # load data
 ## shipping fairway data (source: http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/39986
-shipping_fairway <- sf::st_read(dsn = file.path(paste(data_dir, "shippinglanes.shp", sep ="/"))) %>%
+data <- sf::st_read(dsn = file.path(data_dir, "shippinglanes.shp")) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
 
 # limit data to study region
-westport_shipping_fairway <- shipping_fairway %>%
+region_data <- data %>%
   # obtain only shipping fairway in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "shipping fairway" for summary
   dplyr::mutate(layer = "shipping fairway")
 
@@ -114,10 +117,10 @@ westport_shipping_fairway <- shipping_fairway %>%
 #####################################
 
 # shipping fairway hex grids
-westport_shipping_fairway_hex <- westport_hex[westport_shipping_fairway, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join shipping fairway values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_shipping_fairway,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer) %>%
@@ -130,12 +133,12 @@ westport_shipping_fairway_hex <- westport_hex[westport_shipping_fairway, ] %>%
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = westport_shipping_fairway_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+## submodel geopackage
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
-## shipping fairway geopackage
-sf::st_write(obj = shipping_fairway, dsn = shipping_fairway_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_shipping_fairway, dsn = shipping_fairway_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+## data geopackage
+sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
