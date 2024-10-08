@@ -85,52 +85,62 @@ sf::st_layers(dsn = submodel_gpkg,
 ### munitions and explosives of concern
 mec <- sf::st_read(dsn = submodel_gpkg,
                    layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("{region_name}_hex_munitions_explosives_{date}"),
-                                                                        x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+                                                                        x = sf::st_layers(dsn = submodel_gpkg)[[1]])]) %>%
+  dplyr::select(index)
 
 ### danger zones
 danger_zones <- sf::st_read(dsn = submodel_gpkg,
                    layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("{region_name}_hex_danger_zones_restricted_areas_{date}"),
-                                                                        x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+                                                                        x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 ### environmental sensors
 environmental_sensor <- sf::st_read(dsn = submodel_gpkg,
                             layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("{region_name}_hex_environmental_sensor_{date}"),
-                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 # ### wastewater outfalls
 # ww_outfalls <- sf::st_read(dsn = submodel_gpkg,
 #                             layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("outfalls_{date}"),
-#                                                                                  x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+#                                                                                  x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+#   dplyr::select(index)
 # 
 # ### ocean disposal
 # ocean_disposal <- sf::st_read(dsn = submodel_gpkg,
 #                             layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("disposal_{date}"),
-#                                                                                  x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+#                                                                                  x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+#   dplyr::select(index)
 
 ### aids to navigation
 aids_navigation <- sf::st_read(dsn = submodel_gpkg,
                             layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("navigation_{date}"),
-                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 ### wrecks and obstructions
 wreck_obstruction <- sf::st_read(dsn = submodel_gpkg,
                             layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("obstruction_{date}"),
-                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 ### shipping fairways
 shipping_fairways <- sf::st_read(dsn = submodel_gpkg,
                             layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("fairway_{date}"),
-                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+                                                                                 x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 ### proposed offshore wind cable corridors
-shipping_fairways <- sf::st_read(dsn = submodel_gpkg,
-                                 layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("fairway_{date}"),
-                                                                                      x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+cable_corridors <- sf::st_read(dsn = submodel_gpkg,
+                                 layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("corridors_{date}"),
+                                                                                      x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 ### offshore wind areas
-shipping_fairways <- sf::st_read(dsn = submodel_gpkg,
-                                 layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("fairway_{date}"),
-                                                                                      x = sf::st_layers(dsn = submodel_gpkg)[[1]])])
+offshore_wind <- sf::st_read(dsn = submodel_gpkg,
+                                 layer = sf::st_layers(dsn = submodel_gpkg)[[1]][grep(pattern = stringr::str_glue("wind_{date}"),
+                                                                                      x = sf::st_layers(dsn = submodel_gpkg)[[1]])])%>%
+  dplyr::select(index)
 
 #####################################
 
@@ -143,28 +153,35 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 #####################################
 #####################################
 
-# limit data to study region
-region_data <- data %>%
-  # obtain only shipping fairway in the study area
-  rmapshaper::ms_clip(target = .,
-                      clip = region) %>%
-  # create field called "layer" and fill with "shipping fairway" for summary
-  dplyr::mutate(layer = "shipping fairway")
-
-#####################################
-#####################################
-
-# shipping fairway hex grids
-region_data_hex <- hex_grid[region_data, ] %>%
-  # spatially join shipping fairway values to Westport hex cells
-  sf::st_join(x = .,
-              y = region_data,
-              join = st_intersects) %>%
-  # select fields of importance
-  dplyr::select(index, layer) %>%
-  # group by the index values as there are duplicates
+# create hex grid of just constraint hexes
+hex_constraint <- rbind(mec,
+                        danger_zones,
+                        environmental_sensor,
+                        aids_navigation,
+                        wreck_obstruction,
+                        shipping_fairways,
+                        cable_corridors,
+                        offshore_wind) %>%
   dplyr::group_by(index) %>%
-  # summarise by index
+  dplyr::summarise() %>%
+  dplyr::mutate(submodel = "constraint")
+
+# generate list of indexes that are constraints
+hex_constraint_list <- as.vector(hex_constraint$index)
+
+#####################################
+#####################################
+
+hex_grid_rm_constraints <- hex_grid %>%
+  dplyr::filter(!index %in% constraint_hex_list)
+
+# create a dissolved grid
+dissolved_grid <- hex_grid_rm_constraints %>%
+  # create new field to designate region
+  dplyr::mutate(region = "westport") %>%
+  # group by region
+  dplyr::group_by(region) %>%
+  # summarise by region to dissolve to one polygon
   dplyr::summarise()
 
 #####################################
@@ -172,11 +189,9 @@ region_data_hex <- hex_grid[region_data, ] %>%
 
 # export data
 ## submodel geopackage
-sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
-
-## data geopackage
-sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
-sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = hex_constraint, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}_{date}"), append = F)
+sf::st_write(obj = hex_grid_rm_constraints, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_{submodel}_{date}"), append = F)
+sf::st_write(obj = dissolved_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_{submodel}_boundary_{date}"), append = F)
 
 #####################################
 #####################################
