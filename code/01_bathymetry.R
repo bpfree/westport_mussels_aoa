@@ -48,7 +48,7 @@ pacman::p_load(docxtractr,
 data_dir <- "data/a_raw_data/bathymetry"
 
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### Output directories
 #### Intermediate directories
@@ -58,14 +58,14 @@ intermediate_dir <- "data/b_intermediate_data"
 dir.create(paste0(intermediate_dir, "/",
                   "bathymetry"))
 
-bathymetry_dir <- "data/b_intermediate_data/bathymetry"
+output_dir <- "data/b_intermediate_data/bathymetry"
 
 #####################################
 #####################################
 
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -74,7 +74,7 @@ crs <- "EPSG:26918"
 bath_crs <- "EPSG:4269"
 
 ## layer names
-export_name <- "bathymetry_boundary"
+layer_name <- "bathymetry_boundary"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -102,25 +102,25 @@ date <- format(Sys.Date(), "%Y%m%d")
 ####    a.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x00_2018v1.tif
 ####    b.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x25_2018v1.tif
 ####    c.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x50_2018v1.tif
-bath_9th_1 <- terra::rast(paste(data_dir, "ncei19_n41x50_w071x00_2018v1.tif", sep = "/"))
-bath_9th_2 <- terra::rast(paste(data_dir, "ncei19_n41x50_w071x25_2018v1.tif", sep = "/"))
-bath_9th_3 <- terra::rast(paste(data_dir, "ncei19_n41x50_w071x50_2018v1.tif", sep = "/"))
+bath_9th_1 <- terra::rast(file.path(data_dir, "ncei19_n41x50_w071x00_2018v1.tif"))
+bath_9th_2 <- terra::rast(file.path(data_dir, "ncei19_n41x50_w071x25_2018v1.tif"))
+bath_9th_3 <- terra::rast(file.path(data_dir, "ncei19_n41x50_w071x50_2018v1.tif"))
 
 #### ***Note: for the 1/3-arc second data (~10m), the data encompass three datasets
 ####    a.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x00_2021v1.tif
 ####    b.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x25_2021v1.tif
 ####    c.) https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x50_2021v1.tif
-bath_3rd_1 <- terra::rast(paste(data_dir, "ncei13_n41x25_w071x00_2021v1.tif", sep = "/"))
-bath_3rd_2 <- terra::rast(paste(data_dir, "ncei13_n41x25_w071x25_2021v1.tif", sep = "/"))
-bath_3rd_3 <- terra::rast(paste(data_dir, "ncei13_n41x25_w071x50_2021v1.tif", sep = "/"))
+bath_3rd_1 <- terra::rast(file.path(data_dir, "ncei13_n41x25_w071x00_2021v1.tif"))
+bath_3rd_2 <- terra::rast(file.path(data_dir, "ncei13_n41x25_w071x25_2021v1.tif"))
+bath_3rd_3 <- terra::rast(file.path(data_dir, "ncei13_n41x25_w071x50_2021v1.tif"))
 
 #####################################
 
 # ## study region
-# westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "study_region", sep = "_")) %>%
+# region <- sf::st_read(dsn = region_gpkg, layer = paste(region, "region", sep = "_")) %>%
 #   sf::st_transform(x = ., crs = bath_crs)
 # 
-# cat(crs(westport_region))
+# cat(crs(region))
 
 #####################################
 #####################################
@@ -199,7 +199,7 @@ westport_bath <- terra::mosaic(bath_9th_1,
                                bath_3rd_3_disagg,
                                fun = "mean") # %>%
   # # crop bathymetry data to the Westport study area
-  # terra::crop(westport_region,
+  # terra::crop(region,
   #             # use the Westport study area to mask the data
   #             mask = T)
 dim(westport_bath)
@@ -246,11 +246,11 @@ westport_boundary <- terra::as.polygons(x = westport_bath_boundary) %>%
 #####################################
 
 # export boundary
-sf::st_write(obj = westport_boundary, dsn = study_region_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_boundary, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 # export raster file
-terra::writeRaster(westport_bath_boundary, filename = file.path(bathymetry_dir, "westport_bathymetry_boundary.grd"), overwrite = T)
-terra::writeRaster(westport_bath, filename = file.path(bathymetry_dir, "westport_bath.grd"), overwrite = T)
+terra::writeRaster(westport_bath_boundary, filename = file.path(output_dir, stringr::str_glue("{region_name}_{layer_name}.grd")), overwrite = T)
+terra::writeRaster(westport_bath, filename = file.path(output_dir, stringr::str_glue("{region_name}_bath.grd")), overwrite = T)
 
 #####################################
 #####################################
