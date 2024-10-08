@@ -42,6 +42,17 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
+# set parameters
+## designate region name
+region_name <- "westport"
+
+## coordinate reference system
+### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
+crs <- "EPSG:26918"
+
+#####################################
+#####################################
+
 # set directories
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
@@ -49,23 +60,12 @@ aoi_dir <- "data/a_raw_data/AOI_polygon_shp"
 study_dir <- "data/a_raw_data/studyRegion_polygon"
 westport_gpkg <- "data/a_raw_data/Westport_FinalGeoPackage.gpkg"
 
-data_dir <- "data/b_intermediate_data/westport_study_area.gpkg"
+data_dir <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 #####################################
 
 sf::st_layers(dsn = data_dir,
               do_count = T)
-
-#####################################
-#####################################
-
-# set parameters
-## designate region name
-region <- "westport"
-
-## coordinate reference system
-### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
-crs <- "EPSG:26918"
 
 #####################################
 #####################################
@@ -89,19 +89,21 @@ town_20mi <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## area of interest
-aoi_poly <- sf::st_read(dsn = file.path(paste(aoi_dir, "AOI_polygon.shp", sep = "/"))) %>%
+aoi_poly <- sf::st_read(dsn = file.path(aoi_dir, "AOI_polygon.shp")) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
-  sf::st_transform(x = ., crs = crs)
+  sf::st_transform(x = ., crs = crs) %>%
+  # drop z-dimension from polygon
+  sf::st_zm()
 
 ## study region
-study_region <- sf::st_read(dsn = file.path(paste(study_dir, "studyRegion_constraints_polygon.shp", sep = "/"))) %>%
+region <- sf::st_read(dsn = file.path(study_dir, "studyRegion_constraints_polygon.shp")) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
 #####################################
 
 ## original hex grid
-westport_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_constrained") %>%
+region_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_constrained") %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # create and index location
@@ -112,11 +114,11 @@ westport_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_co
 #####################################
 #####################################
 
-westport_area <- bathymetry %>%
+region_area <- bathymetry %>%
   rmapshaper::ms_clip(federal_waters) %>%
   rmapshaper::ms_clip(town_20mi)
 
-plot(westport_area)
+plot(region_area)
 
 #####################################
 #####################################
@@ -132,44 +134,44 @@ plot(westport_area)
 # 242623406 ^ (1/4) = side length --> 124.8053
 
 # Create 10-acre grid around study region
-study_region_grid <- sf::st_make_grid(x = study_region,
-                                   ## see documentation on what cellsize means when relating to hexagons: https://github.com/r-spatial/sf/issues/1505
-                                   ## cellsize is the distance between two vertices (short diagonal --> d = square root of 3 * side length)
-                                   ### So in this case, square-root of 3 * 124.8053 = 1.73205080757 * 124.8053 = 216.1691
-                                   cellsize = 216.1691,
-                                   # make hexagon (TRUE will generate squares)
-                                   square = FALSE,
-                                   # make hexagons orientation with a flat topped (FALSE = pointy top)
-                                   flat_topped = TRUE) %>%
+region_grid <- sf::st_make_grid(x = region,
+                                ## see documentation on what cellsize means when relating to hexagons: https://github.com/r-spatial/sf/issues/1505
+                                ## cellsize is the distance between two vertices (short diagonal --> d = square root of 3 * side length)
+                                ### So in this case, square-root of 3 * 124.8053 = 1.73205080757 * 124.8053 = 216.1691
+                                cellsize = 216.1691,
+                                # make hexagon (TRUE will generate squares)
+                                square = FALSE,
+                                # make hexagons orientation with a flat topped (FALSE = pointy top)
+                                flat_topped = TRUE) %>%
   # convert back as sf
   sf::st_as_sf() %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
 # subset by location: hexagonal grids that intersect with study area
-study_region_hex <- study_region_grid[study_region, ] %>%
+region_hex <- region_grid[region, ] %>%
   # add field "index" that will be populated with the row_number
   dplyr::mutate(index = row_number())
 
 #####################################
 
 # Create 10-acre grid around westport area
-westport_area_grid <- sf::st_make_grid(x = westport_area,
-                                      ## see documentation on what cellsize means when relating to hexagons: https://github.com/r-spatial/sf/issues/1505
-                                      ## cellsize is the distance between two vertices (short diagonal --> d = square root of 3 * side length)
-                                      ### So in this case, square-root of 3 * 124.8053 = 1.73205080757 * 124.8053 = 216.1691
-                                      cellsize = 216.1691,
-                                      # make hexagon (TRUE will generate squares)
-                                      square = FALSE,
-                                      # make hexagons orientation with a flat topped (FALSE = pointy top)
-                                      flat_topped = TRUE) %>%
+region_area_grid <- sf::st_make_grid(x = region_area,
+                                     ## see documentation on what cellsize means when relating to hexagons: https://github.com/r-spatial/sf/issues/1505
+                                     ## cellsize is the distance between two vertices (short diagonal --> d = square root of 3 * side length)
+                                     ### So in this case, square-root of 3 * 124.8053 = 1.73205080757 * 124.8053 = 216.1691
+                                     cellsize = 216.1691,
+                                     # make hexagon (TRUE will generate squares)
+                                     square = FALSE,
+                                     # make hexagons orientation with a flat topped (FALSE = pointy top)
+                                     flat_topped = TRUE) %>%
   # convert back as sf
   sf::st_as_sf() %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
 # subset by location: hexagonal grids that intersect with study area
-westport_area_hex <- westport_area_grid[westport_area, ] %>%
+region_area_hex <- region_area_grid[region_area, ] %>%
   # add field "index" that will be populated with the row_number
   dplyr::mutate(index = row_number())
 
@@ -178,20 +180,20 @@ westport_area_hex <- westport_area_grid[westport_area, ] %>%
 
 # export data
 ## original grid
-sf::st_write(obj = westport_grid, dsn = data_dir, layer = paste(region, "original_grid", sep = "_"), append = F)
+sf::st_write(obj = region_grid, dsn = data_dir, layer = stringr::str_glue("{region_name}_original_grid"), append = F)
 
 ## study area
 ### area of interest
-sf::st_write(obj = aoi_poly, dsn = data_dir, layer = paste(region, "aoi_polygon", sep = "_"), append = F)
+sf::st_write(obj = aoi_poly, dsn = data_dir, layer = stringr::str_glue("{region_name}_aoi_polygon"), append = F)
 
 ### study region
-sf::st_write(obj = study_region, dsn = data_dir, layer = paste(region, "study_region", sep = "_"), append = F)
-sf::st_write(obj = study_region_grid, dsn = data_dir, layer = paste(region, "study_region_grid", sep = "_"), append = F)
-sf::st_write(obj = study_region_hex, dsn = data_dir, layer = paste(region, "study_region_hex", sep = "_"), append = F)
+sf::st_write(obj = region, dsn = data_dir, layer = stringr::str_glue("{region_name}_region"), append = F)
+sf::st_write(obj = region_grid, dsn = data_dir, layer = stringr::str_glue("{region_name}_region_grid"), append = F)
+sf::st_write(obj = region_hex, dsn = data_dir, layer = stringr::str_glue("{region_name}_region_hex"), append = F)
 
-sf::st_write(obj = westport_area, dsn = data_dir, layer = paste(region, "area", sep = "_"), append = F)
-sf::st_write(obj = westport_area_grid, dsn = data_dir, layer = paste(region, "area_grid", sep = "_"), append = F)
-sf::st_write(obj = westport_area_hex, dsn = data_dir, layer = paste(region, "area_hex", sep = "_"), append = F)
+sf::st_write(obj = region_area, dsn = data_dir, layer = stringr::str_glue("{region_name}_area"), append = F)
+sf::st_write(obj = region_area_grid, dsn = data_dir, layer = stringr::str_glue("{region_name}_area_grid"), append = F)
+sf::st_write(obj = region_area_hex, dsn = data_dir, layer = stringr::str_glue("{region_name}_area_hex"), append = F)
 
 #####################################
 #####################################
