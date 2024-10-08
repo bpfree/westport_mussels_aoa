@@ -129,8 +129,8 @@ zmf_function <- function(raster){
 ## VTR (all gear types)
 data <- terra::rast(file.path(data_dir, "VTR_allGearTypes"))
 
-## study region
-region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area")) %>%
+# study region
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_boundary_{date}")) %>%
   # change projection to match AIS data coordinate reference system
   sf::st_transform(crs = data_crs)
 
@@ -138,7 +138,7 @@ region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name
 cat(crs(region))
 
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 #####################################
 #####################################
