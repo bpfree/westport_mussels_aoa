@@ -57,7 +57,7 @@ data_crs <- "EPSG:3857"
 layer_name <- "ais"
 
 ## submodel
-submodel <- "industry_transportation_navigation"
+submodel <- "industry"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
