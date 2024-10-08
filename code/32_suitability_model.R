@@ -70,16 +70,15 @@ gm_wt <- 1/4
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 #### suitability geopackage
-suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
+suitability_gpkg <- stringr::str_glue("data/d_suitability_data/{layer_name}.gpkg")
 
 ## Output directories
 ### suitability directory
 suitability_dir <- "data/d_suitability_data"
-dir.create(paste0(suitability_dir, "/",
-                  "overall_suitability"))
+dir.create(file.path(suitability_dir, "overall_suitability"))
 
 overall_suitability_dir <- "data/d_suitability_data/overall_suitability"
-overall_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/overall_suitability/{region}_overall_suitability.gpkg")
+overall_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/overall_suitability/{region_name}_overall_suitability.gpkg")
 
 #####################################
 
@@ -95,20 +94,11 @@ sf::st_layers(dsn = suitability_gpkg,
 
 # load data
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
-
-## suitability submodels
-### constraints
-constraints <- sf::st_read(dsn = suitability_gpkg,
-                           layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = "constraints",
-                                                                             sf::st_layers(dsn = suitability_gpkg,
-                                                                                           do_count = T)[[1]])]) %>%
-  # remove geometry
-  sf::st_drop_geometry()
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 ### national security
 national_security <- sf::st_read(dsn = suitability_gpkg,
-                                 layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = "security",
+                                 layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = stringr::str_glue("security_{layer_name}_{date}"),
                                                                                    sf::st_layers(dsn = suitability_gpkg,
                                                                                                  do_count = T)[[1]])]) %>%
   # remove geometry
@@ -116,7 +106,7 @@ national_security <- sf::st_read(dsn = suitability_gpkg,
 
 ### industry, transportation, and navigation
 industry <- sf::st_read(dsn = suitability_gpkg,
-                        layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = "industry",
+                        layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = stringr::str_glue("industry_{layer_name}_{date}"),
                                                                           sf::st_layers(dsn = suitability_gpkg,
                                                                                         do_count = T)[[1]])]) %>%
   # remove geometry
@@ -124,7 +114,7 @@ industry <- sf::st_read(dsn = suitability_gpkg,
 
 ### fisheries
 fisheries <- sf::st_read(dsn = suitability_gpkg,
-                         layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = "fisheries",
+                         layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = stringr::str_glue("fisheries_{layer_name}_{date}"),
                                                                            sf::st_layers(dsn = suitability_gpkg,
                                                                                          do_count = T)[[1]])]) %>%
   # remove geometry
@@ -132,7 +122,7 @@ fisheries <- sf::st_read(dsn = suitability_gpkg,
 
 ### natural and cultural resources
 natural_cultural <- sf::st_read(dsn = suitability_gpkg,
-                                 layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = "cultural",
+                                 layer = sf::st_layers(suitability_gpkg)[[1]][grep(pattern = stringr::str_glue("cultural_{layer_name}_{date}"),
                                                                                    sf::st_layers(dsn = suitability_gpkg,
                                                                                                  do_count = T)[[1]])]) %>%
   # remove geometry
@@ -142,10 +132,6 @@ natural_cultural <- sf::st_read(dsn = suitability_gpkg,
 #####################################
 
 suitability_model <- hex_grid %>%
-  # join the constraints areas by index field to the full Westport hex grid
-  dplyr::left_join(x = .,
-                   y = constraints,
-                   by = "index") %>%
   # join the national security areas by index field to the full Westport hex grid
   dplyr::left_join(x = .,
                    y = national_security,
@@ -166,20 +152,14 @@ suitability_model <- hex_grid %>%
 #####################################
 
 model_areas <- suitability_model %>%
-  # remove any areas that are constraints -- thus get areas that are NA
-  dplyr::filter(is.na(constraints)) %>%
-  
   # calculate the geometric mean
   ## geometric mean = nth root of the product of the variable values
   dplyr::mutate(model_geom_mean = (ns_geom_mean ^ gm_wt) * (itn_geom_mean ^ gm_wt) * (fish_geom_mean ^ gm_wt) * (nc_geom_mean ^ gm_wt)) %>%
   
   # select desired fields
   dplyr::select(index,
-                # constraints
-                uxo_loc_value, danger_value, environmental_value, #disposal_value,
-                navigation_value, wreck_value, shipping_value,
                 # national security
-                uxo_area_value, military_value,
+                military_operating_value,
                 # industry, transportation, and navigation
                 ais_max,
                 # fisheries
@@ -187,7 +167,7 @@ model_areas <- suitability_model %>%
                 # natural and cultural resources
                 cpr_max,
                 # submodel geometric values
-                constraints, ns_geom_mean, itn_geom_mean, fish_geom_mean, nc_geom_mean,
+                ns_geom_mean, itn_geom_mean, fish_geom_mean, nc_geom_mean,
                 # model geometric value
                 model_geom_mean)
 
@@ -201,14 +181,13 @@ dim(model_areas)[1]
 sf::st_write(obj = model_areas, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 ## submodels
-saveRDS(object = constraints, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "constraints.rds", sep = "_"), sep = "/"))
-saveRDS(object = national_security, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "national_security.rds", sep = "_"), sep = "/"))
-saveRDS(object = industry, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "industry.rds", sep = "_"), sep = "/"))
-saveRDS(object = fisheries, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "fisheries.rds", sep = "_"), sep = "/"))
-saveRDS(object = natural_cultural, file = paste(overall_suitability_dir, paste(region, "hex", layer_name, "natural_cultural.rds", sep = "_"), sep = "/"))
+saveRDS(object = national_security, file = file.path(overall_suitability_dir, stringr::str_glue("{region_name}_hex_{layer_name}_national_security_{date}.rds")))
+saveRDS(object = industry, file = file.path(overall_suitability_dir, stringr::str_glue("{region_name}_hex_{layer_name}_industry_{date}.rds")))
+saveRDS(object = fisheries, file = file.path(overall_suitability_dir, stringr::str_glue("{region_name}_hex_{layer_name}_fisheries_{date}.rds")))
+saveRDS(object = natural_cultural, file = file.path(overall_suitability_dir, stringr::str_glue("{region_name}_hex_{layer_name}_natural_cultural_{date}.rds")))
 
 ## model
-sf::st_write(obj = model_areas, dsn = overall_suitability, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = model_areas, dsn = overall_suitability_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
