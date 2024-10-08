@@ -145,11 +145,11 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 
 # limit VTR (all gear types) data to study region
 region_data <- terra::crop(x = data,
-                              # crop using study region
-                              y = region,
-                              # mask using study region (T = True)
-                              mask = T,
-                              extend = T)
+                           # crop using study region
+                           y = region,
+                           # mask using study region (T = True)
+                           mask = T,
+                           extend = T)
 plot(region_data)
 
 #####################################
@@ -166,10 +166,10 @@ region_data_z <- region_data %>%
 # convert raster to vector data (as polygons)
 # convert to polygon
 region_data_polygon <- terra::as.polygons(x = region_data_z,
-                                           # do not aggregate all similar values together as single feature
-                                           aggregate = F,
-                                           # use the values from original raster
-                                           values = T) %>%
+                                          # do not aggregate all similar values together as single feature
+                                          aggregate = F,
+                                          # use the values from original raster
+                                          values = T) %>%
   # change to simple feature (sf)
   sf::st_as_sf() %>%
   # simplify column name to "vtr" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the vtr object)
