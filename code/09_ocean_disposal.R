@@ -94,8 +94,8 @@ sf::st_layers(dsn = region_gpkg,
 ## ocean disposal sites data (source: https://marinecadastre.gov/downloads/data/mc/OceanDisposalSite.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/54193
 data <- sf::st_read(dsn = data_dir,
-                           # ocean disposal site
-                           layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                    # ocean disposal site
+                    layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 

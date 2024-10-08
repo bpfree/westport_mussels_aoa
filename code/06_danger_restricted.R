@@ -94,7 +94,7 @@ sf::st_layers(dsn = region_gpkg,
 ## danger zones and restricted areas data (source: https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/48876
 data <- sf::st_read(dsn = data_dir,
-                            layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                    layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 

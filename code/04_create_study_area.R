@@ -74,17 +74,17 @@ sf::st_layers(dsn = region_gpkg,
 ## bathymetry boundary
 bathymetry <- sf::st_read(dsn = region_gpkg,
                           layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "bathymetry",
-                                                                    sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
+                                                                       sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 ## federal waters
 federal_waters <- sf::st_read(dsn = region_gpkg,
                               layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "federal",
-                                                                        sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
+                                                                           sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 ## Westport town 20-mile setback
 town_20mi <- sf::st_read(dsn = region_gpkg,
                          layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "town",
-                                                                   sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
+                                                                      sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 #####################################
 

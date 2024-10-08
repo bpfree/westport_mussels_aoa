@@ -114,16 +114,16 @@ ww_facility <- sf::st_read(dsn = data_dir,
   st_as_sf()
 
 ww_pipe <- sf::st_read(dsn = data_dir,
-                           # wastewater pipe
-                           layer = sf::st_layers(data_dir)[[1]][3]) %>%
+                       # wastewater pipe
+                       layer = sf::st_layers(data_dir)[[1]][3]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 500-meter setback
   sf::st_buffer(x = ., dist = setback)
 
 ww_outfall <- sf::st_read(dsn = data_dir,
-                           # wastewater outfall
-                           layer = sf::st_layers(data_dir)[[1]][2]) %>%
+                          # wastewater outfall
+                          layer = sf::st_layers(data_dir)[[1]][2]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 500-meter setback

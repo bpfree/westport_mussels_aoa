@@ -97,8 +97,8 @@ sf::st_layers(dsn = region_gpkg,
 ## aids to navigation data (source: https://marinecadastre.gov/downloads/data/mc/AtoN.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/56120
 data <- sf::st_read(dsn = data_dir,
-                              # aids to navigation site
-                              layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                    # aids to navigation site
+                    layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 500-meter setback

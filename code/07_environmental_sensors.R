@@ -97,8 +97,8 @@ sf::st_layers(dsn = region_gpkg,
 ## environmental sensors and buoys data (source: https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography.zip)
 ### metadata: https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm
 data <- sf::st_read(dsn = data_dir,
-                           # NERACOOS buoys are the first dataset
-                           layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                    # NERACOOS buoys are the first dataset
+                    layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 500-meter setback

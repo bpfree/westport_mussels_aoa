@@ -97,8 +97,8 @@ sf::st_layers(dsn = region_gpkg,
 ## wreck and obstruction data (source: https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip)
 ### metadata: https://www.fisheries.noaa.gov/inport/item/70439
 data <- sf::st_read(dsn = data_dir,
-                               # wreck and obstruction
-                               layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                    # wreck and obstruction
+                    layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 152.4-meter setback
