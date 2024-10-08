@@ -72,8 +72,8 @@ data_dir <- "data/a_raw_data/BOEM-Renewable-Energy-Geodatabase/BOEMWindLayers_4D
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
-#### constraints
-constraints_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
+#### submodel
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 #### intermediate directories
 output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
