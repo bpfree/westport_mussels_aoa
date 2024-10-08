@@ -42,48 +42,16 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-#### national security
-submodel_gpkg <- "data/c_submodel_data/fisheries.gpkg"
-
-### fisheries directory
-suitability_dir <- "data/d_suitability_data"
-dir.create(paste0(suitability_dir, "/",
-                  "fisheries_suitability"))
-
-fisheries_dir <- "data/d_suitability_data/fisheries_suitability"
-fisheries_gpkg <- "data/d_suitability_data/fisheries_suitability/westport_fisheries_suitability.gpkg"
-
-#### suitability
-suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
-
-#####################################
-
-# inspect layers within geopackage
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-sf::st_layers(dsn = submodel_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
-## layer names
-export_name <- "fisheries"
+## submodel
+submodel <- "fisheries"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -94,43 +62,75 @@ gm_wt <- 1/4
 #####################################
 #####################################
 
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+#### submodel geopackage
+submodel_gpkg <- stringr::str("data/c_submodel_data/{submodel}.gpkg")
+
+### submodel directory
+suitability_dir <- "data/d_suitability_data"
+dir.create(paste0(suitability_dir, "/",
+                  stringr::str_glue("{submodel}_suitability")))
+
+suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
+submodel_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region_name}_{submodel}_suitability.gpkg")
+
+#### suitability
+suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
+
+#####################################
+
+# inspect layers within geopackage
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
+
+sf::st_layers(dsn = submodel_gpkg,
+              do_count = T)
+
+#####################################
+#####################################
+
 # load data
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
-## constraints
+## submodel datasets
 ### VMS (all gear, 2015 - 2016)
-westport_hex_vms_all <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vms_all", date, sep = "_")) %>%
+hex_grid_vms_all <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vms_all", date, sep = "_")) %>%
   sf::st_drop_geometry()
 
 ### VMS (speeds under 4 / 5 knots, 2015 - 2016)
-westport_hex_vms_4_5_knot <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vms_4_5_knot", date, sep = "_")) %>%
+hex_grid_vms_4_5_knot <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vms_4_5_knot", date, sep = "_")) %>%
   sf::st_drop_geometry()
 
 ### VTR (all gear types)
-westport_hex_vtr <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vtr_all_gear", date, sep = "_")) %>%
+hex_grid_vtr <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "vtr_all_gear", date, sep = "_")) %>%
   sf::st_drop_geometry()
 
 ### large pelagic survey
-westport_hex_lps <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "large_pelagic_survey", date, sep = "_")) %>%
+hex_grid_lps <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "large_pelagic_survey", date, sep = "_")) %>%
   sf::st_drop_geometry()
 
 #####################################
 #####################################
 
 # Create Oregon constraints submodel
-westport_hex_fisheries <- westport_hex %>%
+hex_grid_fisheries <- hex_grid %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_vms_all,
+                   y = hex_grid_vms_all,
                    by = "index") %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_vms_4_5_knot,
+                   y = hex_grid_vms_4_5_knot,
                    by = "index") %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_vtr,
+                   y = hex_grid_vtr,
                    by = "index") %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_lps,
+                   y = hex_grid_lps,
                    by = "index") %>%
   dplyr::select(index,
                 contains("max")) %>%
@@ -151,7 +151,7 @@ westport_hex_fisheries <- westport_hex %>%
                   .after = lps_max)
 
 ### ***Warning: there are duplicates of the index
-duplicates_verify <- westport_hex_fisheries %>%
+duplicates_verify <- hex_grid_fisheries %>%
   # create frequency field based on index
   dplyr::add_count(index) %>%
   # see which ones are duplicates
@@ -164,15 +164,15 @@ duplicates_verify <- westport_hex_fisheries %>%
 
 # Export data
 ## suitability
-sf::st_write(obj = westport_hex_fisheries, dsn = suitability_gpkg, layer = paste(region, export_name, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_grid_fisheries, dsn = suitability_gpkg, layer = paste(region, submodel, "suitability", sep = "_"), append = F)
 
 ## fisheries
-saveRDS(obj = westport_hex_vms_all, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_all.rds", sep = "_"), sep = "/"))
-saveRDS(obj = westport_hex_vms_4_5_knot, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_4_5_kt.rds", sep = "_"), sep = "/"))
-saveRDS(obj = westport_hex_vtr, file = paste(fisheries_dir, paste(region, "hex_fisheries_vtr.rds", sep = "_"), sep = "/"))
-saveRDS(obj = westport_hex_lps, file = paste(fisheries_dir, paste(region, "hex_fisheries_lps.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_grid_vms_all, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_all.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_grid_vms_4_5_knot, file = paste(fisheries_dir, paste(region, "hex_fisheries_vms_4_5_kt.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_grid_vtr, file = paste(fisheries_dir, paste(region, "hex_fisheries_vtr.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_grid_lps, file = paste(fisheries_dir, paste(region, "hex_fisheries_lps.rds", sep = "_"), sep = "/"))
 
-sf::st_write(obj = westport_hex_fisheries, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_grid_fisheries, dsn = fisheries_gpkg, layer = paste(region, "hex", submodel, "suitability", sep = "_"), append = F)
 
 #####################################
 #####################################
