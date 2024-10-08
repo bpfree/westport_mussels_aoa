@@ -396,7 +396,7 @@ download_list <- c(
   # Massachusetts town boundaries
   mass_admin
 )
-  
+
 data_download_function(download_list, data_dir)
 
 #####################################

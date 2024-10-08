@@ -198,10 +198,10 @@ westport_bath <- terra::mosaic(bath_9th_1,
                                bath_3rd_2_disagg,
                                bath_3rd_3_disagg,
                                fun = "mean") # %>%
-  # # crop bathymetry data to the Westport study area
-  # terra::crop(region,
-  #             # use the Westport study area to mask the data
-  #             mask = T)
+# # crop bathymetry data to the Westport study area
+# terra::crop(region,
+#             # use the Westport study area to mask the data
+#             mask = T)
 dim(westport_bath)
 plot(westport_bath)
 
