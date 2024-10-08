@@ -87,7 +87,7 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 #### *Natural and Cultural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Protected resources | | Combined protected resources |--------------- | ---------------|
+| Protected resources |--------------- | Combined protected resources |--------------- | ---------------|
 
 ### **Data commentary**
 Datasets explored but not included in analyses due to not geographically located in study region:
