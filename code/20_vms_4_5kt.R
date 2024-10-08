@@ -216,18 +216,25 @@ dim(smb_4kt) # 265 x 350
 
 ### force the correct extent for ones with different extents
 her_4kt_2 <- terra::extend(x = her_4kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 mnk_4kt_2 <- terra::extend(x = mnk_4kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 nms_4kt_2 <- terra::extend(x = nms_4kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 pel_4kt_2 <- terra::extend(x = pel_4kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 sco_4kt_2 <- terra::extend(x = sco_4kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 ses_5kt_2 <- terra::extend(x = ses_5kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 smb_4kt_2 <- terra::extend(x = smb_4kt,
+                           # extend to match largest extent
                            y = mnk_4kt)
 
 dim(her_4kt_2) # 266 x 351
