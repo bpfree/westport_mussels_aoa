@@ -111,12 +111,12 @@ Any hex indexes that got affected by constraints got removed from the siting ana
 #### *Costs*
 | **Submodel** | **Layer** | **Buffer distance (m)** | **Score** | **Notes** |
 |---------------|---------------|---------------|---------------|---------------|
-| National Securtity | Military operating areas | --------------- | 1 | Removed from second model iteration |
-| Industry | AIS | --------------- | Z-shaped membership function | --------------- |
-| Fisheries | VMS (all gear) | --------------- | Z-shaped membership function | --------------- |
-| Fisheries | VMS (slow fishing) | --------------- | Z-shaped membership function | slow fishing is considered between 4 - 5 knots |
-| Fisheries | VTR (all gear) | --------------- | Z-shaped membership function | --------------- |
-| Fisheries | Large pelagic survey | --------------- | Z-shaped membership function | --------------- |
+| National Securtity | Military operating areas | -------------- | 1 | Removed from second model iteration |
+| Industry | AIS | -------------- | Z-shaped membership function | --------------- |
+| Fisheries | VMS (all gear) | -------------- | Z-shaped membership function | --------------- |
+| Fisheries | VMS (slow fishing) | -------------- | Z-shaped membership function | slow fishing is considered between 4 - 5 knots |
+| Fisheries | VTR (all gear) | -------------- | Z-shaped membership function | --------------- |
+| Fisheries | Large pelagic survey | -------------- | Z-shaped membership function | --------------- |
 | Natural and Cultural | Protected resources | 16093.4 | Z-shaped membership function | Removed from second model iteration |
 
 #### *z-shaped membership function*
