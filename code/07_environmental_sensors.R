@@ -42,37 +42,9 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### environmental sensors and buoys
-data_dir <- "data/a_raw_data/PhysicalOceanography/PhysicalOceanography/PhysicalOceanography.gdb"
-
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-### output directories
-#### constraints
-constraints_gpkg <- "data/c_submodel_data/constraints.gpkg"
-
-#### intermediate directories
-environmental_sensor_gpkg <- "data/b_intermediate_data/westport_environmental_sensor.gpkg"
-
-#####################################
-
-# inspect layers within geodatabases and geopackages
-sf::st_layers(dsn = data_dir,
-              do_count = T)
-
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -82,7 +54,10 @@ crs <- "EPSG:26918"
 setback <- 500
 
 ## layer names
-export_name <- "environmental_sensor"
+layer_name <- "environmental_sensor"
+
+## submodel
+submodel <- "constraints"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -90,10 +65,38 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 #####################################
 
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### environmental sensors and buoys
+data_dir <- "data/a_raw_data/PhysicalOceanography/PhysicalOceanography/PhysicalOceanography.gdb"
+
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+### output directories
+#### submodel
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
+
+#### intermediate directories
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
+
+#####################################
+
+# inspect layers within geodatabases and geopackages
+sf::st_layers(dsn = data_dir,
+              do_count = T)
+
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
+
+#####################################
+#####################################
+
 # load data
 ## environmental sensors and buoys data (source: https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography.zip)
 ### metadata: https://www.northeastoceandata.org/files/metadata/Themes/PhysicalOceanography/NERACOOSBuoys.htm
-envir_sense <- sf::st_read(dsn = data_dir,
+data <- sf::st_read(dsn = data_dir,
                            # NERACOOS buoys are the first dataset
                            layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
@@ -104,19 +107,19 @@ envir_sense <- sf::st_read(dsn = data_dir,
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
 
 # limit data to study region
-westport_envir_sense <- envir_sense %>%
+region_data <- data %>%
   # obtain only environmental sensors and buoys in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "environmental sensors and buoys" for summary
   dplyr::mutate(layer = "environmental sensors and buoys")
 
@@ -124,10 +127,10 @@ westport_envir_sense <- envir_sense %>%
 #####################################
 
 # environmental sensor and buoys hex grids
-westport_envir_sense_hex <- westport_hex[westport_envir_sense, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join environmental sensors and buoys values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_envir_sense,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer)
@@ -136,12 +139,12 @@ westport_envir_sense_hex <- westport_hex[westport_envir_sense, ] %>%
 #####################################
 
 # export data
-## constraints geopackage
-sf::st_write(obj = westport_envir_sense_hex, dsn = constraints_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+## submodel geopackage
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
-## environmental sensor and buoys area geopackage
-sf::st_write(obj = envir_sense, dsn = environmental_sensor_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_envir_sense, dsn = environmental_sensor_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+## data geopackage
+sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
