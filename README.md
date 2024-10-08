@@ -87,7 +87,7 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 #### *Natural and Cultural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| Protected resources |--------------- | Combined protected resources |--------------- | ---------------|
+| Protected resources |-------------- | Combined protected resources |-------------- | --------------|
 
 ### **Data commentary**
 Datasets explored but not included in analyses due to not geographically located in study region:
@@ -110,7 +110,7 @@ Any hex indexes that got affected by constraints got removed from the siting ana
 
 #### *Costs*
 | **Submodel** | **Layer** | **Buffer distance (m)** | **Score** | **Notes** |
-|---------------|---------------|---------------|---------------|
+|---------------|---------------|---------------|---------------|---------------|
 | National Securtity | Military operating areas | --------------- | 1 | Removed from second model iteration |
 | Industry | AIS | --------------- | Z-shaped membership function | --------------- |
 | Fisheries | VMS (all gear) | --------------- | Z-shaped membership function | --------------- |
