@@ -76,13 +76,13 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 #### *Fisheries Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
-| VMS |  | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf) |
-| VMS |  | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery) and for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf)  |
-| VTR |  | VTR (all gear) |--------------- | ---------------|
-| VTR |  | VTR (charter / party) | ---------------|--------------- |
-| Survey |  | Large pelagic survey (2012 - 2021) |--------------- | ---------------|
-| Cod | | [Cod spawning protection areas](https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip) | [Metadata](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf) |[PDF maps](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf) |
-| Cod | | Known cod spawning areas | ---------------| Not in study region |
+| VMS | --------------- | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf) |
+| VMS | --------------- | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery) and for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf)  |
+| VTR | --------------- | VTR (all gear) |--------------- | ---------------|
+| VTR | --------------- | VTR (charter / party) | ---------------|--------------- |
+| Survey | --------------- | Large pelagic survey (2012 - 2021) |--------------- | ---------------|
+| Cod |--------------- | [Cod spawning protection areas](https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip) | [Metadata](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf) |[PDF maps](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf) |
+| Cod |--------------- | Known cod spawning areas | ---------------| Not in study region |
 
 #### *Natural and Cultural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
