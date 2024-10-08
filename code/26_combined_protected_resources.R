@@ -175,7 +175,7 @@ region_data_hex <- hex_grid[region_data, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = region_data_hex, dsn = natural_cultural_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data_hex, dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
 ## combined protected resources geopackage
 sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
