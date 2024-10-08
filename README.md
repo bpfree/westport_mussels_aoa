@@ -37,6 +37,7 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Sediment | [Northeast Ocean Data](https://www.northeastoceandata.org/)  | [Sediment size](https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/Sediment.zip) | [Metadata](https://easterndivision.s3.amazonaws.com/Marine/MooreGrant/SoftSediment.pdf) | TNC provided the data |
 
 #### *Constraints Data*
+##### *Regional*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Bathymetry | NOAA | [CUDEM, 1/9-arc second](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/rima/ncei19_n41x50_w071x00_2018v1.tif) | [Metadata](https://data.noaa.gov/metaview/page?xml=NOAA/NESDIS/NGDC/MGG/DEM//iso/xml/199919.xml&view=xml2text/xml-to-text-ISO) | Explore data [here](https://www.ncei.noaa.gov/maps/bathymetry/), for a [bulk down](https://coast.noaa.gov/dataviewer/#/lidar/search/where:ID=8580), while other options for [individual downloads](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/) can provide ways to get DEMs that cover the area of interest while also providing detailed attention to specific areas. ***Note: the data can also get accessed throught the [FTP server](ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_ninth_Topobathy_2014_8483/) even though browsers do not support it any more and the correct directory is MA_NH_ME |
@@ -45,6 +46,10 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Bathymetry | NOAA | [CUDEM, 1/3-arc second](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x00_2021v1.tif) | [Metadata](https://data.noaa.gov/metaview/page?xml=NOAA/NESDIS/NGDC/MGG/DEM//iso/xml/199913.xml&view=xml2text/xml-to-text-ISO) | Explore data [here](https://www.ncei.noaa.gov/maps/bathymetry/), for a [bulk down](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/), while other options for [individual downloads](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/) can provide ways to get DEMs that cover the area of interest while also providing detailed attention to specific areas. ***Note: the data can also get accessed throught the [FTP server](ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/) even though browsers do not support it any more and the correct directory is rima |
 | Bathymetry | NOAA | [CUDEM, 1/3-arc second](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x25_2021v1.tif) | [Metadata](https://data.noaa.gov/metaview/page?xml=NOAA/NESDIS/NGDC/MGG/DEM//iso/xml/199913.xml&view=xml2text/xml-to-text-ISO) | Explore data [here](https://www.ncei.noaa.gov/maps/bathymetry/), for a [bulk down](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/), while other options for [individual downloads](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/) can provide ways to get DEMs that cover the area of interest while also providing detailed attention to specific areas. ***Note: the data can also get accessed throught the [FTP server](ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/) even though browsers do not support it any more and the correct directory is rima |
 | Bathymetry | NOAA | [CUDEM, 1/3-arc second](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/MA_NH_ME/ncei13_n41x25_w071x50_2021v1.tif) | [Metadata](https://data.noaa.gov/metaview/page?xml=NOAA/NESDIS/NGDC/MGG/DEM//iso/xml/199913.xml&view=xml2text/xml-to-text-ISO) | Explore data [here](https://www.ncei.noaa.gov/maps/bathymetry/), for a [bulk down](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/), while other options for [individual downloads](https://chs.coast.noaa.gov/htdata/raster2/elevation/NCEI_third_Topobathy_2014_8580/) can provide ways to get DEMs that cover the area of interest while also providing detailed attention to specific areas. ***Note: the data can also get accessed throught the [FTP server](ftp://ftp.coast.noaa.gov/pub/DigitalCoast/raster2/elevation/NCEI_third_Topobathy_2014_8580/) even though browsers do not support it any more and the correct directory is rima |
+
+##### *Model*
+| Layer | Data Source | Data Name | Metadata  | Notes |
+|---------------|---------------|---------------|---------------|---------------|
 | Unexploded ordnance | NOAA | [Unexploded ordnance locations](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66208) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
 | Unexploded ordnance | NOAA | [Munitions and explosives of concern](https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/69013) | MECs are replacing the UXOs as the default dataset |
 | Danger zones | NOAA | [Danger zones and restricted areas](https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48876) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about) contains more information |
@@ -155,6 +160,13 @@ Data examined but not existing within -20m and -40m of federal waters that are w
 * Fisheries: four datasets integrated in model (VMS [all fishing (2015-2016)], VMS [all fishing under 4 / 5 knots(2015-2016)], VTR [all gear types], large pelagic survey [2012 - 2021])
 
 * Natural and cultural resources: 
+
+### **Model Runs**
+*8 October 2024*
+- Proposed export offshore wind cable corridors act as constraint
+- Munitions and explosives of concern replace unexploded ordnance locations and areas (act as constraint)
+- Remove combined protected resources from analysis
+- Any hex with constraint gets removed from final analysis
 
 ### **Issues**
 1. Munitions and explosives of concern superseded the unexploded ordnance data, so those data replaced the previous dataset in the analysis. Given that previously  
