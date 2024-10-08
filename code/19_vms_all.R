@@ -206,17 +206,17 @@ smb_15_16
 ### ***warning: the calculation of the mean across the fisheries
 ###             will not work properly if the dimensions across
 ###             all the datasets are not uniform (266 x 351)
-dim(her_15_16) # 266 x 351
-dim(mnk_15_16) # 266 x 351
+dim(her_15_16) # 265 x 351
+dim(mnk_15_16) # 266 x 350
 dim(nms_15_16) # 266 x 351
-dim(pel_15_16) # 267 x 351
+dim(pel_15_16) # 266 x 351
 dim(sco_15_16) # 266 x 351
-dim(ses_15_16) # 266 x 351
+dim(ses_15_16) # 265 x 351
 dim(smb_15_16) # 266 x 351
 
 ### force the correct extent for ones with different extents
-pel_15_16 <- terra::extend(x = her_15_16,
-                           y = pel_15_16)
+pel_15_16 <- terra::extend(x = pel_15_16,
+                           y = her_15_16)
 
 
 dim(her_15_16) # 266 x 351
