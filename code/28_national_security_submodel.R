@@ -50,6 +50,9 @@ region_name <- "westport"
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
+## layer name
+layer_name <- "military_operating"
+
 ## submodel name
 submodel <- "national_security"
 submodel_code <- "ns"
@@ -58,7 +61,7 @@ submodel_code <- "ns"
 date <- format(Sys.Date(), "%Y%m%d")
 
 ## geometric mean weight
-gm_wt <- 1/2
+gm_wt <- 1/1
 
 #####################################
 #####################################
@@ -70,14 +73,13 @@ gm_wt <- 1/2
 region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 #### submodel geopackage
-submodel_gpkg <- stringr::str("data/c_submodel_data/{submodel}.gpkg")
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 ### submodel directory
 suitability_dir <- "data/d_suitability_data"
-dir.create(paste0(suitability_dir, "/",
-                  stringr::str_glue("{submodel}_suitability")))
+dir.create(file.path(suitability_dir, stringr::str_glue("{submodel}_suitability")))
 
-suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
+submodel_suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
 submodel_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region_name}_{submodel}_suitability.gpkg")
 
 #### suitability
@@ -100,26 +102,18 @@ sf::st_layers(dsn = submodel_gpkg,
 hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 ## submodel datasets
-### unexploded ordnance areas
-hex_grid_unexploded_areas <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_uxo_area_{date}")) %>%
-  dplyr::mutate(uxo_area_value = 0.5) %>%
-  sf::st_drop_geometry()
-
 ### military operating areas
-hex_grid_military_operating <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_military_operating_{date}")) %>%
-  dplyr::mutate(military_value = 1) %>%
+hex_data <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}")) %>%
+  dplyr::mutate(!!stringr::str_glue("{layer_name}_value") := 1) %>%
   sf::st_drop_geometry()
 
 #####################################
 #####################################
 
 # Create Westport national security submodel
-hex_grid_submodel <- hex_grid %>%
+hex_submodel <- hex_grid %>%
   dplyr::left_join(x = .,
-                   y = hex_grid_unexploded_areas,
-                   by = "index") %>%
-  dplyr::left_join(x = .,
-                   y = hex_grid_military_operating,
+                   y = hex_data,
                    by = "index") %>%
   dplyr::select(index,
                 contains("value")) %>%
@@ -127,20 +121,20 @@ hex_grid_submodel <- hex_grid %>%
   # add value of 1 for datasets when hex cell has value of NA
   ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
   ### this indicates  suitability with wind energy development
-  dplyr::mutate(across(2:3, ~replace(x = .,
-                                     list = is.na(.),
-                                     # replacement values
-                                     values = 1))) %>%
+  dplyr::mutate(across(2, ~replace(x = .,
+                                   list = is.na(.),
+                                   # replacement values
+                                   values = 1))) %>%
   
   ## geometric mean = nth root of the product of the variable values
-  dplyr::mutate(stringr::str_glue("{submodel_code}_geom_mean") = (uxo_area_value ^ gm_wt) * (military_value ^ gm_wt)) %>%
+  dplyr::mutate(!!stringr::str_glue("{submodel_code}_geom_mean") := .data[[stringr::str_glue("{layer_name}_value")]] ^ gm_wt) %>%
   
   # relocate the industry and operations geometric mean field
   dplyr::relocate(stringr::str_glue("{submodel_code}_geom_mean"),
-                  .after = military_value)
+                  .after = stringr::str_glue("{layer_name}_value"))
 
 ### ***Warning: there are duplicates of the index
-duplicates_verify <- hex_grid_submodel %>%
+duplicates_verify <- hex_submodel %>%
   # create frequency field based on index
   dplyr::add_count(index) %>%
   # see which ones are duplicates
@@ -153,13 +147,12 @@ duplicates_verify <- hex_grid_submodel %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = hex_grid_submodel, dsn = suitability_gpkg, layer = paste(region, submodel, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_submodel, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{submodel}_suitability"), append = F)
 
 ## Constraints
-saveRDS(obj = hex_grid_military_operating, file = paste(submodel_dir, paste(region, "hex_national_security_military_operating.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_unexploded_areas, file = paste(submodel_dir, paste(region, "hex_national_security_unexploded_areas.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_data, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_military_operating.rds")))
 
-sf::st_write(obj = hex_grid_submodel, dsn = submodel_suitability_gpkg, layer = paste(region, "hex", submodel, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_submodel, dsn = submodel_suitability_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}_suitability"), append = F)
 
 #####################################
 #####################################
