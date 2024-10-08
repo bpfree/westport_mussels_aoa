@@ -218,10 +218,10 @@ westport_constraints <- hex_grid_constraints %>%
 #####################################
 
 # Export data
-## Suitability
+## suitability
 sf::st_write(obj = westport_constraints, dsn = suitability_gpkg, layer = paste(region, layer_name, "suitability", sep = "_"), append = F)
 
-## Constraints
+## constraints
 saveRDS(obj = hex_grid_aids_navigation, file = paste(constraints_dir, paste(region, "hex_constraint_aids_navigation.rds", sep = "_"), sep = "/"))
 saveRDS(obj = hex_grid_environmental_sensor, file = paste(constraints_dir, paste(region, "hex_constraint_environmental_sensor.rds", sep = "_"), sep = "/"))
 saveRDS(obj = hex_grid_danger_restricted, file = paste(constraints_dir, paste(region, "hex_constraint_danger_restricted.rds", sep = "_"), sep = "/"))
