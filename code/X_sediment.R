@@ -49,7 +49,7 @@ pacman::p_load(docxtractr,
 data_dir <- "data/a_raw_data/SedimentTexture/SedimentTexture.gpkg"
 
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
 #### natural and cultural resources
@@ -64,7 +64,7 @@ sediment_gpkg <- "data/b_intermediate_data/westport_sediment.gpkg"
 sf::st_layers(dsn = data_dir,
               do_count = T)
 
-sf::st_layers(dsn = study_region_gpkg,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
 
 #####################################
@@ -72,14 +72,14 @@ sf::st_layers(dsn = study_region_gpkg,
 
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
 ## layer names
-export_name <- "sediment"
+layer_name <- "sediment"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -104,10 +104,10 @@ length(unique(sediment$classification)) # 238 different combinations that have e
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_"))
+region <- sf::st_read(dsn = region_gpkg, layer = paste(region, "area", sep = "_"))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = paste(region, "area_hex", sep = "_"))
 
 #####################################
 #####################################
@@ -116,7 +116,7 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 westport_sediment <- sediment %>%
   # obtain only sediment in the study area
   rmapshaper::ms_clip(target = .,
-                      clip = westport_region) %>%
+                      clip = region) %>%
   # create field called "layer" and fill with "sediment" for summary
   dplyr::mutate(layer = "sediment")
 
@@ -124,7 +124,7 @@ westport_sediment <- sediment %>%
 #####################################
 
 # sediment hex grids
-westport_sediment_hex <- westport_hex[westport_sediment, ] %>%
+westport_sediment_hex <- hex_grid[westport_sediment, ] %>%
   # spatially join sediment values to Westport hex cells
   sf::st_join(x = .,
               y = westport_sediment,
@@ -137,11 +137,11 @@ westport_sediment_hex <- westport_hex[westport_sediment, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_sediment_hex, dsn = natural_cultural_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_sediment_hex, dsn = natural_cultural_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## sediment geopackage
-sf::st_write(obj = sediment, dsn = sediment_gpkg, layer = paste(export_name, date, sep = "_"), append = F)
-sf::st_write(obj = westport_sediment, dsn = sediment_gpkg, layer = paste(region, export_name, date, sep = "_"), append = F)
+sf::st_write(obj = sediment, dsn = sediment_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = westport_sediment, dsn = sediment_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
