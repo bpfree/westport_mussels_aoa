@@ -46,18 +46,18 @@ pacman::p_load(docxtractr,
 ## define data directory (as this is an R Project, pathnames are simplified)
 ### input directories
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
-#### industry, transportation, navigation
-submodel_gpkg <- "data/c_submodel_data/industry_transportation_navigation.gpkg"
+#### submodel geopackage
+submodel_gpkg <- stringr::str("data/c_submodel_data/{submodel}.gpkg")
 
-### industry, transportation, navigation directory
+### submodel directory
 suitability_dir <- "data/d_suitability_data"
 dir.create(paste0(suitability_dir, "/",
-                  "industry_suitability"))
+                  stringr::str_glue("{submodel}_suitability")))
 
-industry_dir <- "data/d_suitability_data/industry_suitability"
-industry_gpkg <- "data/d_suitability_data/industry_suitability/westport_industry_suitability.gpkg"
+suitability_dir <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability")
+submodel_suitability_gpkg <- stringr::str_glue("data/d_suitability_data/{submodel}_suitability/{region_name}_{submodel}_suitability.gpkg")
 
 #### suitability
 suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
@@ -65,7 +65,7 @@ suitability_gpkg <- "data/d_suitability_data/suitability.gpkg"
 #####################################
 
 # inspect layers within geopackage
-sf::st_layers(dsn = study_region_gpkg,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
 
 sf::st_layers(dsn = submodel_gpkg,
@@ -76,14 +76,14 @@ sf::st_layers(dsn = submodel_gpkg,
 
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
 ## layer names
-export_name <- "industry"
+layer_name <- "industry"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -96,20 +96,20 @@ gm_wt <- 1/1
 
 # load data
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
-## constraints
-### unexploded ordnance areas
-westport_hex_ais <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "ais", date, sep = "_")) %>%
+## submodel datasets
+### AIS
+hex_grid_ais <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "ais", date, sep = "_")) %>%
   sf::st_drop_geometry()
 
 #####################################
 #####################################
 
 # Create Westport industry, transportation, and navigation submodel
-westport_hex_industry <- westport_hex %>%
+hex_grid_industry <- hex_grid %>%
   dplyr::left_join(x = .,
-                   y = westport_hex_ais,
+                   y = hex_grid_ais,
                    by = "index") %>%
   dplyr::select(index,
                 contains("max")) %>%
@@ -130,7 +130,7 @@ westport_hex_industry <- westport_hex %>%
                   .after = ais_max)
 
 ### ***Warning: there are duplicates of the index
-duplicates_verify <- westport_hex_industry %>%
+duplicates_verify <- hex_grid_industry %>%
   # create frequency field based on index
   dplyr::add_count(index) %>%
   # see which ones are duplicates
@@ -143,12 +143,12 @@ duplicates_verify <- westport_hex_industry %>%
 
 # Export data
 ## Suitability
-sf::st_write(obj = westport_hex_industry, dsn = suitability_gpkg, layer = paste(region, export_name, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_grid_industry, dsn = suitability_gpkg, layer = paste(region, layer_name, "suitability", sep = "_"), append = F)
 
 ## Constraints
-saveRDS(obj = westport_hex_ais, file = paste(industry_dir, paste(region, "hex_industry_ais.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_grid_ais, file = paste(industry_dir, paste(region, "hex_industry_ais.rds", sep = "_"), sep = "/"))
 
-sf::st_write(obj = westport_hex_industry, dsn = industry_gpkg, layer = paste(region, "hex", export_name, "suitability", sep = "_"), append = F)
+sf::st_write(obj = hex_grid_industry, dsn = industry_gpkg, layer = paste(region, "hex", layer_name, "suitability", sep = "_"), append = F)
 
 #####################################
 #####################################
