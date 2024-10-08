@@ -53,6 +53,9 @@ crs <- "EPSG:26918"
 ## layer names
 layer_name <- "combined_protected_resources"
 
+## submodel
+submodel <- "natural_cultural"
+
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
 
@@ -70,7 +73,7 @@ region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_a
 
 ### output directories
 #### natural and cultural resources
-natural_cultural_gpkg <- "data/c_submodel_data/natural_cultural.gpkg"
+submodel_gpkg <- stringr::str_glue("data/c_submodel_data/{submodel}.gpkg")
 
 #### intermediate directories
 output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
@@ -120,7 +123,7 @@ zmf_function <- function(combined_protected_resources){
 
 # load data
 ## combined protected resources data
-comb_prot_resources <- sf::st_read(dsn = file.path(paste(data_dir, "final_PRD_CEATL_WP.shp", sep = "/"))) %>%
+data <- sf::st_read(dsn = file.path(paste(data_dir, "final_PRD_CEATL_WP.shp", sep = "/"))) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
 
@@ -136,7 +139,7 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 #####################################
 
 # limit data to study region
-westport_comb_prot_resources <- comb_prot_resources %>%
+region_data <- data %>%
   # obtain only combined protected resources in the study area
   rmapshaper::ms_clip(target = .,
                       clip = region) %>%
@@ -147,10 +150,10 @@ westport_comb_prot_resources <- comb_prot_resources %>%
 #####################################
 
 # combined protected resources hex grids
-westport_comb_prot_resources_hex <- hex_grid[westport_comb_prot_resources, ] %>%
+region_data_hex <- hex_grid[region_data, ] %>%
   # spatially join combined protected resources values to Westport hex cells
   sf::st_join(x = .,
-              y = westport_comb_prot_resources,
+              y = region_data,
               join = st_intersects) %>%
   # select fields of importance
   dplyr::select(index, layer, GEO_MEAN) %>%
@@ -172,11 +175,11 @@ westport_comb_prot_resources_hex <- hex_grid[westport_comb_prot_resources, ] %>%
 
 # export data
 ## constraints geopackage
-sf::st_write(obj = westport_comb_prot_resources_hex, dsn = natural_cultural_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data_hex, dsn = natural_cultural_gpkg, layer = stringr::str_glue("{region_name}_hex_{layer_name}_{date}"), append = F)
 
 ## combined protected resources geopackage
-sf::st_write(obj = comb_prot_resources, dsn = comb_prot_resources_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
-sf::st_write(obj = westport_comb_prot_resources, dsn = comb_prot_resources_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
+sf::st_write(obj = data, dsn = output_gpkg, layer = stringr::str_glue("{layer_name}_{date}"), append = F)
+sf::st_write(obj = region_data, dsn = output_gpkg, layer = stringr::str_glue("{region_name}_{layer_name}_{date}"), append = F)
 
 #####################################
 #####################################
