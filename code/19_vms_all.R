@@ -218,13 +218,13 @@ dim(smb_15_16) # 266 x 351
 her_15_16 <- terra::extend(x = her_15_16,
                              # extend to match largest extent
                              y = pel_15_16)
-mnk_15_16 <- terra::extend(x = mnk_15_16,,
+mnk_15_16 <- terra::extend(x = mnk_15_16,
                              # extend to match largest extent
                              y = pel_15_16)
-ses_15_16 <- terra::extend(x = ses_15_16,,
+ses_15_16 <- terra::extend(x = ses_15_16,
                              # extend to match largest extent
                              y = pel_15_16)
-smb_15_16 <- terra::extend(x = smb_15_16,,
+smb_15_16 <- terra::extend(x = smb_15_16,
                            # extend to match largest extent
                            y = pel_15_16)
 
