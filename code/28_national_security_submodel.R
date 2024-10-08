@@ -146,13 +146,13 @@ duplicates_verify <- hex_submodel %>%
 #####################################
 
 # Export data
-## Suitability
-sf::st_write(obj = hex_submodel, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{submodel}_suitability"), append = F)
+## suitability
+sf::st_write(obj = hex_submodel, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{submodel}_suitability_{date}"), append = F)
 
-## Constraints
-saveRDS(obj = hex_data, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_military_operating.rds")))
+## constraints
+saveRDS(obj = hex_data, file = file.path(submodel_suitability_dir, stringr::str_glue("{region_name}_hex_{submodel}_military_operating_{date}.rds")))
 
-sf::st_write(obj = hex_submodel, dsn = submodel_suitability_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}_suitability"), append = F)
+sf::st_write(obj = hex_submodel, dsn = submodel_suitability_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}_suitability_{date}"), append = F)
 
 #####################################
 #####################################
