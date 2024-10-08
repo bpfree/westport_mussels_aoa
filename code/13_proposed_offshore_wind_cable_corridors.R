@@ -92,7 +92,6 @@ sf::st_layers(dsn = region_gpkg,
 ### Marine Cadastre: https://hub.marinecadastre.gov/datasets/BOEM::offshore-wind-export-cable-corridors-proposed
 ### metadata: https://www.arcgis.com/sharing/rest/content/items/0e57fcbb8aaf49c5b8d0944a4ffeef08/info/metadata/metadata.xml?format=default&output=html
 ### REST server: https://services7.arcgis.com/G5Ma95RzqJRPKsWL/arcgis/rest/services/Offshore_Wind-_Proposed_Export_Cable_Corridors/FeatureServer/0
-
 data <- sf::st_read(dsn = file.path(data_dir, "Offshore_Wind-_Proposed_Export_Cable_Corridors.shp")) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs)
