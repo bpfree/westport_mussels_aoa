@@ -49,19 +49,19 @@ pacman::p_load(docxtractr,
 data_dir <- "data/a_raw_data/ais_2022/ais_2022_year"
 
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
 #### industry, transportation, navigation
 industry_gpkg <- "data/c_submodel_data/industry_transportation_navigation.gpkg"
 
 #### intermediate directories
-ais_gpkg <- "data/b_intermediate_data/westport_ais.gpkg"
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
 #####################################
 
 # inspect layers within geopackage
-sf::st_layers(dsn = study_region_gpkg,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
 
 #####################################
@@ -69,7 +69,7 @@ sf::st_layers(dsn = study_region_gpkg,
 
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -79,7 +79,7 @@ crs <- "EPSG:26918"
 ais_crs <- "EPSG:3857"
 
 ## layer names
-export_name <- "ais"
+layer_name <- "ais"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -123,7 +123,7 @@ zmf_function <- function(raster){
 # load data
 ## AIS 2022 data (source: https://services.northeastoceandata.org/downloads/AIS/AIS2022_Annual.zip)
 ### metadata: https://www.northeastoceandata.org/files/metadata/Themes/AIS/AllAISVesselTransitCounts2022.pdf
-ais <- terra::rast(paste(data_dir, "w001001.adf", sep = "/"))
+ais <- terra::rast(paste(file.path, "w001001.adf", sep = "/"))
 crs(ais) <- ais_crs
 
 ### inspect data
@@ -140,25 +140,25 @@ cat(crs(ais))
 #####################################
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_")) %>%
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area")) %>%
   # change projection to match AIS data coordinate reference system
   sf::st_transform(crs = ais_crs)
 
 ### Inspect study region coordinate reference system
-cat(crs(westport_region))
+cat(crs(region))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
 
-plot(westport_region)
+plot(region)
 
 # limit data to study region
 westport_ais <- terra::crop(x = ais,
                             # crop using study region
-                            y = westport_region,
+                            y = region,
                             # mask using study region (T = True)
                             mask = T)
 
@@ -191,7 +191,7 @@ westport_ais_polygon <- terra::as.polygons(x = ais_z,
   # add field "layer" and populate with "ais"
   dplyr::mutate(layer = "ais") %>%
   # limit to the study region
-  rmapshaper::ms_clip(clip = westport_region) %>%
+  rmapshaper::ms_clip(clip = region) %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 18N) that will convert units from degrees to meters
   sf::st_transform(crs = crs)
 
@@ -202,7 +202,7 @@ westport_ais_polygon <- terra::as.polygons(x = ais_z,
 #####################################
 
 # vessel trip reporting hex grids
-westport_ais_hex <- westport_hex[westport_ais_polygon, ] %>%
+westport_ais_hex <- hex_grid[westport_ais_polygon, ] %>%
   # spatially join vessel trip reporting values to Westport hex cells
   sf::st_join(x = .,
               y = westport_ais_polygon,
@@ -223,11 +223,11 @@ westport_ais_hex <- westport_hex[westport_ais_polygon, ] %>%
 
 # export data
 ## industry, transportation, navigation geopackage
-sf::st_write(obj = westport_ais_hex, dsn = industry_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_ais_hex, dsn = industry_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## ais geopackage
-sf::st_write(obj = westport_ais_polygon, dsn = ais_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
-sf::st_write(obj = westport_ais_hex, dsn = ais_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_ais_polygon, dsn = ais_gpkg, layer = paste(region, layer_name, "polygon", date, sep = "_"), append = F)
+sf::st_write(obj = westport_ais_hex, dsn = ais_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## ais raster
 ais_raster <- dir.create(paste0("data/b_intermediate_data/ais_data"))
