@@ -359,10 +359,10 @@ region_data_z <- region_data %>%
 # convert raster to vector data (as polygons)
 # convert to polygon
 region_data_polygon <- terra::as.polygons(x = region_data_z,
-                                           # do not aggregate all similar values together as single feature
-                                           aggregate = F,
-                                           # use the values from original raster
-                                           values = T) %>%
+                                          # do not aggregate all similar values together as single feature
+                                          aggregate = F,
+                                          # use the values from original raster
+                                          values = T) %>%
   # change to simple feature (sf)
   sf::st_as_sf() %>%
   # simplify column name to "vms" (this is the first column of the object, thus the colnames(.)[1] means take the first column name from the vms object)
