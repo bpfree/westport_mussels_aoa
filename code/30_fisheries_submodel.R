@@ -96,7 +96,7 @@ sf::st_layers(dsn = submodel_gpkg,
 
 # load data
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 ## submodel datasets
 ### VMS (all gear, 2015 - 2016)
