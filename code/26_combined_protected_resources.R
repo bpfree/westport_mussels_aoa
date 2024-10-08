@@ -51,7 +51,7 @@ region_name <- "westport"
 crs <- "EPSG:26918"
 
 ## layer names
-layer_name <- "combined_protected_resources"
+layer_name <- "cpr"
 
 ## submodel
 submodel <- "natural_cultural"
@@ -107,12 +107,12 @@ zmf_function <- function(combined_protected_resources){
     # calculate the z-shape membership value (more desired values get a score of 1 and less desired values will decrease till 0.01)
     ## ***Note: in other words, habitats with higher richness values will be closer to 0
     dplyr::mutate(cpr_z_value = ifelse(cpr_value == min, 1, # if value is equal to minimum, score as 1
-                                   # if value is larger than minimum but lower than mid-value, calculate based on scalar equation
-                                   ifelse(cpr_value > min & cpr_value < (min + z_max) / 2, 1 - 2 * ((cpr_value - min) / (z_max - min)) ** 2,
-                                          # if value is lower than z_maximum but larger than than mid-value, calculate based on scalar equation
-                                          ifelse(cpr_value >= (min + z_max) / 2 & cpr_value < z_max, 2 * ((cpr_value - z_max) / (z_max - min)) ** 2,
-                                                 # if value is equal to maximum, value is equal to 0.01 [all other values should get an NA]
-                                                 ifelse(cpr_value == z_max, 0.01, NA)))))
+                                       # if value is larger than minimum but lower than mid-value, calculate based on scalar equation
+                                       ifelse(cpr_value > min & cpr_value < (min + z_max) / 2, 1 - 2 * ((cpr_value - min) / (z_max - min)) ** 2,
+                                              # if value is lower than z_maximum but larger than than mid-value, calculate based on scalar equation
+                                              ifelse(cpr_value >= (min + z_max) / 2 & cpr_value < z_max, 2 * ((cpr_value - z_max) / (z_max - min)) ** 2,
+                                                     # if value is equal to maximum, value is equal to 0.01 [all other values should get an NA]
+                                                     ifelse(cpr_value == z_max, 0.01, NA)))))
   
   # return the layer
   return(combined_protected_resources)
@@ -130,10 +130,10 @@ data <- sf::st_read(dsn = file.path(paste(data_dir, "final_PRD_CEATL_WP.shp", se
 #####################################
 
 ## study region
-region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_boundary_{date}"))
 
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_hex_rm_constraints_{date}"))
 
 #####################################
 #####################################
@@ -158,17 +158,18 @@ region_data_hex <- hex_grid[region_data, ] %>%
   # select fields of importance
   dplyr::select(index, layer, GEO_MEAN) %>%
   # rename "GEO_MEAN" field
-  dplyr::rename(cpr_value = GEO_MEAN) %>%
+  dplyr::rename(!!stringr::str_glue("{layer_name}_value") := GEO_MEAN) %>%
   # calculate z-values
   zmf_function() %>%
   # relocate the z-value field
-  dplyr::relocate(cpr_z_value, .after = cpr_value) %>%
+  dplyr::relocate(stringr::str_glue("{layer_name}_z_value"),
+                  .after = stringr::str_glue("{layer_name}_value")) %>%
   # group by the index values as there are duplicates
   dplyr::group_by(index) %>%
   # summarise the fisheries score values
   ## take the maximum value of the combined protected resource score for any that overlap
   ## ***Note: this will provide the most conservation given that high values are less desirable
-  dplyr::summarise(cpr_max = max(cpr_z_value))
+  dplyr::summarise(!!stringr::str_glue("{layer_name}_max") := max(.data[[stringr::str_glue("{layer_name}_z_value")]]))
 
 #####################################
 #####################################

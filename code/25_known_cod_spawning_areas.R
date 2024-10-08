@@ -97,8 +97,8 @@ sf::st_layers(dsn = region_gpkg,
 ## known cod spawning areas data (source: https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip)
 ### metadata: https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf
 data <- sf::st_read(dsn = data_dir,
-                            # known cod spawning areas
-                            layer = sf::st_layers(data_dir)[[1]][1]) %>%
+                    # known cod spawning areas
+                    layer = sf::st_layers(data_dir)[[1]][1]) %>%
   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
   sf::st_transform(x = ., crs = crs) %>%
   # apply 2000-meter setback
