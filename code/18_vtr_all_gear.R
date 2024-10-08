@@ -49,19 +49,19 @@ pacman::p_load(docxtractr,
 data_dir <- "data/a_raw_data/VTR_allGearTypes/"
 
 #### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
 
 ### output directories
 #### fisheries
 fisheries_gpkg <- "data/c_submodel_data/fisheries.gpkg"
 
 #### intermediate directories
-vtr_all_gpkg <- "data/b_intermediate_data/westport_vtr_all.gpkg"
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
 
 #####################################
 
 # inspect layers within geopackage
-sf::st_layers(dsn = study_region_gpkg,
+sf::st_layers(dsn = region_gpkg,
               do_count = T)
 
 #####################################
@@ -69,7 +69,7 @@ sf::st_layers(dsn = study_region_gpkg,
 
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -79,7 +79,7 @@ crs <- "EPSG:26918"
 vtr_crs <- "EPSG:26919"
 
 ## layer names
-export_name <- "vtr_all_gear"
+layer_name <- "vtr_all_gear"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -124,18 +124,18 @@ zmf_function <- function(raster){
 
 # load data
 ## VTR (all gear types)
-vtr_all <- terra::rast(paste(data_dir, "VTR_allGearTypes", sep = "/"))
+vtr_all <- terra::rast(paste(file.path, "VTR_allGearTypes", sep = "/"))
 
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_")) %>%
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area")) %>%
   # change projection to match AIS data coordinate reference system
-  sf::st_transform(crs = vtr_crs)
+  sf::st_transform(crs = vms_crs)
 
 ### Inspect study region coordinate reference system
-cat(crs(westport_region))
+cat(crs(region))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
@@ -144,7 +144,7 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 
 vtr_all_raster <- terra::crop(x = vtr_all,
                               # crop using study region
-                              y = westport_region,
+                              y = region,
                               # mask using study region (T = True)
                               mask = T,
                               extend = T)
@@ -175,7 +175,7 @@ westport_vtr_all_polygon <- terra::as.polygons(x = vtr_all_z,
   # add field "layer" and populate with "vms"
   dplyr::mutate(layer = "vtr") %>%
   # limit to the study region
-  rmapshaper::ms_clip(clip = westport_region) %>%
+  rmapshaper::ms_clip(clip = region) %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 18N) that will convert units from degrees to meters
   sf::st_transform(crs = crs)
 
@@ -186,7 +186,7 @@ westport_vtr_all_polygon <- terra::as.polygons(x = vtr_all_z,
 #####################################
 
 # vessel trip reporting hex grids
-westport_vtr_all_hex <- westport_hex[westport_vtr_all_polygon, ] %>%
+westport_vtr_all_hex <- hex_grid[westport_vtr_all_polygon, ] %>%
   # spatially join vessel trip reporting values to Westport hex cells
   sf::st_join(x = .,
               y = westport_vtr_all_polygon,
@@ -207,11 +207,11 @@ westport_vtr_all_hex <- westport_hex[westport_vtr_all_polygon, ] %>%
 
 # export data
 ## fisheries geopackage
-sf::st_write(obj = westport_vtr_all_hex, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_vtr_all_hex, dsn = fisheries_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## vms geopackage
-sf::st_write(obj = westport_vtr_all_polygon, dsn = vtr_all_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
-sf::st_write(obj = westport_vtr_all_hex, dsn = vtr_all_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_vtr_all_polygon, dsn = vtr_all_gpkg, layer = paste(region, layer_name, "polygon", date, sep = "_"), append = F)
+sf::st_write(obj = westport_vtr_all_hex, dsn = vtr_all_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## vms raster
 vtr_raster <- dir.create(paste0("data/b_intermediate_data/vtr_data"))

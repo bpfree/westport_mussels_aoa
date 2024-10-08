@@ -42,34 +42,9 @@ pacman::p_load(docxtractr,
 #####################################
 #####################################
 
-# set directories
-## define data directory (as this is an R Project, pathnames are simplified)
-### input directories
-#### vessel trip reporting
-data_dir <- "data/a_raw_data/vms/vms_fishing/fisheries_4_5_kt"
-
-#### study area grid
-study_region_gpkg <- "data/b_intermediate_data/westport_study_area.gpkg"
-
-### output directories
-#### fisheries
-fisheries_gpkg <- "data/c_submodel_data/fisheries.gpkg"
-
-#### intermediate directories
-vms_4_5kt_gpkg <- "data/b_intermediate_data/westport_vms_4_5knot.gpkg"
-
-#####################################
-
-# inspect layers within geopackage
-sf::st_layers(dsn = study_region_gpkg,
-              do_count = T)
-
-#####################################
-#####################################
-
 # set parameters
 ## designate region name
-region <- "westport"
+region_name <- "westport"
 
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
@@ -79,7 +54,7 @@ crs <- "EPSG:26918"
 vms_crs <- "ESRI:102008"
 
 ## layer names
-export_name <- "vms_4_5_knot"
+layer_name <- "vms_4_5_knot"
 
 ## designate date
 date <- format(Sys.Date(), "%Y%m%d")
@@ -87,15 +62,40 @@ date <- format(Sys.Date(), "%Y%m%d")
 #####################################
 #####################################
 
+# set directories
+## define data directory (as this is an R Project, pathnames are simplified)
+### input directories
+#### vessel trip reporting
+data_dir <- "data/a_raw_data/vms/vms_fishing/fisheries_4_5_kt"
+
+#### study area grid
+region_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_study_area.gpkg")
+
+### output directories
+#### fisheries
+fisheries_gpkg <- "data/c_submodel_data/fisheries.gpkg"
+
+#### intermediate directories
+output_gpkg <- stringr::str_glue("data/b_intermediate_data/{region_name}_{layer_name}.gpkg")
+
+#####################################
+
+# inspect layers within geopackage
+sf::st_layers(dsn = region_gpkg,
+              do_count = T)
+
+#####################################
+#####################################
+
 # function
-fishery_function <- function(fishery_dir, study_region){
+fishery_function <- function(fishery_dir, region){
   # load the fishery raster data
-  fishery_raster <- terra::rast(paste(data_dir, fishery_dir, "w001001.adf", sep = "/"))
+  fishery_raster <- terra::rast(paste(file.path, fishery_dir, "w001001.adf", sep = "/"))
   
   # limit fishery raster data to the study region
   raster <- terra::crop(x = fishery_raster,
                         # crop using study region
-                        y = study_region,
+                        y = region,
                         # mask using study region (T = True)
                         mask = T,
                         extend = T)
@@ -152,15 +152,15 @@ zmf_function <- function(raster){
 
 # load data
 ## study region
-westport_region <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area", sep = "_")) %>%
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area")) %>%
   # change projection to match AIS data coordinate reference system
   sf::st_transform(crs = vms_crs)
 
 ### Inspect study region coordinate reference system
-cat(crs(westport_region))
+cat(crs(region))
 
 ## hex grid
-westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area_hex", sep = "_"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
 
 #####################################
 #####################################
@@ -168,25 +168,25 @@ westport_hex <- sf::st_read(dsn = study_region_gpkg, layer = paste(region, "area
 # run z-membership function on each fishery
 ## 2015 - 2016 fishery data for speeds under 4 / 5 knots
 ### herring
-her_4kt <- fishery_function("her_15_16_4kt", westport_region)
+her_4kt <- fishery_function("her_15_16_4kt", region)
 
 ### monk fish
-mnk_4kt <- fishery_function("mnk_15_16_4kt", westport_region)
+mnk_4kt <- fishery_function("mnk_15_16_4kt", region)
 
 ### multiple species
-nms_4kt <- fishery_function("nms_15_16_4kt", westport_region)
+nms_4kt <- fishery_function("nms_15_16_4kt", region)
 
 ### pelagics
-pel_4kt <- fishery_function("pel_15_16_4kt", westport_region)
+pel_4kt <- fishery_function("pel_15_16_4kt", region)
 
 ### surfclam / quahog
-sco_4kt <- fishery_function("sco_15_16_4kt", westport_region)
+sco_4kt <- fishery_function("sco_15_16_4kt", region)
 
 ### scallops
-ses_5kt <- fishery_function("ses_15_16_5kt", westport_region)
+ses_5kt <- fishery_function("ses_15_16_5kt", region)
 
 ### squid
-smb_4kt <- fishery_function("smb_15_16_4kt", westport_region)
+smb_4kt <- fishery_function("smb_15_16_4kt", region)
 
 #####################################
 
@@ -364,7 +364,7 @@ fishery_raster <- terra::app(c(her_4kt_3,
                              na.rm = T) %>%
   
   # crop and mask to the study region
-  terra::crop(westport_region,
+  terra::crop(region,
               mask = T)
 
 #####################################
@@ -393,7 +393,7 @@ westport_vms_polygon <- terra::as.polygons(x = fishery_z_scale,
   # add field "layer" and populate with "vms"
   dplyr::mutate(layer = "vms") %>%
   # limit to the study region
-  rmapshaper::ms_clip(clip = westport_region) %>%
+  rmapshaper::ms_clip(clip = region) %>%
   # reproject data into a coordinate system (NAD 1983 UTM Zone 18N) that will convert units from degrees to meters
   sf::st_transform(crs = crs)
 
@@ -404,7 +404,7 @@ westport_vms_polygon <- terra::as.polygons(x = fishery_z_scale,
 #####################################
 
 # vessel trip reporting hex grids
-westport_vms_hex <- westport_hex[westport_vms_polygon, ] %>%
+westport_vms_hex <- hex_grid[westport_vms_polygon, ] %>%
   # spatially join vessel trip reporting values to Westport hex cells
   sf::st_join(x = .,
               y = westport_vms_polygon,
@@ -425,11 +425,11 @@ westport_vms_hex <- westport_hex[westport_vms_polygon, ] %>%
 
 # export data
 ## fisheries geopackage
-sf::st_write(obj = westport_vms_hex, dsn = fisheries_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_vms_hex, dsn = fisheries_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## vms geopackage
-sf::st_write(obj = westport_vms_polygon, dsn = vms_4_5kt_gpkg, layer = paste(region, export_name, "polygon", date, sep = "_"), append = F)
-sf::st_write(obj = westport_vms_hex, dsn = vms_4_5kt_gpkg, layer = paste(region, "hex", export_name, date, sep = "_"), append = F)
+sf::st_write(obj = westport_vms_polygon, dsn = vms_4_5kt_gpkg, layer = paste(region, layer_name, "polygon", date, sep = "_"), append = F)
+sf::st_write(obj = westport_vms_hex, dsn = vms_4_5kt_gpkg, layer = stringr::str_glue("{region}_hex_{layer_name}_{date}"), append = F)
 
 ## vms raster
 vms_raster <- dir.create(paste0("data/b_intermediate_data/vms_data"))
