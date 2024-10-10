@@ -61,19 +61,20 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Shipping | NOAA | [Shipping lanes (federal)](http://encdirect.noaa.gov/theme_layers/data/shipping_lanes/shippinglanes.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/39986) | Note these data are for shipping lanes in federal waters |
 | Wind | BOEM | [Offshore Wind - export cable corridors (proposed)](https://hub.marinecadastre.gov/datasets/BOEM::offshore-wind-export-cable-corridors-proposed) | [Metadata](https://www.arcgis.com/sharing/rest/content/items/0e57fcbb8aaf49c5b8d0944a4ffeef08/info/metadata/metadata.xml?format=default&output=html) | [REST Service](https://services7.arcgis.com/G5Ma95RzqJRPKsWL/arcgis/rest/services/Offshore_Wind-_Proposed_Export_Cable_Corridors/FeatureServer/0) |
 
-#### *National Security Data*
+#### *Costs Data*
+##### *National Security Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Unexploded ordnance | NOAA | [Unexploded ordnance areas](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnanceArea.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66206) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
 | Airspace | NOAA | [Special use airspace](https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/48898) | [MarineCadastre](https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::military-special-use-airspace/about) contains more information; an older [link](https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip) for these data should not get used for those data have become deprecated (according to [Daniel Martin](mailtio:daniel.martin@noaa.gov) as of 31 January 2024) |
 | Military | [Data.gov](https://data.gov/) | [Military operating areas](https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/55364) | MarineCadastre contains an alternative [download link](https://marinecadastre.gov/downloads/data/mc/MilitaryOperatingAreaBoundary.zip), yet these data are deprecated as of 9 February 2024 and contain different objects, though both datasets have the same data for the study region |
 
-#### *Industry, Transportation, and Navigation Data*
+##### *Industry, Transportation, and Navigation Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | AIS | [Northeast Ocean Data](https://www.northeastoceandata.org/) | [AIS vessel tracks (counts)](https://services.northeastoceandata.org/downloads/AIS/AIS2022_Annual.zip) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/AIS/AllAISVesselTransitCounts2022.pdf) | For data downloads at Northeast Ocean Data, use this [link](https://www.northeastoceandata.org/data-download/)
 
-#### *Fisheries Data*
+##### *Fisheries Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | VMS | --------- | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf) |
@@ -84,7 +85,7 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Cod |--------- | [Cod spawning protection areas](https://media.fisheries.noaa.gov/2020-04/gom-spawning-groundfish-closures-20180409-noaa-garfo.zip) | [Metadata](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-metadata-noaa-fisheries_.pdf) |[PDF maps](https://media.fisheries.noaa.gov/dam-migration/gom-spawning-groundfish-closures-map-noaa-fisheries_.pdf) |
 | Cod |--------- | Known cod spawning areas | ----------| Not in study region |
 
-#### *Natural and Cultural Resources Data*
+##### *Natural and Cultural Resources Data*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Protected resources |-------------- | Combined protected resources |-------------- | --------------|
