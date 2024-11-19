@@ -46,6 +46,10 @@ pacman::p_load(docxtractr,
 ## designate region name
 region_name <- "westport"
 
+## depth
+min_depth <- -30
+max_depth <- -50
+
 ## coordinate reference system
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
@@ -218,7 +222,9 @@ terra::minmax(westport_bath)[2] # bottom depth
 #####################################
 
 # limit area to locations where bathymetry falls between -40 and -20 meters
-westport_bath_boundary <- terra::ifel(westport_bath < -40, NA, terra::ifel(westport_bath > -20, NA, westport_bath))
+westport_bath_boundary <- terra::ifel(westport_bath < max_depth, NA, terra::ifel(westport_bath > min_depth, NA, westport_bath))
+
+plot(westport_bath_boundary)
 
 # plot new raster
 plot(westport_bath_boundary)
