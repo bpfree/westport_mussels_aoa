@@ -101,7 +101,7 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 ## constraints
 ### offshore wind energy areas
 hex_grid_offshore_wind <- sf::st_read(dsn = submodel_gpkg, stringr::str_glue("{region_name}_hex_offshore_wind_{date}")) %>%
-  dplyr::mutate(uxo_loc_value = 0) %>%
+  dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 # ### unexploded ordnance locations
@@ -111,7 +111,7 @@ hex_grid_offshore_wind <- sf::st_read(dsn = submodel_gpkg, stringr::str_glue("{r
 
 ### munitions and explosive concerns
 hex_grid_mec <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_munitions_explosives_{date}")) %>%
-  dplyr::mutate(wind_value = 0) %>%
+  dplyr::mutate(mec_value = 0) %>%
   sf::st_drop_geometry()
 
 ### danger zones and restricted areas
@@ -121,7 +121,7 @@ hex_grid_danger_restricted <- sf::st_read(dsn = submodel_gpkg, layer = stringr::
 
 ### environmental sensors and buoys
 hex_grid_environmental_sensor <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_danger_zones_restricted_areas_{date}")) %>%
-  dplyr::mutate(wind_value = 0) %>%
+  dplyr::mutate(environmental_value = 0) %>%
   sf::st_drop_geometry()
 
 ### ocean disposal sites
@@ -131,17 +131,17 @@ hex_grid_environmental_sensor <- sf::st_read(dsn = submodel_gpkg, layer = string
 
 ### aids to navigation
 hex_grid_aids_navigation <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_aids_navigation_{date}")) %>%
-  dplyr::mutate(wind_value = 0) %>%
+  dplyr::mutate(navigation_value = 0) %>%
   sf::st_drop_geometry()
 
 ### wrecks and obstructions
 hex_grid_wreck_obstruction <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_wreck_obstruction_{date}")) %>%
-  dplyr::mutate(wind_value = 0) %>%
+  dplyr::mutate(wreck_value = 0) %>%
   sf::st_drop_geometry()
 
 ### shipping fairways
 hex_grid_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_shipping_fairway_{date}")) %>%
-  dplyr::mutate(wind_value = 0) %>%
+  dplyr::mutate(shipping_value = 0) %>%
   sf::st_drop_geometry()
 
 #####################################
@@ -193,7 +193,8 @@ westport_constraints <- hex_grid_constraints %>%
   # group by key fields to reduce duplicates
   dplyr::group_by(index,
                   wind_value,
-                  uxo_loc_value,
+                  # uxo_loc_value,
+                  mec_value,
                   danger_value,
                   environmental_value,
                   # disposal_value,
@@ -204,7 +205,8 @@ westport_constraints <- hex_grid_constraints %>%
   dplyr::distinct() %>%
   # create a field called "constraints" that populates with 0 whenever datasets equal 0
   dplyr::mutate(constraints = case_when(wind_value == 0 ~ 0,
-                                        uxo_loc_value == 0 ~ 0,
+                                        # uxo_loc_value == 0 ~ 0
+                                        mec_value == 0 ~ 0,
                                         danger_value == 0 ~ 0,
                                         environmental_value == 0 ~ 0,
                                         # disposal_value == 0 ~ 0,
@@ -219,19 +221,19 @@ westport_constraints <- hex_grid_constraints %>%
 
 # Export data
 ## suitability
-sf::st_write(obj = westport_constraints, dsn = suitability_gpkg, layer = paste(region, layer_name, "suitability", sep = "_"), append = F)
+sf::st_write(obj = westport_constraints, dsn = suitability_gpkg, layer = stringr::str_glue("{region_name}_{submodel}_suitability"), append = F)
 
 ## constraints
-saveRDS(obj = hex_grid_aids_navigation, file = paste(constraints_dir, paste(region, "hex_constraint_aids_navigation.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_environmental_sensor, file = paste(constraints_dir, paste(region, "hex_constraint_environmental_sensor.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_danger_restricted, file = paste(constraints_dir, paste(region, "hex_constraint_danger_restricted.rds", sep = "_"), sep = "/"))
-# saveRDS(obj = hex_grid_ocean_disposal, file = paste(constraints_dir, paste(region, "hex_constraint_ocean_disposal.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_offshore_wind, file = paste(constraints_dir, paste(region, "hex_constraint_offshore_wind.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_shipping_fairway, file = paste(constraints_dir, paste(region, "hex_constraint_shipping_fairway.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_unexploded_location, file = paste(constraints_dir, paste(region, "hex_constraint_unexploded_ordnance_location.rds", sep = "_"), sep = "/"))
-saveRDS(obj = hex_grid_wreck_obstruction, file = paste(constraints_dir, paste(region, "hex_constraint_wreck_obstruction.rds", sep = "_"), sep = "/"))
+saveRDS(obj = hex_grid_aids_navigation, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_aids_navigation.rds")))
+saveRDS(obj = hex_grid_environmental_sensor, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_environmental_sensor.rds")))
+saveRDS(obj = hex_grid_danger_restricted, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_danger_restricted.rds")))
+# saveRDS(obj = hex_grid_ocean_disposal, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_ocean_disposal.rds")))
+saveRDS(obj = hex_grid_offshore_wind, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_offshore_wind.rds")))
+saveRDS(obj = hex_grid_shipping_fairway, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_shipping_fairway.rds")))
+# saveRDS(obj = hex_grid_unexploded_location, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_unexploded_ordnance_location.rds")))
+saveRDS(obj = hex_grid_wreck_obstruction, file = file.path(constraints_dir, stringr::str_glue("{region_name}_hex_constraint_wreck_obstruction.rds")))
 
-sf::st_write(obj = hex_grid_constraints, dsn = constraints_gpkg, layer = paste(region, "hex", layer_name, sep = "_"), append = F)
+sf::st_write(obj = hex_grid_constraints, dsn = constraints_gpkg, layer = stringr::str_glue("{region_name}_hex_{submodel}"), append = F)
 
 #####################################
 #####################################
