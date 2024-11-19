@@ -114,8 +114,11 @@ region_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_cons
 #####################################
 #####################################
 
+# study region
 region_area <- bathymetry %>%
+  # remove federal waters
   rmapshaper::ms_clip(federal_waters) %>%
+  # remove town-buffered area
   rmapshaper::ms_clip(town_20mi)
 
 plot(region_area)
