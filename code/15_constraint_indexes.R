@@ -173,7 +173,7 @@ hex_constraint_list <- as.vector(hex_constraint$index)
 #####################################
 
 hex_grid_rm_constraints <- hex_grid %>%
-  dplyr::filter(!index %in% constraint_hex_list)
+  dplyr::filter(!index %in% hex_constraint_list)
 
 # create a dissolved grid
 dissolved_grid <- hex_grid_rm_constraints %>%
