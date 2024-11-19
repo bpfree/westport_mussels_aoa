@@ -100,8 +100,8 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 
 ## constraints
 ### offshore wind energy areas
-hex_grid_offshore_wind <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "offshore_wind", date, sep = "_")) %>%
-  dplyr::mutate(wind_value = 0) %>%
+hex_grid_offshore_wind <- sf::st_read(dsn = submodel_gpkg, stringr::str_glue("{region_name}_hex_offshore_wind_{date}")) %>%
+  dplyr::mutate(uxo_loc_value = 0) %>%
   sf::st_drop_geometry()
 
 # ### unexploded ordnance locations
@@ -110,18 +110,18 @@ hex_grid_offshore_wind <- sf::st_read(dsn = submodel_gpkg, layer = paste(region,
 #   sf::st_drop_geometry()
 
 ### munitions and explosive concerns
-hex_grid_mec <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "munitions_explosives", date, sep = "_")) %>%
+hex_grid_mec <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_munitions_explosives_{date}")) %>%
   dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 ### danger zones and restricted areas
-hex_grid_danger_restricted <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "danger_zones_restricted_areas", date, sep = "_")) %>%
+hex_grid_danger_restricted <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_danger_zones_restricted_areas_{date}")) %>%
   dplyr::mutate(danger_value = 0) %>%
   sf::st_drop_geometry()
 
 ### environmental sensors and buoys
-hex_grid_environmental_sensor <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "environmental_sensor", date, sep = "_")) %>%
-  dplyr::mutate(environmental_value = 0) %>%
+hex_grid_environmental_sensor <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_danger_zones_restricted_areas_{date}")) %>%
+  dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 ### ocean disposal sites
@@ -130,18 +130,18 @@ hex_grid_environmental_sensor <- sf::st_read(dsn = submodel_gpkg, layer = paste(
 #   sf::st_drop_geometry()
 
 ### aids to navigation
-hex_grid_aids_navigation <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "aids_navigation", date, sep = "_")) %>%
-  dplyr::mutate(navigation_value = 0) %>%
+hex_grid_aids_navigation <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_aids_navigation_{date}")) %>%
+  dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 ### wrecks and obstructions
-hex_grid_wreck_obstruction <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "wreck_obstruction", date, sep = "_")) %>%
-  dplyr::mutate(wreck_value = 0) %>%
+hex_grid_wreck_obstruction <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_wreck_obstruction_{date}")) %>%
+  dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 ### shipping fairways
-hex_grid_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = paste(region, "hex", "shipping_fairway", date, sep = "_")) %>%
-  dplyr::mutate(shipping_value = 0) %>%
+hex_grid_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = stringr::str_glue("{region_name}_hex_shipping_fairway_{date}")) %>%
+  dplyr::mutate(wind_value = 0) %>%
   sf::st_drop_geometry()
 
 #####################################
@@ -150,7 +150,7 @@ hex_grid_shipping_fairway <- sf::st_read(dsn = submodel_gpkg, layer = paste(regi
 # Create Oregon constraints submodel
 hex_grid_constraints <- hex_grid %>%
   dplyr::left_join(x = .,
-                   y = westport_offshore_wind,
+                   y = hex_grid_offshore_wind,
                    by = "index") %>%
   # dplyr::left_join(x = .,
   #                  y = hex_grid_unexploded_location,
