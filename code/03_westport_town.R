@@ -102,7 +102,7 @@ westport_town <- sf::st_read(dsn = data_dir,
   dplyr::summarise() %>%
   sf::st_buffer(dist = setback)
 
-plot(westport_town)
+plot(westport_town$SHAPE)
 
 #####################################
 #####################################
