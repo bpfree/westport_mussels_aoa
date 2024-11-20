@@ -23,6 +23,9 @@ data/a_raw_data/vms
 #####################################
 
 ## Intermediate data
+## study region
+data/b_intermediate_data/westport_study_region.gkpg
+
 ### AIS
 data/b_intermediate_data/ais_data
 
