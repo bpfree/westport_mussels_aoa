@@ -50,6 +50,9 @@ region_name <- "westport"
 ### EPSG:26918 is NAD83 / UTM 18N (https://epsg.io/26918)
 crs <- "EPSG:26918"
 
+## designate date
+date <- format(Sys.Date(), "%Y%m%d")
+
 #####################################
 #####################################
 
@@ -73,17 +76,17 @@ sf::st_layers(dsn = region_gpkg,
 # load data
 ## bathymetry boundary
 bathymetry <- sf::st_read(dsn = region_gpkg,
-                          layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "bathymetry",
+                          layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = stringr::str_glue("bathymetry.*{date}"),
                                                                        sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 ## federal waters
 federal_waters <- sf::st_read(dsn = region_gpkg,
-                              layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "federal",
+                              layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = str_glue("federal.*{date}"),
                                                                            sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 ## Westport town 20-mile setback
 town_20mi <- sf::st_read(dsn = region_gpkg,
-                         layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = "town",
+                         layer = sf::st_layers(region_gpkg)[[1]][grep(pattern = str_glue("town.*{date}"),
                                                                       sf::st_layers(dsn = region_gpkg, do_count = T)[[1]])])
 
 #####################################
@@ -103,13 +106,13 @@ region <- sf::st_read(dsn = file.path(study_dir, "studyRegion_constraints_polygo
 #####################################
 
 ## original hex grid
-region_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_constrained") %>%
-  # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
-  sf::st_transform(x = ., crs = crs) %>%
-  # create and index location
-  dplyr::mutate(index = row_number()) %>%
-  dplyr::relocate(index,
-                  .before = GRID_ID)
+# region_grid <- sf::st_read(dsn = westport_gpkg, layer = "studyArea_hexGrids_constrained") %>%
+#   # change to correct coordinate reference system (EPSG:26918 -- NAD83 / UTM 18N)
+#   sf::st_transform(x = ., crs = crs) %>%
+#   # create and index location
+#   dplyr::mutate(index = row_number()) %>%
+#   dplyr::relocate(index,
+#                   .before = GRID_ID)
 
 #####################################
 #####################################
@@ -121,7 +124,7 @@ region_area <- bathymetry %>%
   # remove town-buffered area
   rmapshaper::ms_clip(town_20mi)
 
-plot(region_area)
+plot(region_area$geometry)
 
 #####################################
 #####################################
@@ -183,20 +186,20 @@ region_area_hex <- region_area_grid[region_area, ] %>%
 
 # export data
 ## original grid
-sf::st_write(obj = region_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_original_grid"), append = F)
+sf::st_write(obj = region_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_original_grid_{date}"), append = F)
 
 ## study area
 ### area of interest
-sf::st_write(obj = aoi_poly, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_aoi_polygon"), append = F)
+sf::st_write(obj = aoi_poly, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_aoi_polygon_{date}"), append = F)
 
 ### study region
-sf::st_write(obj = region, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region"), append = F)
-sf::st_write(obj = region_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_grid"), append = F)
-sf::st_write(obj = region_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_hex"), append = F)
+sf::st_write(obj = region, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_{date}"), append = F)
+sf::st_write(obj = region_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_grid_{date}"), append = F)
+sf::st_write(obj = region_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_region_hex_{date}"), append = F)
 
-sf::st_write(obj = region_area, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"), append = F)
-sf::st_write(obj = region_area_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_grid"), append = F)
-sf::st_write(obj = region_area_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"), append = F)
+sf::st_write(obj = region_area, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_{date}"), append = F)
+sf::st_write(obj = region_area_grid, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_grid_{date}"), append = F)
+sf::st_write(obj = region_area_hex, dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex_{date}"), append = F)
 
 #####################################
 #####################################
