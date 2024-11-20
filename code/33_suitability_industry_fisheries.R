@@ -106,7 +106,7 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 #### AIS
 hex_ais <- sf::st_read(dsn = industry_gpkg,
                        layer = sf::st_layers(industry_gpkg)[[1]][grep(pattern = stringr::str_glue("ais_{date}"),
-                                                                         sf::st_layers(dsn = suitability_gpkg,
+                                                                         sf::st_layers(dsn = industry_gpkg,
                                                                                        do_count = T)[[1]])]) %>%
   # remove geometry
   sf::st_drop_geometry()
@@ -151,7 +151,20 @@ suitability_model <- hex_grid %>%
   # join the large pelagic survey by index field to the full Westport hex grid
   dplyr::left_join(x = .,
                    y = hex_lps,
-                   by = "index")
+                   by = "index") %>%
+
+  # add value of 1 for datasets when hex cell has value of NA
+  ## for hex cells not impacted by a particular dataset, that cell gets a value of 1
+  ### this indicates  suitability with wind energy development
+  dplyr::mutate(across(2:6, ~replace(x = .,
+                                     list = is.na(.),
+                                     # replacement values
+                                     values = 1)))
+
+test <- suitability_model %>%
+  sf::st_drop_geometry()
+
+has_na <- length(rownames(test)[!complete.cases(test)])
 
 #####################################
 
@@ -169,8 +182,27 @@ model_areas <- suitability_model %>%
                 # model geometric value
                 model_geom_mean)
 
+model_areas <- suitability_model %>%
+  # calculate the geometric mean
+  ## geometric mean = nth root of the product of the variable values
+  dplyr::mutate(model_geom_mean = (ais_max ^ gm_wt) * (vms_all_max ^ gm_wt) * (vtr_max ^ gm_wt) * (lps_max ^ gm_wt)) %>%
+  
+  # select desired fields
+  dplyr::select(index,
+                # industry, transportation, and navigation
+                ais_max,
+                # fisheries
+                vms_all_max, vtr_max, lps_max,
+                # model geometric value
+                model_geom_mean)
+
 dim(model_areas)[1] - dim(model_areas[!is.na(model_areas$constraints), ])[1]
 dim(model_areas)[1]
+
+test <- model_areas %>%
+  sf::st_drop_geometry()
+
+has_na <- rownames(test)[!complete.cases(test)]
 
 #####################################
 
