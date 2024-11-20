@@ -128,6 +128,11 @@ region_data_hex <- hex_grid[region_data, ] %>%
   # select fields of importance
   dplyr::select(index, layer)
 
+test <- region_data_hex %>%
+  sf::st_drop_geometry()
+
+has_na <- rownames(test)[!complete.cases(test)]
+
 #####################################
 #####################################
 

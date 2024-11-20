@@ -181,6 +181,11 @@ region_data_hex <- hex_grid[region_data, ] %>%
   ## ***Note: this will provide the most conservation given that high values are less desirable
   dplyr::summarise(lps_max = max(lps_z_value))
 
+test <- region_data_hex %>%
+  sf::st_drop_geometry()
+
+has_na <- rownames(test)[!complete.cases(test)]
+
 #####################################
 #####################################
 
