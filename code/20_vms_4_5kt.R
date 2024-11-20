@@ -359,6 +359,9 @@ region_data <- terra::app(c(her_4kt_2,
   terra::crop(region,
               mask = T)
 
+terra::minmax(region_data)[1]
+terra::minmax(region_data)[2]
+
 #####################################
 #####################################
 
@@ -367,6 +370,9 @@ region_data_z <- region_data %>%
   
   # apply the z-membership function
   zmf_function()
+
+terra::minmax(region_data_z)[1]
+terra::minmax(region_data_z)[2]
 
 #####################################
 #####################################
@@ -416,6 +422,8 @@ test <- region_data_hex %>%
   sf::st_drop_geometry()
 
 has_na <- rownames(test)[!complete.cases(test)]
+
+plot(region_data_hex$geom)
 
 #####################################
 #####################################
