@@ -221,7 +221,7 @@ terra::minmax(westport_bath)[2] # bottom depth
 
 #####################################
 
-# limit area to locations where bathymetry falls between -40 and -20 meters
+# limit area to locations where bathymetry falls between -50 and -30 meters
 westport_bath_boundary <- terra::ifel(westport_bath < max_depth, NA, terra::ifel(westport_bath > min_depth, NA, westport_bath))
 
 plot(westport_bath_boundary)
@@ -247,6 +247,8 @@ westport_boundary <- terra::as.polygons(x = westport_bath_boundary) %>%
   dplyr::group_by(boundary) %>%
   # summarise all those grouped elements together -- in effect this will create a single feature
   dplyr::summarise()
+
+plot(westport_boundary$geometry)
 
 #####################################
 #####################################
