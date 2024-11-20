@@ -206,45 +206,64 @@ smb_15_16
 ### ***warning: the calculation of the mean across the fisheries
 ###             will not work properly if the dimensions across
 ###             all the datasets are not uniform (266 x 351)
-dim(her_15_16) # 265 x 351
-dim(mnk_15_16) # 266 x 350
-dim(nms_15_16) # 266 x 351
-dim(pel_15_16) # 266 x 351
-dim(sco_15_16) # 266 x 351
-dim(ses_15_16) # 265 x 351
-dim(smb_15_16) # 266 x 351
+dim(her_15_16) # 205 x 350
+dim(mnk_15_16) # 204 x 351
+dim(nms_15_16) # 204 x 350
+dim(pel_15_16) # 205 x 350
+dim(sco_15_16) # 204 x 351
+dim(ses_15_16) # 204 x 350
+dim(smb_15_16) # 204 x 350
 
 ### force the correct extent for ones with different extents
-her_15_16 <- terra::extend(x = her_15_16,
+her_15_16_2 <- terra::extend(x = her_15_16,
+                             # extend to match largest extent
+                             y = mnk_15_16)
+mnk_15_16_2 <- terra::extend(x = mnk_15_16,
                              # extend to match largest extent
                              y = pel_15_16)
-mnk_15_16 <- terra::extend(x = mnk_15_16,
+nms_15_16_2 <- terra::extend(x = nms_15_16,
+                             # extend to match largest extent
+                             y = mnk_15_16)
+nms_15_16_3 <- terra::extend(x = nms_15_16_2,
+                             # extend to match largest extent
+                             y = mnk_15_16_2)
+pel_15_16_2 <- terra::extend(x = pel_15_16,
+                             # extend to match largest extent
+                             y = mnk_15_16)
+sco_15_16_2 <- terra::extend(x = sco_15_16,
                              # extend to match largest extent
                              y = pel_15_16)
-ses_15_16 <- terra::extend(x = ses_15_16,
+ses_15_16_2 <- terra::extend(x = ses_15_16,
                              # extend to match largest extent
                              y = pel_15_16)
-smb_15_16 <- terra::extend(x = smb_15_16,
-                           # extend to match largest extent
-                           y = pel_15_16)
+ses_15_16_3 <- terra::extend(x = ses_15_16_2,
+                             # extend to match largest extent
+                             y = nms_15_16_2)
+smb_15_16_2 <- terra::extend(x = smb_15_16,
+                             # extend to match largest extent
+                             y = pel_15_16)
+smb_15_16_3 <- terra::extend(x = smb_15_16_2,
+                             # extend to match largest extent
+                             y = mnk_15_16_2)
 
-dim(her_15_16) # 266 x 351
-dim(mnk_15_16) # 266 x 351
-dim(pel_15_16) # 267 x 351
-dim(sco_15_16) # 266 x 351
-dim(ses_15_16) # 266 x 351
-dim(smb_15_16) # 266 x 351
+dim(her_15_16_2) # 205 x 351
+dim(mnk_15_16_2) # 205 x 351
+dim(nms_15_16_3) # 205 x 351
+dim(pel_15_16_2) # 205 x 351
+dim(sco_15_16_2) # 205 x 351
+dim(ses_15_16_3) # 205 x 351
+dim(smb_15_16_3) # 205 x 351
 
 #####################################
 
 ## plot data
-plot(her_15_16)
-plot(mnk_15_16)
-plot(nms_15_16)
-plot(pel_15_16)
-plot(sco_15_16)
-plot(ses_15_16)
-plot(smb_15_16)
+plot(her_15_16_2)
+plot(mnk_15_16_2)
+plot(nms_15_16_3)
+plot(pel_15_16_2)
+plot(sco_15_16_2)
+plot(ses_15_16_3)
+plot(smb_15_16_3)
 
 #####################################
 
@@ -252,74 +271,74 @@ plot(smb_15_16)
 ### ***warning: the calculation of the mean across the fisheries
 ###             will not work properly if the extensions across
 ###             all the datasets are not uniform
-terra::ext(her_15_16)
-terra::ext(mnk_15_16)
-terra::ext(nms_15_16)
-terra::ext(pel_15_16)
-terra::ext(sco_15_16)
-terra::ext(ses_15_16)
-terra::ext(smb_15_16)
+terra::ext(her_15_16_2)
+terra::ext(mnk_15_16_2)
+terra::ext(nms_15_16_3)
+terra::ext(pel_15_16_2)
+terra::ext(sco_15_16_2)
+terra::ext(ses_15_16_3)
+terra::ext(smb_15_16_3)
 
 ### expand extent
 #### ***note: this will take the maximum possible extent
 ####          across all the fishery datasets
-xmin <- min(terra::ext(her_15_16)[1],
-            terra::ext(mnk_15_16)[1],
-            terra::ext(nms_15_16)[1],
-            terra::ext(pel_15_16)[1],
-            terra::ext(sco_15_16)[1],
-            terra::ext(ses_15_16)[1],
-            terra::ext(smb_15_16)[1])
+xmin <- min(terra::ext(her_15_16_2)[1],
+            terra::ext(mnk_15_16_2)[1],
+            terra::ext(nms_15_16_3)[1],
+            terra::ext(pel_15_16_2)[1],
+            terra::ext(sco_15_16_2)[1],
+            terra::ext(ses_15_16_3)[1],
+            terra::ext(smb_15_16_3)[1])
 xmin
 
-xmax <- max(terra::ext(her_15_16)[2],
-            terra::ext(mnk_15_16)[2],
-            terra::ext(nms_15_16)[2],
-            terra::ext(pel_15_16)[2],
-            terra::ext(sco_15_16)[2],
-            terra::ext(ses_15_16)[2],
-            terra::ext(smb_15_16)[2])
+xmax <- max(terra::ext(her_15_16_2)[2],
+            terra::ext(mnk_15_16_2)[2],
+            terra::ext(nms_15_16_3)[2],
+            terra::ext(pel_15_16_2)[2],
+            terra::ext(sco_15_16_2)[2],
+            terra::ext(ses_15_16_3)[2],
+            terra::ext(smb_15_16_3)[2])
 xmax
 
-ymin <- min(terra::ext(her_15_16)[3],
-            terra::ext(mnk_15_16)[3],
-            terra::ext(nms_15_16)[3],
-            terra::ext(pel_15_16)[3],
-            terra::ext(sco_15_16)[3],
-            terra::ext(ses_15_16)[3],
-            terra::ext(smb_15_16)[3])
+ymin <- min(terra::ext(her_15_16_2)[3],
+            terra::ext(mnk_15_16_2)[3],
+            terra::ext(nms_15_16_3)[3],
+            terra::ext(pel_15_16_2)[3],
+            terra::ext(sco_15_16_2)[3],
+            terra::ext(ses_15_16_3)[3],
+            terra::ext(smb_15_16_3)[3])
 ymin
 
-ymax <- max(ext(her_15_16)[4],
-            ext(mnk_15_16)[4],
-            ext(nms_15_16)[4],
-            ext(pel_15_16)[4],
-            ext(sco_15_16)[4],
-            ext(ses_15_16)[4],
-            ext(smb_15_16)[4])
+ymax <- max(ext(her_15_16_2)[4],
+            ext(mnk_15_16_2)[4],
+            ext(nms_15_16_3)[4],
+            ext(pel_15_16_2)[4],
+            ext(sco_15_16_2)[4],
+            ext(ses_15_16_3)[4],
+            ext(smb_15_16_3)[4])
 ymax
 
 ### raster extent
 raster_ext <- c(xmin, xmax, ymin, ymax)
 
-terra::ext(her_15_16) <- raster_ext
-terra::ext(mnk_15_16) <- raster_ext
-terra::ext(nms_15_16) <- raster_ext
-terra::ext(pel_15_16) <- raster_ext
-terra::ext(sco_15_16) <- raster_ext
-terra::ext(ses_15_16) <- raster_ext
-terra::ext(smb_15_16) <- raster_ext
+terra::ext(her_15_16_2) <- raster_ext
+terra::ext(mnk_15_16_2) <- raster_ext
+terra::ext(nms_15_16_3) <- raster_ext
+terra::ext(pel_15_16_2) <- raster_ext
+terra::ext(sco_15_16_2) <- raster_ext
+terra::ext(ses_15_16_3) <- raster_ext
+terra::ext(smb_15_16_3) <- raster_ext
 
 #####################################
 
 ## reinspect data
-her_15_16
-mnk_15_16
-nms_15_16
-pel_15_16
-sco_15_16
-ses_15_16
-smb_15_16
+her_15_16_2
+mnk_15_16_2
+nms_15_16_3
+pel_15_16_2
+sco_15_16_2
+ses_15_16_3
+smb_15_16_3
 
 #####################################
 #####################################
@@ -327,13 +346,13 @@ smb_15_16
 # combine all fishery rasters
 ## ***warning: verify that all rasters have exact same
 ##             dimensions and extents before running
-region_data <- terra::app(c(her_15_16,
-                            mnk_15_16,
-                            nms_15_16,
-                            pel_15_16,
-                            sco_15_16,
-                            ses_15_16,
-                            smb_15_16),
+region_data <- terra::app(c(her_15_16_2,
+                            mnk_15_16_2,
+                            nms_15_16_3,
+                            pel_15_16_2,
+                            sco_15_16_2,
+                            ses_15_16_3,
+                            smb_15_16_3),
                           # take mean values of all fishery rasters (2015 - 2016)
                           fun = mean,
                           # remove any NA values from mean calculation
