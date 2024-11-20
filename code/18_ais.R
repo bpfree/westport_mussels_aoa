@@ -156,7 +156,7 @@ hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_na
 #####################################
 #####################################
 
-plot(region)
+plot(region$geom)
 
 # limit data to study region
 region_data <- terra::crop(x = data,
@@ -166,6 +166,8 @@ region_data <- terra::crop(x = data,
                            mask = T)
 
 plot(region_data)
+terra::minmax(region_data)[1]
+terra::minmax(region_data)[2]
 
 #####################################
 #####################################
@@ -176,6 +178,8 @@ region_data_z <- region_data %>%
 
 ## inspect rescaled data
 plot(region_data_z)
+terra::minmax(region_data_z)[1]
+terra::minmax(region_data_z)[2]
 
 #####################################
 #####################################
@@ -220,6 +224,11 @@ region_data_hex <- hex_grid[region_data_polygon, ] %>%
   ## ***Note: this will provide the most conservation given that
   ##          high values are less desirable
   dplyr::summarise(ais_max = max(ais))
+
+test <- region_data_hex %>%
+  sf::st_drop_geometry()
+
+has_na <- rownames(test)[!complete.cases(test)]
 
 #####################################
 #####################################
