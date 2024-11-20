@@ -2,7 +2,7 @@
   <PAMRasterBand band="1">
     <Description>nms_2015_2016</Description>
     <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">2.1648066043854</MDI>
+      <MDI key="STATISTICS_MAXIMUM">2.1432020664215</MDI>
       <MDI key="STATISTICS_MEAN">-9999</MDI>
       <MDI key="STATISTICS_MINIMUM">-1.3510876893997</MDI>
       <MDI key="STATISTICS_STDDEV">-9999</MDI>

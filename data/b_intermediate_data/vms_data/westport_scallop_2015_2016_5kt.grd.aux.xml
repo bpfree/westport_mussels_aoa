@@ -2,7 +2,7 @@
   <PAMRasterBand band="1">
     <Description>ses_15_16_5kt</Description>
     <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">-0.45807358622551</MDI>
+      <MDI key="STATISTICS_MAXIMUM">-0.71002125740051</MDI>
       <MDI key="STATISTICS_MEAN">-9999</MDI>
       <MDI key="STATISTICS_MINIMUM">-1.2528746128082</MDI>
       <MDI key="STATISTICS_STDDEV">-9999</MDI>

@@ -2,7 +2,7 @@
   <PAMRasterBand band="1">
     <Description>pel_2015_2016</Description>
     <Metadata>
-      <MDI key="STATISTICS_MAXIMUM">3.257292509079</MDI>
+      <MDI key="STATISTICS_MAXIMUM">3.2520370483398</MDI>
       <MDI key="STATISTICS_MEAN">-9999</MDI>
       <MDI key="STATISTICS_MINIMUM">-1.3032921552658</MDI>
       <MDI key="STATISTICS_STDDEV">-9999</MDI>
