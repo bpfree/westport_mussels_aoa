@@ -97,10 +97,10 @@ data <- sf::st_read(dsn = file.path(data_dir, "shippinglanes.shp")) %>%
 #####################################
 
 ## study region
-region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area"))
+region <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_{date}"))
 
 ## hex grid
-hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex"))
+hex_grid <- sf::st_read(dsn = region_gpkg, layer = stringr::str_glue("{region_name}_area_hex_{date}"))
 
 #####################################
 #####################################
