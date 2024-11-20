@@ -206,52 +206,60 @@ smb_4kt
 ### ***warning: the calculation of the mean across the fisheries
 ###             will not work properly if the dimensions across
 ###             all the datasets are not uniform (273 x 454)
-dim(her_4kt) # 266 x 350
-dim(mnk_4kt) # 266 x 351
-dim(nms_4kt) # 266 x 351
-dim(pel_4kt) # 266 x 350
-dim(sco_4kt) # 266 x 350
-dim(ses_5kt) # 265 x 351
-dim(smb_4kt) # 265 x 350
+dim(her_4kt) # 204 x 350
+dim(mnk_4kt) # 205 x 350
+dim(nms_4kt) # 205 x 350
+dim(pel_4kt) # 204 x 350
+dim(sco_4kt) # 204 x 350
+dim(ses_5kt) # 204 x 350
+dim(smb_4kt) # 204 x 351
 
 ### force the correct extent for ones with different extents
 her_4kt_2 <- terra::extend(x = her_4kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = smb_4kt)
 mnk_4kt_2 <- terra::extend(x = mnk_4kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = smb_4kt)
 nms_4kt_2 <- terra::extend(x = nms_4kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = smb_4kt)
 pel_4kt_2 <- terra::extend(x = pel_4kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = smb_4kt)
+pel_4kt_3 <- terra::extend(x = pel_4kt,
+                           # extend to match largest extent
+                           y = her_4kt_2)
 sco_4kt_2 <- terra::extend(x = sco_4kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = smb_4kt)
 ses_5kt_2 <- terra::extend(x = ses_5kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = smb_4kt)
+ses_5kt_3 <- terra::extend(x = ses_5kt_2,
+                           # extend to match largest extent
+                           y = her_4kt)
 smb_4kt_2 <- terra::extend(x = smb_4kt,
                            # extend to match largest extent
-                           y = mnk_4kt)
+                           y = her_4kt)
 
-dim(her_4kt_2) # 266 x 351
-dim(mnk_4kt_2) # 266 x 351
-dim(nms_4kt_2) # 266 x 351
-dim(pel_4kt_2) # 266 x 351
-dim(sco_4kt_2) # 266 x 351
-dim(ses_5kt_2) # 266 x 351
-dim(smb_4kt_2) # 266 x 351
+dim(her_4kt_2) # 205 x 351
+dim(mnk_4kt_2) # 205 x 351
+dim(nms_4kt_2) # 205 x 351
+dim(pel_4kt_2) # 204 x 351
+dim(pel_4kt_3) # 205 x 351
+dim(sco_4kt_2) # 205 x 351
+dim(ses_5kt_2) # 204 x 351
+dim(ses_5kt_3) # 204 x 351
+dim(smb_4kt_2) # 205 x 351
 
 ## plot data
 plot(her_4kt_2)
 plot(mnk_4kt_2)
 plot(nms_4kt_2)
-plot(pel_4kt_2)
+plot(pel_4kt_3)
 plot(sco_4kt_2)
-plot(ses_5kt_2)
+plot(ses_5kt_3)
 plot(smb_4kt_2)
 
 #####################################
@@ -263,9 +271,9 @@ plot(smb_4kt_2)
 terra::ext(her_4kt_2)
 terra::ext(mnk_4kt_2)
 terra::ext(nms_4kt_2)
-terra::ext(pel_4kt_2)
+terra::ext(pel_4kt_3)
 terra::ext(sco_4kt_2)
-terra::ext(ses_5kt_2)
+terra::ext(ses_5kt_3)
 terra::ext(smb_4kt_2)
 
 ### expand extent
@@ -274,36 +282,36 @@ terra::ext(smb_4kt_2)
 xmin <- min(terra::ext(her_4kt_2)[1],
             terra::ext(mnk_4kt_2)[1],
             terra::ext(nms_4kt_2)[1],
-            terra::ext(pel_4kt_2)[1],
+            terra::ext(pel_4kt_3)[1],
             terra::ext(sco_4kt_2)[1],
-            terra::ext(ses_5kt_2)[1],
+            terra::ext(ses_5kt_3)[1],
             terra::ext(smb_4kt_2)[1])
 xmin
 
 xmax <- max(terra::ext(her_4kt_2)[2],
             terra::ext(mnk_4kt_2)[2],
             terra::ext(nms_4kt_2)[2],
-            terra::ext(pel_4kt_2)[2],
+            terra::ext(pel_4kt_3)[2],
             terra::ext(sco_4kt_2)[2],
-            terra::ext(ses_5kt_2)[2],
+            terra::ext(ses_5kt_3)[2],
             terra::ext(smb_4kt_2)[2])
 xmax
 
 ymin <- min(terra::ext(her_4kt_2)[3],
             terra::ext(mnk_4kt_2)[3],
             terra::ext(nms_4kt_2)[3],
-            terra::ext(pel_4kt_2)[3],
+            terra::ext(pel_4kt_3)[3],
             terra::ext(sco_4kt_2)[3],
-            terra::ext(ses_5kt_2)[3],
+            terra::ext(ses_5kt_3)[3],
             terra::ext(smb_4kt_2)[3])
 ymin
 
 ymax <- max(ext(her_4kt_2)[4],
             ext(mnk_4kt_2)[4],
             ext(nms_4kt_2)[4],
-            ext(pel_4kt_2)[4],
+            ext(pel_4kt_3)[4],
             ext(sco_4kt_2)[4],
-            ext(ses_5kt_2)[4],
+            ext(ses_5kt_3)[4],
             ext(smb_4kt_2)[4])
 ymax
 
@@ -313,9 +321,9 @@ raster_ext <- c(xmin, xmax, ymin, ymax)
 terra::ext(her_4kt_2) <- raster_ext
 terra::ext(mnk_4kt_2) <- raster_ext
 terra::ext(nms_4kt_2) <- raster_ext
-terra::ext(pel_4kt_2) <- raster_ext
+terra::ext(pel_4kt_3) <- raster_ext
 terra::ext(sco_4kt_2) <- raster_ext
-terra::ext(ses_5kt_2) <- raster_ext
+terra::ext(ses_5kt_3) <- raster_ext
 terra::ext(smb_4kt_2) <- raster_ext
 
 #####################################
@@ -324,9 +332,9 @@ terra::ext(smb_4kt_2) <- raster_ext
 her_4kt_2
 mnk_4kt_2
 nms_4kt_2
-pel_4kt_2
+pel_4kt_3
 sco_4kt_2
-ses_5kt_2
+ses_5kt_3
 smb_4kt_2
 
 #####################################
@@ -338,9 +346,9 @@ smb_4kt_2
 region_data <- terra::app(c(her_4kt_2,
                             mnk_4kt_2,
                             nms_4kt_2,
-                            pel_4kt_2,
+                            pel_4kt_3,
                             sco_4kt_2,
-                            ses_5kt_2,
+                            ses_5kt_3,
                             smb_4kt_2),
                           # take mean values of fishery under 4 / 5 knots rasters (2015 - 2016)
                           fun = mean,
