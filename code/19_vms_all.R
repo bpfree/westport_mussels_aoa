@@ -415,6 +415,11 @@ region_data_hex <- hex_grid[region_data_polygon, ] %>%
   ##          high values are less desirable
   dplyr::summarise(vms_all_max = max(vms))
 
+test <- region_data_hex %>%
+  sf::st_drop_geometry()
+
+has_na <- rownames(test)[!complete.cases(test)]
+
 #####################################
 #####################################
 
