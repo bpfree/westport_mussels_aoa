@@ -119,9 +119,9 @@ region <- sf::st_read(dsn = file.path(study_dir, "studyRegion_constraints_polygo
 
 # study region
 region_area <- bathymetry %>%
-  # remove federal waters
+  # include only federal waters
   rmapshaper::ms_clip(federal_waters) %>%
-  # remove town-buffered area
+  # include only area within the town-buffered area
   rmapshaper::ms_clip(town_20mi)
 
 plot(region_area$geometry)
