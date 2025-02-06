@@ -170,5 +170,3 @@ no special use airspace overlapped with the Westport study region and unexploded
 setback distance applied to it so that the 1-dimensional points had geographic space, that setback distance was no longer required for the munitions and explosives of concern.
 
 2. Noticed on 6 February 2025, VMS data for all fisheries got the mean taken. At the time of the analysis, little guidance was provided on if the mean or the sum should get taken.
-
-3. 
