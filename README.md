@@ -48,7 +48,6 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Administrative boundary | [Masschusetts](https://www.mass.gov/info-details/massgis-data-layers)  | [Town survey](https://s3.us-east-1.amazonaws.com/download.massgis.digital.mass.gov/gdbs/townssurvey_gdb.zip) | [Metadata](https://www.mass.gov/info-details/massgis-data-municipalities) | [MASSGIS](https://www.mass.gov/orgs/massgis-bureau-of-geographic-information) |
 
 ##### *Model*
-##### *Constraints*
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | Unexploded ordnance | NOAA | [Unexploded ordnance locations](https://marinecadastre.gov/downloads/data/mc/UnexplodedOrdnance.zip) | [Metadata](https://www.fisheries.noaa.gov/inport/item/66208) | As of 17 January 2024, MarineCadastre will not return any results for unexploded ordnance data; these data came from links located for previous analyses |
