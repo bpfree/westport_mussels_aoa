@@ -79,7 +79,7 @@ The aquaculture analysis focused on finding suitable sites in federal waters off
 | Layer | Data Source | Data Name | Metadata  | Notes |
 |---------------|---------------|---------------|---------------|---------------|
 | VMS | --------- | VMS (all fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fisheries effort for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf) |
-| VMS | --------- | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery) and for 2015 and 2016, [additional documentation](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity_2022.pdf)  |
+| VMS | --------- | VMS (slow fishing) | [Metadata](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) | Fishing vessels under speeds 4 or 5 knots (depends on the fishery) and for 2015 and 2016, [additional documentation](https://neoceanplanning.org/wp-content/uploads/2021/09/Portal_FisheriesData_FinalReport_2021.pdf) |
 | VTR | --------- | VTR (all gear) |---------- | ---------------|
 | VTR | --------- | VTR (charter / party) | ----------|--------------- |
 | Survey | --------- | Large pelagic survey (2012 - 2021) |---------- | ---------------|
@@ -168,3 +168,7 @@ no special use airspace overlapped with the Westport study region and unexploded
 ### **Issues**
 1. Munitions and explosives of concern superseded the unexploded ordnance data, so those data replaced the previous dataset in the analysis. Given that previously the location data had a
 setback distance applied to it so that the 1-dimensional points had geographic space, that setback distance was no longer required for the munitions and explosives of concern.
+
+2. Noticed on 6 February 2025, VMS data for all fisheries got the mean taken. At the time of the analysis, little guidance was provided on if the mean or the sum should get taken.
+
+3. 
