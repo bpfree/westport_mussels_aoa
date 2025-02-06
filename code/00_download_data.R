@@ -195,13 +195,13 @@ unexploded_ordnance_location <- "https://marinecadastre.gov/downloads/data/mc/Un
 
 ### Munitions and explosives of concern data (source: https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip)
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/69013
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/c28b230c336b472e979723d15ede22e7_0/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//c28b230c336b472e979723d15ede22e7_0/about
 munitions_explosives <- "https://marinecadastre.gov/downloads/data/mc/MunitionsExplosivesConcern.zip"
 
 #####################################
 
 ### Danger zones and restricted areas data (source: https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip)
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::danger-zones-and-restricted-areas/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//noaa::danger-zones-and-restricted-areas/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/48876
 danger_zone <- "https://marinecadastre.gov/downloads/data/mc/DangerZoneRestrictedArea.zip"
 
@@ -214,30 +214,30 @@ environmental_sensor_buoy <- "https://www.northeastoceandata.org/files/metadata/
 #####################################
 
 ### Wastewater outfall facilities data (source: https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip)
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/b0c5d61277f440e3b6ca001f7fbd5416_0/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//b0c5d61277f440e3b6ca001f7fbd5416_0/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/66706
-#### ***Note: the download link is the same for the wastewater outfall pipes data (https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wastewater-outfall-pipes/about)
+#### ***Note: the download link is the same for the wastewater outfall pipes data (https://hub.marinecadastre.gov/datasets//noaa::wastewater-outfall-pipes/about)
 ####          and the wastewater outfalls data (https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip)
 wastewater_outfall <- "https://marinecadastre.gov/downloads/data/mc/WastewaterOutfall.zip"
 
 #####################################
 
 ### Ocean disposal sites data (source: https://marinecadastre.gov/downloads/data/mc/OceanDisposalSite.zip)
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::ocean-disposal-sites/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//noaa::ocean-disposal-sites/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/54193
 ocean_disposal <- "https://marinecadastre.gov/downloads/data/mc/OceanDisposalSite.zip"
 
 #####################################
 
 ### Aids to navigation data (source: https://marinecadastre.gov/downloads/data/mc/AtoN.zip)
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::aids-to-navigation-1/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//noaa::aids-to-navigation-2/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/56120
 aids_navigation <- "https://marinecadastre.gov/downloads/data/mc/AtoN.zip"
 
 #####################################
 
 ### Wrecks and obstructions data (source: https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip)
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::wrecks-and-obstructions/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//noaa::wrecks-and-obstructions/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/70439
 wrecks_obstructions <- "https://marinecadastre.gov/downloads/data/mc/WreckObstruction.zip"
 
@@ -259,7 +259,7 @@ unexploded_ordnance_area <- "https://marinecadastre.gov/downloads/data/mc/Unexpl
 #####################################
 
 ### Special use airspace
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::military-special-use-airspace/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//noaa::military-special-use-airspace/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/48898
 #### ***Note: Marine Cadastre had a link for special use airspace (https://marinecadastre.gov/downloads/data/mc/MilitarySpecialUseAirspace.zip)
 ####          yet these data have become deprecated (according to Daniel Marin [daniel.martin@noaa.gov] as of 31 January 2024)
@@ -277,7 +277,7 @@ military <- "https://marinecadastre.gov/downloads/data/mc/MilitaryCollection.zip
 ## Natural and Cultural Resources
 
 ### Sediment (source: https://marinecadastre.gov/downloads/data/mc/SedimentTexture.zip)
-#### MarineCadastre: https://marinecadastre-noaa.hub.arcgis.com/datasets/noaa::sediment-texture/about
+#### MarineCadastre: https://hub.marinecadastre.gov/datasets//noaa::sediment-texture/about
 #### Metadata: https://www.fisheries.noaa.gov/inport/item/55364
 sediment <- "https://marinecadastre.gov/downloads/data/mc/SedimentTexture.zip"
 
