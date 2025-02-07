@@ -178,7 +178,6 @@ region_data_hex <- hex_grid[region_data, ] %>%
   dplyr::group_by(index) %>%
   # summarise the fisheries score values
   ## take the maximum value of the large pelagic survey score for any that overlap
-  ## ***Note: this will provide the most conservation given that high values are less desirable
   dplyr::summarise(lps_max = max(lps_z_value))
 
 test <- region_data_hex %>%

@@ -168,7 +168,6 @@ region_data_hex <- hex_grid[region_data, ] %>%
   dplyr::group_by(index) %>%
   # summarise the fisheries score values
   ## take the maximum value of the combined protected resource score for any that overlap
-  ## ***Note: this will provide the most conservation given that high values are less desirable
   dplyr::summarise(!!stringr::str_glue("{layer_name}_max") := max(.data[[stringr::str_glue("{layer_name}_z_value")]]))
 
 #####################################

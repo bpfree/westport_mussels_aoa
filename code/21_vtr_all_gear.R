@@ -199,9 +199,7 @@ region_data_hex <- hex_grid[region_data_polygon, ] %>%
   # group by the index values as there are duplicates
   dplyr::group_by(index) %>%
   # summarise the fisheries score values
-  ## take the maximum value of the AIS score for any that overlap
-  ## ***Note: this will provide the most conservation given that
-  ##          high values are less desirable
+  ## take the maximum value of the VTR score for any that overlap
   dplyr::summarise(vtr_max = max(vtr))
 
 test <- region_data_hex %>%
