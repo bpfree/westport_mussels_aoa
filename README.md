@@ -105,7 +105,7 @@ Datasets explored but not included in analyses due to not geographically located
 #### *Software*
 All data cleaning and analyses were performed using the R programming software (version 4.3.2, R Core Team 2023). Especially important R packages used include: dplyr(1.1.4), rmapshaper(0.5.0), sf(1.0-15), terra(1.7-65).
 
-While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the maximum value occurring in the hex cell. The maximum value prioritized conservation.
+While most data used in the model received a single value, some ranged between 0 and 1. This caused at times a hex cells across the call areas to have more than a single value due to data not sharing the exact same shape and size as the call are hex cells. When this occurred, the analysis chose the maximum value occurring in the hex cell.
 
 #### *Constraints*
 Any hex indexes that got affected by constraints got removed from the siting analysis.
@@ -118,11 +118,11 @@ Any hex indexes that got affected by constraints got removed from the siting ana
 | Fisheries | VMS (all gear) | -------------- | Z-shaped membership function | --------------- |
 | Fisheries | VMS (slow fishing) | -------------- | Z-shaped membership function | slow fishing is considered between 4 - 5 knots |
 | Fisheries | VTR (all gear) | -------------- | Z-shaped membership function | --------------- |
-| Fisheries | Large pelagic survey | -------------- | Z-shaped membership function | --------------- |
-| Natural and Cultural | Protected resources | 16093.4 | Z-shaped membership function | Removed from second model iteration |
+| Fisheries | Large pelagic survey | 16093.4 | Z-shaped membership function | --------------- |
+| Natural and Cultural | Protected resources | -------------- | Z-shaped membership function | Removed from second model iteration |
 
 #### *z-shaped membership function*
-Data layers with continuous data had their values rescaled between 0 and 1 using a [z-shaped memebership function](https://www.mathworks.com/help/fuzzy/zmf.html#d126e54766) adapted from Matlab's methods. The z-shaped membership function rescaled values so that minimum values receive a score of 1 and as the values increase to the maximum, the rescaled score approaches 0. In the normal Matlab function, the maximum value would get the rescaled value of 0; however, scores of 0 got classified as constraints -- areas not permitted for aquaculture. To avoid rescaled continuous data getting scores of 0, the maximum value received an extra one-thousandth of the maximum value (*i.e.*, maximum value * 1/1000).
+Data layers with continuous data had their values rescaled between 0 and 1 using an adapted [z-shaped memebership function](https://www.mathworks.com/help/fuzzy/zmf.html#d126e54766) adapted from Matlab's methods. The z-shaped membership function rescaled values so that minimum values receive a score of 1 and as the values increase to the maximum, the rescaled score approaches 0. In the normal Matlab function, the maximum value would get the rescaled value of 0; however, scores of 0 got classified as constraints -- areas not permitted for aquaculture. To avoid rescaled continuous data getting scores of 0, the maximum value received an extra one-thousandth of the maximum value (*i.e.*, maximum value * 1/1000).
 
 The z-shaped membership function required additional adaptation for the vessel monitoring system data for these data had negative values. These data had fishing densities standardized and the [authors noted](https://www.northeastoceandata.org/files/metadata/Themes/CommercialFishing/VMSCommercialFishingDensity.pdf) that the results were best to understand qualitatively through its five classes: very high, high, medium-high, medium-low, and low. A z-shaped membership function assumes that all values are positive. The absolute value of the minimum standardized fishing densities, which can then get added to every value across the dataset to have only positive values for running the normal z-shaped membership function on these shifted values.
 
